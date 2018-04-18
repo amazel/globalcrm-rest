@@ -1,4 +1,4 @@
-package com.globalcrm.rest.services;
+package com.globalcrm.rest.exceptions;
 
 /**
  * Created by Hugo Lezama on April - 2018

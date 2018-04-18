@@ -2,8 +2,10 @@ package com.globalcrm.rest.services.v1;
 
 import com.globalcrm.rest.api.v1.mapper.UserMapper;
 import com.globalcrm.rest.api.v1.model.UserDTO;
+import com.globalcrm.rest.domain.User;
+import com.globalcrm.rest.exceptions.ExceptionFactory;
 import com.globalcrm.rest.repositories.UserRepository;
-import com.globalcrm.rest.services.ResourceNotFoundException;
+import com.globalcrm.rest.exceptions.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -32,8 +34,24 @@ public class UserServiceImpl implements UserService {
     public UserDTO getUserById(Long id) {
         return userRepository.findById(id)
                 .map(mapper::userToUserDto)
-                .orElseThrow(ResourceNotFoundException::new);
+                .orElseThrow(() -> ExceptionFactory.userNotFound(id));
+    }
+
+    @Override
+    public UserDTO saveUser(UserDTO userDTO) {
+        User savedUser = userRepository.save(mapper.userDtoToUser(userDTO));
+        return mapper.userToUserDto(savedUser);
     }
 
 
+    @Override
+    public void deleteUser(Long id) {
+        userRepository.deleteById(id);
+    }
+
+    @Override
+    public UserDTO updateUser(Long id, UserDTO userDTO) {
+        userDTO.setId(id);
+        return saveUser(userDTO);
+    }
 }

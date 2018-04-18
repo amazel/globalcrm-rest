@@ -25,6 +25,7 @@
         <lombok.version>1.16.20</lombok.version>
         <org.mapstruct.version>1.2.0.Final</org.mapstruct.version>
         <jacoco.version>0.8.1</jacoco.version>
+        <springfox-swagger.version>2.7.0</springfox-swagger.version>
     </properties>
 
     <dependencies>
@@ -76,7 +77,16 @@
             <artifactId>jacoco-maven-plugin</artifactId>
             <version>${jacoco.version}</version>
         </dependency>
-
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+            <version>${springfox-swagger.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+            <version>${springfox-swagger.version}</version>
+        </dependency>
     </dependencies>
 
     <build>

@@ -22,14 +22,32 @@ public class UserController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public UserListDTO getAllUsers(){
+    public UserListDTO getAllUsers() {
         return new UserListDTO(userService.getAllUsers());
     }
 
-    @GetMapping("/{userId}")
+    @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public UserDTO getUserById(@PathVariable Long userId){
-        log.info("Getting User: "+userId);
-        return userService.getUserById(userId);
+    public UserDTO getUserById(@PathVariable Long id) {
+        log.info("Getting User: " + id);
+        return userService.getUserById(id);
+    }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public UserDTO createNewUser(@RequestBody UserDTO userDTO) {
+        return userService.saveUser(userDTO);
+    }
+
+    @PutMapping({"/{id}"})
+    @ResponseStatus(HttpStatus.OK)
+    public UserDTO updateUser(@PathVariable Long id, @RequestBody UserDTO userDTO) {
+        return userService.updateUser(id, userDTO);
+    }
+
+    @DeleteMapping({"/{id}"})
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteUser(@PathVariable Long id) {
+        userService.deleteUser(id);
     }
 }
