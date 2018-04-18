@@ -98,8 +98,7 @@ public class UserControllerTest extends AbstractRestControllerTest{
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.firstName", equalTo(NAME)))
                 .andExpect(jsonPath("$.lastName", equalTo(LAST_NAME)))
-                .andExpect(jsonPath("$.email", equalTo(EMAIL)))
-                .andExpect(jsonPath("$.id", equalTo(USER_ID)));
+                .andExpect(jsonPath("$.email", equalTo(EMAIL)));
     }
 
     @Test
