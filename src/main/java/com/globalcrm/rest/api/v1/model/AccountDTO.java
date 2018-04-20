@@ -6,7 +6,9 @@ import com.globalcrm.rest.domain.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.URL;
 
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -20,7 +22,9 @@ import java.util.Set;
 public class AccountDTO {
     private Long id;
     private String companyName;
+    @URL
     private String companyWebsite;
+    @NotNull
     private UserDTO accountHolder;
     private SubscriptionType subscriptionType;
     private LocalDateTime creationDateTime;
