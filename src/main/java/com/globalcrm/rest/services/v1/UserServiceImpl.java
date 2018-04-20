@@ -2,10 +2,12 @@ package com.globalcrm.rest.services.v1;
 
 import com.globalcrm.rest.api.v1.mapper.UserMapper;
 import com.globalcrm.rest.api.v1.model.UserDTO;
+import com.globalcrm.rest.domain.Account;
 import com.globalcrm.rest.domain.User;
 import com.globalcrm.rest.exceptions.ExceptionFactory;
-import com.globalcrm.rest.repositories.UserRepository;
 import com.globalcrm.rest.exceptions.ResourceNotFoundException;
+import com.globalcrm.rest.repositories.AccountRepository;
+import com.globalcrm.rest.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,16 +17,20 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
+    private AccountRepository accountRepository;
     private final UserMapper mapper;
 
-    public UserServiceImpl(UserRepository userRepository, UserMapper mapper) {
+    public UserServiceImpl(UserRepository userRepository, AccountRepository accountRepository, UserMapper mapper) {
         this.userRepository = userRepository;
+        this.accountRepository = accountRepository;
         this.mapper = mapper;
     }
 
     @Override
-    public List<UserDTO> getAllUsers() {
-        return userRepository.findAll()
+    public List<UserDTO> getAllUsers(Long accountId) {
+
+        Account acct = accountRepository.findById(accountId).orElseThrow(ResourceNotFoundException::new);
+        return acct.getUsers()
                 .stream()
                 .map(mapper::userToUserDto)
                 .collect(Collectors.toList());
@@ -38,8 +44,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO saveUser(UserDTO userDTO) {
-        User savedUser = userRepository.save(mapper.userDtoToUser(userDTO));
+    public UserDTO saveUser(Long accountId, UserDTO userDTO) {
+        User user = mapper.userDtoToUser(userDTO);
+        Account acct = accountRepository.findById(accountId).orElse(null);
+        user.setAccount(acct);
+        User savedUser = userRepository.save(user);
         return mapper.userToUserDto(savedUser);
     }
 
@@ -50,8 +59,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO updateUser(Long id, UserDTO userDTO) {
+    public UserDTO updateUser(Long accountId, Long id, UserDTO userDTO) {
         userDTO.setId(id);
-        return saveUser(userDTO);
+        return saveUser(accountId, userDTO);
     }
 }

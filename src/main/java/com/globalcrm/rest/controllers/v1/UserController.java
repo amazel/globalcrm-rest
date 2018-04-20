@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(UserController.BASE_URL)
 public class UserController {
 
-    public static final String BASE_URL = "/api/v1/users";
+    public static final String BASE_URL = AccountController.BASE_URL+"/{accountId}/users";
 
     private final UserService userService;
 
@@ -22,32 +22,32 @@ public class UserController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public UserListDTO getAllUsers() {
-        return new UserListDTO(userService.getAllUsers());
+    public UserListDTO getAllAccountUsers(@PathVariable Long accountId) {
+        return new UserListDTO(userService.getAllUsers(accountId));
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{userId}")
     @ResponseStatus(HttpStatus.OK)
-    public UserDTO getUserById(@PathVariable Long id) {
-        log.info("Getting User: " + id);
-        return userService.getUserById(id);
+    public UserDTO getUserById(@PathVariable Long userId) {
+        log.info("Getting User: " + userId);
+        return userService.getUserById(userId);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public UserDTO createNewUser(@RequestBody UserDTO userDTO) {
-        return userService.saveUser(userDTO);
+    public UserDTO createNewUser(@PathVariable Long accountId, @RequestBody UserDTO userDTO) {
+        return userService.saveUser(accountId, userDTO);
     }
 
-    @PutMapping({"/{id}"})
+    @PutMapping({"/{userId}"})
     @ResponseStatus(HttpStatus.OK)
-    public UserDTO updateUser(@PathVariable Long id, @RequestBody UserDTO userDTO) {
-        return userService.updateUser(id, userDTO);
+    public UserDTO updateUser(@PathVariable Long accountId, @PathVariable Long userId, @RequestBody UserDTO userDTO) {
+        return userService.updateUser(accountId, userId, userDTO);
     }
 
-    @DeleteMapping({"/{id}"})
+    @DeleteMapping({"/{userId}"})
     @ResponseStatus(HttpStatus.OK)
-    public void deleteUser(@PathVariable Long id) {
-        userService.deleteUser(id);
+    public void deleteUser(@PathVariable Long userId) {
+        userService.deleteUser(userId);
     }
 }

@@ -6,10 +6,9 @@ import com.globalcrm.rest.domain.User;
 import java.util.List;
 
 public interface UserService {
-    List<UserDTO> getAllUsers();
+    List<UserDTO> getAllUsers(Long accountId);
     UserDTO getUserById(Long id);
-
-    UserDTO saveUser (UserDTO userDTO);
-    UserDTO updateUser (Long id, UserDTO userDTO);
+    UserDTO saveUser (Long accountId,UserDTO userDTO);
+    UserDTO updateUser (Long accountId,Long id, UserDTO userDTO);
     void deleteUser (Long id);
 }

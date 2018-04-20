@@ -30,6 +30,7 @@ public class UserControllerTest extends AbstractRestControllerTest{
     public static final String LAST_NAME = "Test LastName";
     public static final String EMAIL = "test@email.com";
     public static final Long USER_ID = 1L;
+    public static final Long ACCT_ID = 1L;
 
     @InjectMocks
     UserController userController;
@@ -51,9 +52,9 @@ public class UserControllerTest extends AbstractRestControllerTest{
     public void getAllUsers() throws Exception {
         List<UserDTO> users = Arrays.asList(new UserDTO(), new UserDTO());
 
-        when(userService.getAllUsers()).thenReturn(users);
+        when(userService.getAllUsers(anyLong())).thenReturn(users);
 
-        mockMvc.perform(get(UserController.BASE_URL)
+        mockMvc.perform(get(AccountController.BASE_URL + "/"+ACCT_ID+"/users/")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.users", hasSize(2)));
@@ -67,7 +68,7 @@ public class UserControllerTest extends AbstractRestControllerTest{
         mockUser.setFirstName(NAME);
         when(userService.getUserById(anyLong())).thenReturn(mockUser);
 
-        mockMvc.perform(get(UserController.BASE_URL + "/1")
+        mockMvc.perform(get(AccountController.BASE_URL + "/"+ACCT_ID+"/users/"+USER_ID)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.firstName", equalTo(NAME)));
@@ -88,11 +89,11 @@ public class UserControllerTest extends AbstractRestControllerTest{
         retUser.setEmail(EMAIL);
         retUser.setId(USER_ID);
 
-        when(userService.saveUser(any(UserDTO.class))).thenReturn(retUser);
+        when(userService.saveUser(anyLong(),any(UserDTO.class))).thenReturn(retUser);
 
         //When & then
         mockMvc.perform(
-                post(UserController.BASE_URL)
+                post(AccountController.BASE_URL + "/"+ACCT_ID+"/users/")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(asJsonString(newUser)))
                 .andExpect(status().isCreated())
@@ -116,11 +117,11 @@ public class UserControllerTest extends AbstractRestControllerTest{
         retUser.setEmail(EMAIL);
         retUser.setId(USER_ID);
 
-        when(userService.updateUser(anyLong(),any(UserDTO.class))).thenReturn(retUser);
+        when(userService.updateUser(anyLong(),anyLong(),any(UserDTO.class))).thenReturn(retUser);
 
         //When & then
         mockMvc.perform(
-                put(UserController.BASE_URL+"/"+USER_ID)
+                put(AccountController.BASE_URL + "/"+ACCT_ID+"/users/"+USER_ID)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(asJsonString(newUser)))
                 .andExpect(status().isOk())
@@ -132,7 +133,7 @@ public class UserControllerTest extends AbstractRestControllerTest{
 
     @Test
     public void deleteUser() throws Exception{
-        mockMvc.perform(delete(UserController.BASE_URL + "/"+USER_ID)
+        mockMvc.perform(delete(AccountController.BASE_URL + "/"+ACCT_ID+"/users/"+USER_ID)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
         verify(userService).deleteUser(anyLong());
@@ -144,7 +145,7 @@ public class UserControllerTest extends AbstractRestControllerTest{
 
         when(userService.getUserById(anyLong())).thenThrow(ResourceNotFoundException.class);
 
-        mockMvc.perform(get(UserController.BASE_URL + "/222")
+        mockMvc.perform(get(AccountController.BASE_URL + "/"+ACCT_ID+"/users/222")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
     }
@@ -152,7 +153,7 @@ public class UserControllerTest extends AbstractRestControllerTest{
     @Test
     public void getUserByIdBadRequest() throws Exception {
 
-        mockMvc.perform(get(UserController.BASE_URL + "/WWW")
+        mockMvc.perform(get(AccountController.BASE_URL + "/"+ACCT_ID+"/users/WWW")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
     }

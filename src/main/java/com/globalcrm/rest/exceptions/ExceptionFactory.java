@@ -5,6 +5,9 @@ package com.globalcrm.rest.exceptions;
  */
 public class ExceptionFactory {
     public static ResourceNotFoundException userNotFound (Long id){
-        return new ResourceNotFoundException("User with ID: "+id+" not found");
+        return new ResourceNotFoundException("User ID: "+id+" not found");
+    }
+    public static ResourceNotFoundException accountNotFound (Long id){
+        return new ResourceNotFoundException("Account ID: "+id+" not found");
     }
 }

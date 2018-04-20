@@ -1,18 +1,15 @@
 package com.globalcrm.rest.controllers.v1;
 
-import com.globalcrm.rest.domain.Account;
+import com.globalcrm.rest.api.v1.model.AccountDTO;
 import com.globalcrm.rest.services.v1.AccountService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
-
-import javax.print.DocFlavor;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * Created by Hugo Lezama on April - 2018
  */
+@Slf4j
 @RestController
 @RequestMapping(AccountController.BASE_URL)
 public class AccountController {
@@ -24,9 +21,16 @@ public class AccountController {
         this.accountService = accountService;
     }
 
-    @GetMapping
+    @GetMapping("/{acctId}")
     @ResponseStatus(HttpStatus.OK)
-    public Account createAccount(){
-        return accountService.createAccount();
+    public AccountDTO getAccountById(@PathVariable Long acctId) {
+        log.info("Getting Account: " + acctId);
+        return accountService.findById(acctId);
+    }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public AccountDTO createAccount(@RequestBody AccountDTO accountDTO) {
+        return accountService.createAccount(accountDTO);
     }
 }

@@ -1,8 +1,7 @@
 package com.globalcrm.rest.bootstrap;
 
-import com.globalcrm.rest.domain.Account;
-import com.globalcrm.rest.domain.SubscriptionType;
-import com.globalcrm.rest.domain.User;
+import com.globalcrm.rest.domain.*;
+import com.globalcrm.rest.repositories.AccountHistoryRepository;
 import com.globalcrm.rest.repositories.AccountRepository;
 import com.globalcrm.rest.repositories.UserRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -22,26 +21,45 @@ public class RequiredDataBootstrap implements CommandLineRunner {
 
     private final UserRepository userRepository;
     private final AccountRepository accountRepository;
+    private final AccountHistoryRepository accountHistoryRepository;
 
-    public RequiredDataBootstrap(UserRepository userRepository, AccountRepository accountRepository) {
+    public RequiredDataBootstrap(UserRepository userRepository, AccountRepository accountRepository, AccountHistoryRepository accountHistoryRepository) {
         this.userRepository = userRepository;
         this.accountRepository = accountRepository;
+        this.accountHistoryRepository = accountHistoryRepository;
     }
 
     @Override
     public void run(String... args) {
-        Long actId = loadDefaultAccount();
+        loadDefaultAccount();
     }
 
-    public Long loadDefaultAccount() {
+    public void loadDefaultAccount() {
         log.info("Loading default account");
 
         Account acct = new Account();
-        acct.setCompanyName("Default");
+        acct.setCompanyName("TEST");
+        acct.setCompanyWebsite("www.company.com");
         acct.setCreationDateTime(LocalDateTime.now());
         acct.setSubscriptionType(SubscriptionType.MICRO);
-
         Account acctSaved = accountRepository.save(acct);
-        return acctSaved.getId();
+
+        AccountHistory acctHistory = new AccountHistory();
+        acctHistory.setAccount(acctSaved);
+        acctHistory.setAccountEvent(AccountEvent.CREATED);
+        acctHistory.setDateTime(LocalDateTime.now());
+        accountHistoryRepository.save(acctHistory);
+
+        User holder = new User();
+        holder.setAccount(acctSaved);
+        holder.setFirstName("ACCOUNT");
+        holder.setLastName("HOLDER");
+        userRepository.save(holder);
+        acctSaved.setAccountHolder(holder);
+        User u1 = new User();
+        u1.setFirstName("USER");
+        u1.setLastName("ONE");
+        acctSaved.addUser(u1);
+        accountRepository.save(acct);
     }
 }

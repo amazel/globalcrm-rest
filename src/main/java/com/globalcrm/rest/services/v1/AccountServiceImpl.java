@@ -1,9 +1,14 @@
 package com.globalcrm.rest.services.v1;
 
-import com.globalcrm.rest.domain.*;
+import com.globalcrm.rest.api.v1.mapper.AccountMapper;
+import com.globalcrm.rest.api.v1.model.AccountDTO;
+import com.globalcrm.rest.domain.Account;
+import com.globalcrm.rest.domain.AccountEvent;
+import com.globalcrm.rest.domain.AccountHistory;
+import com.globalcrm.rest.domain.AccountStatus;
+import com.globalcrm.rest.exceptions.ExceptionFactory;
 import com.globalcrm.rest.repositories.AccountHistoryRepository;
 import com.globalcrm.rest.repositories.AccountRepository;
-import com.globalcrm.rest.repositories.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,36 +24,39 @@ public class AccountServiceImpl implements AccountService {
 
     private AccountRepository accountRepository;
     private AccountHistoryRepository accountHistoryRepository;
-    private UserRepository userRepository;
+    private AccountMapper accountMapper;
 
-    public AccountServiceImpl(AccountRepository accountRepository, AccountHistoryRepository accountHistoryRepository, UserRepository userRepository) {
+    public AccountServiceImpl(AccountRepository accountRepository, AccountHistoryRepository accountHistoryRepository, AccountMapper accountMapper) {
         this.accountRepository = accountRepository;
         this.accountHistoryRepository = accountHistoryRepository;
-        this.userRepository = userRepository;
+        this.accountMapper = accountMapper;
     }
 
     @Override
     @Transactional
-    public Account createAccount() {
+    public AccountDTO createAccount(AccountDTO accountDTO) {
         log.info("CREATING ACCOUNT");
-        Account acct = new Account();
-        acct.setCompanyName("TEST");
-        acct.setCreationDateTime(LocalDateTime.now());
-        acct.setSubscriptionType(SubscriptionType.MICRO);
-        Account acctSaved = accountRepository.save(acct);
-
-        genererateAccountHistoryRecord(acctSaved,AccountEvent.CREATED);
-
-        User holder = new User();
-        holder.setAccount(acctSaved);
-        userRepository.save(holder);
-        acctSaved.setAccountHolder(holder);
-        acctSaved.addUser(new User());
-        accountRepository.save(acct);
-        return acctSaved;
+        Account savedAcct = accountRepository.save(accountMapper.accountDtoToAccount(accountDTO));
+        generateAccountHistoryRecord(savedAcct, AccountEvent.CREATED);
+        return accountMapper.accountToAccountDto(savedAcct);
     }
 
-    private AccountHistory genererateAccountHistoryRecord(Account account, AccountEvent event){
+    @Override
+    public AccountDTO findById(Long acctId) {
+        return accountRepository.findById(acctId)
+                .map(accountMapper::accountToAccountDto)
+                .orElseThrow(() -> ExceptionFactory.accountNotFound(acctId));
+    }
+    @Override
+    public AccountDTO manageAccountStatus(Long acctId, AccountStatus acctStatus) {
+        Account acct = accountRepository.findById(acctId)
+                .orElseThrow(() -> ExceptionFactory.accountNotFound(acctId));
+        acct.setAccountStatus(acctStatus);
+        return accountMapper.accountToAccountDto(accountRepository.save(acct));
+    }
+
+    @Transactional
+    public AccountHistory generateAccountHistoryRecord(Account account, AccountEvent event) {
         AccountHistory acctHistory = new AccountHistory();
         acctHistory.setAccount(account);
         acctHistory.setAccountEvent(event);
