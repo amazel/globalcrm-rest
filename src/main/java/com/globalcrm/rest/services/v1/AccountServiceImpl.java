@@ -1,6 +1,7 @@
 package com.globalcrm.rest.services.v1;
 
 import com.globalcrm.rest.api.v1.mapper.AccountMapper;
+import com.globalcrm.rest.api.v1.mapper.CycleAvoidingMappingContext;
 import com.globalcrm.rest.api.v1.model.AccountDTO;
 import com.globalcrm.rest.domain.Account;
 import com.globalcrm.rest.domain.AccountEvent;
@@ -24,12 +25,11 @@ public class AccountServiceImpl implements AccountService {
 
     private AccountRepository accountRepository;
     private AccountHistoryRepository accountHistoryRepository;
-    private AccountMapper accountMapper;
+    private AccountMapper accountMapper = AccountMapper.INSTANCE;
 
-    public AccountServiceImpl(AccountRepository accountRepository, AccountHistoryRepository accountHistoryRepository, AccountMapper accountMapper) {
+    public AccountServiceImpl(AccountRepository accountRepository, AccountHistoryRepository accountHistoryRepository) {
         this.accountRepository = accountRepository;
         this.accountHistoryRepository = accountHistoryRepository;
-        this.accountMapper = accountMapper;
     }
 
     @Override
@@ -44,7 +44,7 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public AccountDTO findById(Long acctId) {
         return accountRepository.findById(acctId)
-                .map(accountMapper::accountToAccountDto)
+                .map(account -> accountMapper.accountToAccountDto(account))
                 .orElseThrow(() -> ExceptionFactory.accountNotFound(acctId));
     }
     @Override

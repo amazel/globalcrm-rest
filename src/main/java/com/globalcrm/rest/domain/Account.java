@@ -3,6 +3,8 @@ package com.globalcrm.rest.domain;
 import lombok.Data;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -19,7 +21,8 @@ public class Account {
     private String companyName;
     private String companyWebsite;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST)
+    @NotNull
     private User accountHolder;
 
     @Enumerated(value = EnumType.STRING)

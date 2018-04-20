@@ -13,6 +13,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 public class AccountMapperTest {
 
@@ -34,12 +35,19 @@ public class AccountMapperTest {
         User user = new User();
         user.setFirstName(USER_NAME);
         user.setId(USER_ID);
+        user.setAccount(account);
         account.setAccountHolder(user);
         account.setCreationDateTime(CREATION_TIME);
         account.setAccountStatus(AccountStatus.NEW);
         account.setCompanyWebsite(COMPANY_WEBSITE);
         Set<User> users = new HashSet<>();
-        users.add(new User());
+
+        User user2 = new User();
+        user2.setFirstName(USER_NAME);
+        user2.setId(3L);
+        user2.setAccount(account);
+
+        users.add(user2);
         account.setUsers(users);
 
         AccountDTO accountDTO = accountMapper.accountToAccountDto(account);
@@ -52,6 +60,7 @@ public class AccountMapperTest {
         assertEquals(AccountStatus.NEW, accountDTO.getAccountStatus());
         assertEquals(COMPANY_WEBSITE, accountDTO.getCompanyWebsite());
         assertEquals(1, accountDTO.getUsers().size());
+        assertNull(accountDTO.getAccountHolder().getAccount().getAccountHolder());
     }
 
     @Test

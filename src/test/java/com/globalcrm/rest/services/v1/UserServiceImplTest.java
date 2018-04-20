@@ -1,6 +1,5 @@
 package com.globalcrm.rest.services.v1;
 
-import com.globalcrm.rest.api.v1.mapper.UserMapper;
 import com.globalcrm.rest.api.v1.model.UserDTO;
 import com.globalcrm.rest.domain.Account;
 import com.globalcrm.rest.domain.User;
@@ -11,7 +10,10 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -31,14 +33,12 @@ public class UserServiceImplTest {
     @Mock
     AccountRepository accountRepository;
 
-    UserMapper mapper = UserMapper.INSTANCE;
-
     UserService userService;
 
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        userService = new UserServiceImpl(userRepository, accountRepository,mapper);
+        userService = new UserServiceImpl(userRepository, accountRepository);
     }
 
     @Test
@@ -81,7 +81,7 @@ public class UserServiceImplTest {
         when(userRepository.save(any(User.class))).thenReturn(savedUser);
 
         //When
-        UserDTO retUser = userService.saveUser(ACCT_ID,new UserDTO());
+        UserDTO retUser = userService.saveUser(ACCT_ID, new UserDTO());
 
         //Then
         assertEquals(USER_ID, retUser.getId());
@@ -103,7 +103,7 @@ public class UserServiceImplTest {
         when(userRepository.save(any(User.class))).thenReturn(savedUser);
 
         //When
-        UserDTO retUser = userService.updateUser(ACCT_ID,USER_ID, new UserDTO());
+        UserDTO retUser = userService.updateUser(ACCT_ID, USER_ID, new UserDTO());
 
         //Then
         assertEquals(USER_ID, retUser.getId());

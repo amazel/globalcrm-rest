@@ -11,6 +11,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import javax.validation.ConstraintViolationException;
 import java.time.LocalDateTime;
 
 /**
@@ -32,6 +33,16 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
         log.error("Handling MethodArgumentTypeMismatchException... ");
 
         return handleExceptionInternal(ex, new ErrorDetails(LocalDateTime.now(), "Argument type mismatch", ex.getMessage()), new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<Object> handleConstraintViolationException(ConstraintViolationException ex, WebRequest
+            request) {
+        log.error("Handling ConstraintViolationException... ");
+
+        return handleExceptionInternal(ex, new ErrorDetails(LocalDateTime.now(), "Constraint Validation", ex.getMessage
+                ()), new
+                HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }
 
     @Override

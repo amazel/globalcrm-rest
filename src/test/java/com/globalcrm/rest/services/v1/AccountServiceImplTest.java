@@ -39,12 +39,10 @@ public class AccountServiceImplTest {
     @Mock
     AccountHistoryRepository accountHistoryRepository;
 
-    AccountMapper accountMapper = AccountMapper.INSTANCE;
-
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        accountService = new AccountServiceImpl(accountRepository,accountHistoryRepository,accountMapper);
+        accountService = new AccountServiceImpl(accountRepository,accountHistoryRepository);
     }
 
 

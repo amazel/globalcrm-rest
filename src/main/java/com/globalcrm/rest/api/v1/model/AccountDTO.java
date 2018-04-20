@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -24,5 +25,5 @@ public class AccountDTO {
     private SubscriptionType subscriptionType;
     private LocalDateTime creationDateTime;
     private AccountStatus accountStatus;
-    private Set<UserDTO> users;
+    private Set<UserDTO> users = new HashSet<>();
 }

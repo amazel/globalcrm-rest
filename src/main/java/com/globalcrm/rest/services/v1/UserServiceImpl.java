@@ -18,12 +18,11 @@ public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
     private AccountRepository accountRepository;
-    private final UserMapper mapper;
+    private final UserMapper mapper = UserMapper.INSTANCE;
 
-    public UserServiceImpl(UserRepository userRepository, AccountRepository accountRepository, UserMapper mapper) {
+    public UserServiceImpl(UserRepository userRepository, AccountRepository accountRepository) {
         this.userRepository = userRepository;
         this.accountRepository = accountRepository;
-        this.mapper = mapper;
     }
 
     @Override
@@ -32,14 +31,14 @@ public class UserServiceImpl implements UserService {
         Account acct = accountRepository.findById(accountId).orElseThrow(ResourceNotFoundException::new);
         return acct.getUsers()
                 .stream()
-                .map(mapper::userToUserDto)
+                .map(user -> mapper.userToUserDto(user))
                 .collect(Collectors.toList());
     }
 
     @Override
     public UserDTO getUserById(Long id) {
         return userRepository.findById(id)
-                .map(mapper::userToUserDto)
+                .map(user -> mapper.userToUserDto(user))
                 .orElseThrow(() -> ExceptionFactory.userNotFound(id));
     }
 

@@ -42,6 +42,14 @@ public class RequiredDataBootstrap implements CommandLineRunner {
         acct.setCompanyWebsite("www.company.com");
         acct.setCreationDateTime(LocalDateTime.now());
         acct.setSubscriptionType(SubscriptionType.MICRO);
+
+        User holder = new User();
+        holder.setAccount(acct);
+        holder.setFirstName("ACCOUNT");
+        holder.setLastName("HOLDER");
+        //userRepository.save(holder);
+        acct.setAccountHolder(holder);
+
         Account acctSaved = accountRepository.save(acct);
 
         AccountHistory acctHistory = new AccountHistory();
@@ -50,12 +58,6 @@ public class RequiredDataBootstrap implements CommandLineRunner {
         acctHistory.setDateTime(LocalDateTime.now());
         accountHistoryRepository.save(acctHistory);
 
-        User holder = new User();
-        holder.setAccount(acctSaved);
-        holder.setFirstName("ACCOUNT");
-        holder.setLastName("HOLDER");
-        userRepository.save(holder);
-        acctSaved.setAccountHolder(holder);
         User u1 = new User();
         u1.setFirstName("USER");
         u1.setLastName("ONE");
