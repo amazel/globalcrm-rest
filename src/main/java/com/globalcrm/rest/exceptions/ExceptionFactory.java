@@ -10,4 +10,8 @@ public class ExceptionFactory {
     public static ResourceNotFoundException accountNotFound (Long id){
         return new ResourceNotFoundException("Account ID: "+id+" not found");
     }
+
+    public static ResourceNotFoundException contactNotFound(Long id) {
+        return new ResourceNotFoundException("Contact ID: "+id+" not found");
+    }
 }

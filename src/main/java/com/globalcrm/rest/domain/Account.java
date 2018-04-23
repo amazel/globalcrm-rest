@@ -3,7 +3,6 @@ package com.globalcrm.rest.domain;
 import lombok.Data;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -35,9 +34,18 @@ public class Account {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "account")
     private Set<User> users = new HashSet<>();
 
-    public Account addUser(User user){
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "account")
+    private Set<Company> companies = new HashSet<>();
+
+    public Account addUser(User user) {
         user.setAccount(this);
         this.users.add(user);
+        return this;
+    }
+
+    public Account addCompany(Company company) {
+        company.setAccount(this);
+        this.companies.add(company);
         return this;
     }
 }

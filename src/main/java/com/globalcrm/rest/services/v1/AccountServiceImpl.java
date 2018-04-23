@@ -35,15 +35,17 @@ public class AccountServiceImpl implements AccountService {
     @Transactional
     public AccountDTO createAccount(AccountDTO accountDTO) {
         log.info("CREATING ACCOUNT");
-        Account savedAcct = accountRepository.save(accountMapper.accountDtoToAccount(accountDTO));
+        accountDTO.setAccountStatus(AccountStatus.NEW);
+        accountDTO.setCreationDateTime(LocalDateTime.now());
+        Account savedAcct = accountRepository.save(accountMapper.dtoToAccount(accountDTO));
         generateAccountHistoryRecord(savedAcct, AccountEvent.CREATED);
-        return accountMapper.accountToAccountDto(savedAcct);
+        return accountMapper.accountToDto(savedAcct);
     }
 
     @Override
     public AccountDTO findById(Long acctId) {
         return accountRepository.findById(acctId)
-                .map(accountMapper::accountToAccountDto)
+                .map(accountMapper::accountToDto)
                 .orElseThrow(() -> ExceptionFactory.accountNotFound(acctId));
     }
 
@@ -52,7 +54,7 @@ public class AccountServiceImpl implements AccountService {
         Account acct = accountRepository.findById(acctId)
                 .orElseThrow(() -> ExceptionFactory.accountNotFound(acctId));
         acct.setAccountStatus(acctStatus);
-        return accountMapper.accountToAccountDto(accountRepository.save(acct));
+        return accountMapper.accountToDto(accountRepository.save(acct));
     }
 
     @Transactional

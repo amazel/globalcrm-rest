@@ -31,24 +31,24 @@ public class UserServiceImpl implements UserService {
         Account acct = accountRepository.findById(accountId).orElseThrow(ResourceNotFoundException::new);
         return acct.getUsers()
                 .stream()
-                .map(user -> mapper.userToUserDto(user))
+                .map(user -> mapper.userToDto(user))
                 .collect(Collectors.toList());
     }
 
     @Override
     public UserDTO getUserById(Long id) {
         return userRepository.findById(id)
-                .map(user -> mapper.userToUserDto(user))
+                .map(user -> mapper.userToDto(user))
                 .orElseThrow(() -> ExceptionFactory.userNotFound(id));
     }
 
     @Override
     public UserDTO saveUser(Long accountId, UserDTO userDTO) {
-        User user = mapper.userDtoToUser(userDTO);
+        User user = mapper.dtoToUser(userDTO);
         Account acct = accountRepository.findById(accountId).orElse(null);
         user.setAccount(acct);
         User savedUser = userRepository.save(user);
-        return mapper.userToUserDto(savedUser);
+        return mapper.userToDto(savedUser);
     }
 
 

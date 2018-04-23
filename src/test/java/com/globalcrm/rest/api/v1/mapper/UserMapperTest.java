@@ -54,7 +54,7 @@ public class UserMapperTest {
 
         userDTO1.setAccount(accountDTO);
 
-        User user = mapper.userDtoToUser(userDTO1);
+        User user = mapper.dtoToUser(userDTO1);
 
         assertEquals(USER_ID, user.getId());
         assertEquals(USER_NAME, user.getFirstName());
@@ -95,7 +95,7 @@ public class UserMapperTest {
 
         user.setAccount(account);
 
-        UserDTO userDTO = mapper.userToUserDto(user);
+        UserDTO userDTO = mapper.userToDto(user);
 
         assertEquals(USER_ID, userDTO.getId());
         assertEquals(USER_NAME, userDTO.getFirstName());

@@ -30,4 +30,7 @@ public class AccountDTO {
     private LocalDateTime creationDateTime;
     private AccountStatus accountStatus;
     private Set<UserDTO> users = new HashSet<>();
+    private Set<CompanyDTO> companies = new HashSet<>();
+
+
 }

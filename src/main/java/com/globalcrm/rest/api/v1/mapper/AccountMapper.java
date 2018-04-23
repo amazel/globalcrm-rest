@@ -17,10 +17,10 @@ public interface AccountMapper {
     AccountMapper INSTANCE = Mappers.getMapper(AccountMapper.class);
 
 
-    Account accountDtoToAccount(AccountDTO accountDTO);
+    Account dtoToAccount(AccountDTO accountDTO);
 
 
-    AccountDTO accountToAccountDto(Account account);
+    AccountDTO accountToDto(Account account);
 
     @Mappings({
             @Mapping(target = "account.accountHolder", ignore = true),

@@ -50,7 +50,7 @@ public class AccountMapperTest {
         users.add(user2);
         account.setUsers(users);
 
-        AccountDTO accountDTO = accountMapper.accountToAccountDto(account);
+        AccountDTO accountDTO = accountMapper.accountToDto(account);
 
         assertEquals(ID, accountDTO.getId());
         assertEquals(COMPANY_NAME, accountDTO.getName());
@@ -80,7 +80,7 @@ public class AccountMapperTest {
         users.add(new UserDTO());
         accountDTO.setUsers(users);
 
-        Account account = accountMapper.accountDtoToAccount(accountDTO);
+        Account account = accountMapper.dtoToAccount(accountDTO);
 
         assertEquals(ID, account.getId());
         assertEquals(COMPANY_NAME, account.getName());

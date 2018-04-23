@@ -17,20 +17,20 @@ public interface UserMapper {
 
     UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
 
-    User userDtoToUser(UserDTO userDTO);
-    UserDTO userToUserDto(User user);
+    User dtoToUser(UserDTO userDTO);
+    UserDTO userToDto(User user);
 
     @Mappings({
             @Mapping(target = "accountHolder.account", ignore = true),
             @Mapping(target = "users", ignore = true),
     })
-    Account accountDtoToAccount(AccountDTO accountDTO);
+    Account dtoToAccount(AccountDTO accountDTO);
 
     @Mappings({
             @Mapping(target = "accountHolder.account", ignore = true),
             @Mapping(target = "users", ignore = true),
     })
-    AccountDTO accountToAccountDto(Account account);
+    AccountDTO accountToDto(Account account);
 
 
 

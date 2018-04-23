@@ -1,6 +1,5 @@
 package com.globalcrm.rest.services.v1;
 
-import com.globalcrm.rest.api.v1.mapper.AccountMapper;
 import com.globalcrm.rest.api.v1.model.AccountDTO;
 import com.globalcrm.rest.api.v1.model.UserDTO;
 import com.globalcrm.rest.domain.*;
@@ -25,9 +24,9 @@ import static org.mockito.Mockito.when;
 
 public class AccountServiceImplTest {
     public static final Long ID = 1L;
-    public static final String COMPANY_NAME = "Company";
+    public static final String NAME = "Company";
     public static final LocalDateTime CREATION_TIME = LocalDateTime.now();
-    public static final String COMPANY_WEBSITE = "www.company.com";
+    public static final String WEBSITE = "www.company.com";
     public static final String USER_NAME = "Holder";
     public static final Long USER_ID = 2L;
 
@@ -56,12 +55,12 @@ public class AccountServiceImplTest {
 
         //Then
         assertEquals(ID, accountDTO.getId());
-        assertEquals(COMPANY_NAME, accountDTO.getName());
+        assertEquals(NAME, accountDTO.getName());
         assertEquals(SubscriptionType.MEDIUM, accountDTO.getSubscriptionType());
         assertEquals(USER_ID, accountDTO.getAccountHolder().getId());
         assertEquals(CREATION_TIME, accountDTO.getCreationDateTime());
         assertEquals(AccountStatus.NEW, accountDTO.getAccountStatus());
-        assertEquals(COMPANY_WEBSITE, accountDTO.getWebsite());
+        assertEquals(WEBSITE, accountDTO.getWebsite());
         assertEquals(1, accountDTO.getUsers().size());
         verify(accountRepository, times(1)).save(any(Account.class));
     }
@@ -77,12 +76,12 @@ public class AccountServiceImplTest {
 
         //Then
         assertEquals(ID, accountDTO.getId());
-        assertEquals(COMPANY_NAME, accountDTO.getName());
+        assertEquals(NAME, accountDTO.getName());
         assertEquals(SubscriptionType.MEDIUM, accountDTO.getSubscriptionType());
         assertEquals(USER_ID, accountDTO.getAccountHolder().getId());
         assertEquals(CREATION_TIME, accountDTO.getCreationDateTime());
         assertEquals(AccountStatus.NEW, accountDTO.getAccountStatus());
-        assertEquals(COMPANY_WEBSITE, accountDTO.getWebsite());
+        assertEquals(WEBSITE, accountDTO.getWebsite());
         assertEquals(1, accountDTO.getUsers().size());
         verify(accountRepository, times(1)).findById(anyLong());
     }
@@ -128,7 +127,7 @@ public class AccountServiceImplTest {
     public AccountDTO createDummyAccountDTO(){
         AccountDTO accountDTO = new AccountDTO();
         accountDTO.setId(ID);
-        accountDTO.setName(COMPANY_NAME);
+        accountDTO.setName(NAME);
         accountDTO.setSubscriptionType(SubscriptionType.MEDIUM);
         UserDTO userDTO = new UserDTO();
         userDTO.setFirstName(USER_NAME);
@@ -136,7 +135,7 @@ public class AccountServiceImplTest {
         accountDTO.setAccountHolder(userDTO);
         accountDTO.setCreationDateTime(CREATION_TIME);
         accountDTO.setAccountStatus(AccountStatus.NEW);
-        accountDTO.setWebsite(COMPANY_WEBSITE);
+        accountDTO.setWebsite(WEBSITE);
         Set<UserDTO> users = new HashSet<>();
         users.add(new UserDTO());
         accountDTO.setUsers(users);
@@ -146,7 +145,7 @@ public class AccountServiceImplTest {
     public Account createDummyAccount() {
         Account account = new Account();
         account.setId(ID);
-        account.setName(COMPANY_NAME);
+        account.setName(NAME);
         account.setSubscriptionType(SubscriptionType.MEDIUM);
         User user = new User();
         user.setFirstName(USER_NAME);
@@ -154,7 +153,7 @@ public class AccountServiceImplTest {
         account.setAccountHolder(user);
         account.setCreationDateTime(CREATION_TIME);
         account.setAccountStatus(AccountStatus.NEW);
-        account.setWebsite(COMPANY_WEBSITE);
+        account.setWebsite(WEBSITE);
         Set<User> users = new HashSet<>();
         users.add(new User());
         account.setUsers(users);
