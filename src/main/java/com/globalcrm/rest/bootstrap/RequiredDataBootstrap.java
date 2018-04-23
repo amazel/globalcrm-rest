@@ -3,14 +3,11 @@ package com.globalcrm.rest.bootstrap;
 import com.globalcrm.rest.domain.*;
 import com.globalcrm.rest.repositories.AccountHistoryRepository;
 import com.globalcrm.rest.repositories.AccountRepository;
-import com.globalcrm.rest.repositories.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 /**
  * Created by Hugo Lezama on April - 2018
@@ -18,13 +15,10 @@ import java.util.Optional;
 @Slf4j
 @Component
 public class RequiredDataBootstrap implements CommandLineRunner {
-
-    private final UserRepository userRepository;
     private final AccountRepository accountRepository;
     private final AccountHistoryRepository accountHistoryRepository;
 
-    public RequiredDataBootstrap(UserRepository userRepository, AccountRepository accountRepository, AccountHistoryRepository accountHistoryRepository) {
-        this.userRepository = userRepository;
+    public RequiredDataBootstrap(AccountRepository accountRepository, AccountHistoryRepository accountHistoryRepository) {
         this.accountRepository = accountRepository;
         this.accountHistoryRepository = accountHistoryRepository;
     }
@@ -38,8 +32,8 @@ public class RequiredDataBootstrap implements CommandLineRunner {
         log.info("Loading default account");
 
         Account acct = new Account();
-        acct.setCompanyName("TEST");
-        acct.setCompanyWebsite("www.company.com");
+        acct.setName("TEST");
+        acct.setWebsite("www.company.com");
         acct.setCreationDateTime(LocalDateTime.now());
         acct.setSubscriptionType(SubscriptionType.MICRO);
 

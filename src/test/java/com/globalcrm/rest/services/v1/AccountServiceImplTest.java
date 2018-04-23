@@ -56,12 +56,12 @@ public class AccountServiceImplTest {
 
         //Then
         assertEquals(ID, accountDTO.getId());
-        assertEquals(COMPANY_NAME, accountDTO.getCompanyName());
+        assertEquals(COMPANY_NAME, accountDTO.getName());
         assertEquals(SubscriptionType.MEDIUM, accountDTO.getSubscriptionType());
         assertEquals(USER_ID, accountDTO.getAccountHolder().getId());
         assertEquals(CREATION_TIME, accountDTO.getCreationDateTime());
         assertEquals(AccountStatus.NEW, accountDTO.getAccountStatus());
-        assertEquals(COMPANY_WEBSITE, accountDTO.getCompanyWebsite());
+        assertEquals(COMPANY_WEBSITE, accountDTO.getWebsite());
         assertEquals(1, accountDTO.getUsers().size());
         verify(accountRepository, times(1)).save(any(Account.class));
     }
@@ -77,12 +77,12 @@ public class AccountServiceImplTest {
 
         //Then
         assertEquals(ID, accountDTO.getId());
-        assertEquals(COMPANY_NAME, accountDTO.getCompanyName());
+        assertEquals(COMPANY_NAME, accountDTO.getName());
         assertEquals(SubscriptionType.MEDIUM, accountDTO.getSubscriptionType());
         assertEquals(USER_ID, accountDTO.getAccountHolder().getId());
         assertEquals(CREATION_TIME, accountDTO.getCreationDateTime());
         assertEquals(AccountStatus.NEW, accountDTO.getAccountStatus());
-        assertEquals(COMPANY_WEBSITE, accountDTO.getCompanyWebsite());
+        assertEquals(COMPANY_WEBSITE, accountDTO.getWebsite());
         assertEquals(1, accountDTO.getUsers().size());
         verify(accountRepository, times(1)).findById(anyLong());
     }
@@ -128,7 +128,7 @@ public class AccountServiceImplTest {
     public AccountDTO createDummyAccountDTO(){
         AccountDTO accountDTO = new AccountDTO();
         accountDTO.setId(ID);
-        accountDTO.setCompanyName(COMPANY_NAME);
+        accountDTO.setName(COMPANY_NAME);
         accountDTO.setSubscriptionType(SubscriptionType.MEDIUM);
         UserDTO userDTO = new UserDTO();
         userDTO.setFirstName(USER_NAME);
@@ -136,7 +136,7 @@ public class AccountServiceImplTest {
         accountDTO.setAccountHolder(userDTO);
         accountDTO.setCreationDateTime(CREATION_TIME);
         accountDTO.setAccountStatus(AccountStatus.NEW);
-        accountDTO.setCompanyWebsite(COMPANY_WEBSITE);
+        accountDTO.setWebsite(COMPANY_WEBSITE);
         Set<UserDTO> users = new HashSet<>();
         users.add(new UserDTO());
         accountDTO.setUsers(users);
@@ -146,7 +146,7 @@ public class AccountServiceImplTest {
     public Account createDummyAccount() {
         Account account = new Account();
         account.setId(ID);
-        account.setCompanyName(COMPANY_NAME);
+        account.setName(COMPANY_NAME);
         account.setSubscriptionType(SubscriptionType.MEDIUM);
         User user = new User();
         user.setFirstName(USER_NAME);
@@ -154,7 +154,7 @@ public class AccountServiceImplTest {
         account.setAccountHolder(user);
         account.setCreationDateTime(CREATION_TIME);
         account.setAccountStatus(AccountStatus.NEW);
-        account.setCompanyWebsite(COMPANY_WEBSITE);
+        account.setWebsite(COMPANY_WEBSITE);
         Set<User> users = new HashSet<>();
         users.add(new User());
         account.setUsers(users);

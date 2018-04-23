@@ -18,8 +18,8 @@ public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String companyName;
-    private String companyWebsite;
+    private String name;
+    private String website;
 
     @OneToOne(cascade = CascadeType.PERSIST)
     @NotNull

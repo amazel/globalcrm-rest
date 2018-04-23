@@ -20,9 +20,9 @@ public class UserMapperTest {
     public static final String USER_NAME = "UserT";
     public static final String USER_LASTNAME = "Holsder";
     public static final Long ACCT_ID = 1L;
-    public static final String COMPANY_NAME = "Company";
+    public static final String ACCOUNT_NAME = "Company";
     public static final LocalDateTime CREATION_TIME = LocalDateTime.now();
-    public static final String COMPANY_WEBSITE = "www.company.com";
+    public static final String ACCOUNT_WEBSITE = "www.company.com";
 
     UserMapper mapper = UserMapper.INSTANCE;
 
@@ -35,11 +35,11 @@ public class UserMapperTest {
 
         AccountDTO accountDTO = new AccountDTO();
         accountDTO.setId(ACCT_ID);
-        accountDTO.setCompanyName(COMPANY_NAME);
+        accountDTO.setName(ACCOUNT_NAME);
         accountDTO.setSubscriptionType(SubscriptionType.MEDIUM);
         accountDTO.setCreationDateTime(CREATION_TIME);
         accountDTO.setAccountStatus(AccountStatus.NEW);
-        accountDTO.setCompanyWebsite(COMPANY_WEBSITE);
+        accountDTO.setWebsite(ACCOUNT_WEBSITE);
         accountDTO.setAccountHolder(userDTO1);
 
         Set<UserDTO> users = new HashSet<>();
@@ -60,7 +60,7 @@ public class UserMapperTest {
         assertEquals(USER_NAME, user.getFirstName());
         assertEquals(USER_LASTNAME, user.getLastName());
 
-        assertEquals(COMPANY_NAME, user.getAccount().getCompanyName());
+        assertEquals(ACCOUNT_NAME, user.getAccount().getName());
         assertEquals(AccountStatus.NEW, user.getAccount().getAccountStatus());
 
         assertNull(user.getAccount().getAccountHolder().getAccount());
@@ -76,11 +76,11 @@ public class UserMapperTest {
 
         Account account = new Account();
         account.setId(ACCT_ID);
-        account.setCompanyName(COMPANY_NAME);
+        account.setName(ACCOUNT_NAME);
         account.setSubscriptionType(SubscriptionType.MEDIUM);
         account.setCreationDateTime(CREATION_TIME);
         account.setAccountStatus(AccountStatus.NEW);
-        account.setCompanyWebsite(COMPANY_WEBSITE);
+        account.setWebsite(ACCOUNT_WEBSITE);
         account.setAccountHolder(user);
 
         Set<User> users = new HashSet<>();
@@ -101,7 +101,7 @@ public class UserMapperTest {
         assertEquals(USER_NAME, userDTO.getFirstName());
         assertEquals(USER_LASTNAME, userDTO.getLastName());
 
-        assertEquals(COMPANY_NAME, userDTO.getAccount().getCompanyName());
+        assertEquals(ACCOUNT_NAME, userDTO.getAccount().getName());
         assertEquals(AccountStatus.NEW, userDTO.getAccount().getAccountStatus());
 
         assertNull(userDTO.getAccount().getAccountHolder().getAccount());

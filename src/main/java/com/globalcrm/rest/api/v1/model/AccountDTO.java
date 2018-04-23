@@ -21,9 +21,9 @@ import java.util.Set;
 @NoArgsConstructor
 public class AccountDTO {
     private Long id;
-    private String companyName;
+    private String name;
     @URL
-    private String companyWebsite;
+    private String website;
     @NotNull
     private UserDTO accountHolder;
     private SubscriptionType subscriptionType;
