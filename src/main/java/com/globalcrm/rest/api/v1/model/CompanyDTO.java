@@ -4,7 +4,8 @@ import com.globalcrm.rest.domain.VisibleFor;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
+
+import java.util.Set;
 
 /**
  * Created by Hugo Lezama on April - 2018
@@ -22,4 +23,5 @@ public class CompanyDTO {
     private String city;
     private String state;
     private VisibleFor visibleFor;
+    private Set<ContactDTO> contacts;
 }

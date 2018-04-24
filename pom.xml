@@ -141,6 +141,13 @@
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>${jacoco.version}</version>
+                <configuration>
+                    <excludes>
+                        <exclude>com/globalcrm/rest/config/**/*</exclude>
+                        <exclude>com/globalcrm/rest/bootstrap/**/*</exclude>
+                        <exclude>com/globalcrm/rest/exceptions/**/*</exclude>
+                    </excludes>
+                </configuration>
                 <executions>
                     <execution>
                         <id>default-prepare-agent</id>

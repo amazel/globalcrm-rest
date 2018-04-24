@@ -3,7 +3,6 @@ package com.globalcrm.rest.services.v1;
 import com.globalcrm.rest.api.v1.model.AccountDTO;
 import com.globalcrm.rest.api.v1.model.UserDTO;
 import com.globalcrm.rest.bootstrap.RequiredDataBootstrap;
-import com.globalcrm.rest.domain.Account;
 import com.globalcrm.rest.domain.AccountStatus;
 import com.globalcrm.rest.domain.SubscriptionType;
 import com.globalcrm.rest.repositories.AccountHistoryRepository;
@@ -17,17 +16,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import javax.validation.constraints.Size;
-import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 
 /**
  * Created by Hugo Lezama on April - 2018
@@ -53,7 +46,7 @@ public class AccountServiceImplIT {
     ContactRepository contactRepository;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp()  {
 
         //setup data for testing
         RequiredDataBootstrap bootstrap = new RequiredDataBootstrap(accountRepository, accountHistoryRepository, contactRepository);
@@ -63,7 +56,7 @@ public class AccountServiceImplIT {
     }
 
     @Test
-    public void createAccountTest(){
+    public void createAccountTest() {
 
         AccountDTO retAcct = accountService.createAccount(createDummyAccountDTO());
 
@@ -75,11 +68,11 @@ public class AccountServiceImplIT {
     }
 
     @Test
-    public void  findAccountById(){
+    public void findAccountById() {
 
     }
 
-    private AccountDTO createDummyAccountDTO(){
+    private AccountDTO createDummyAccountDTO() {
         AccountDTO accountDTO = new AccountDTO();
         accountDTO.setName(NAME);
         accountDTO.setSubscriptionType(SubscriptionType.MEDIUM);

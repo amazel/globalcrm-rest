@@ -1,6 +1,7 @@
 package com.globalcrm.rest.domain;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -9,6 +10,7 @@ import java.util.Set;
  * Created by Hugo Lezama on April - 2018
  */
 @Data
+@EqualsAndHashCode(exclude = {"account"})
 @Entity
 public class Company {
     @Id
@@ -16,14 +18,14 @@ public class Company {
     private Long id;
     @Column(nullable = false)
     private String name;
-    @ManyToOne()
+    @ManyToOne(optional = false)
     private Account account;
     private String address;
     private String zipCode;
     private String city;
     private String state;
     private VisibleFor visibleFor;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "company")
     private Set<Contact> contacts;
     // Not for v1.0
     //private String country;

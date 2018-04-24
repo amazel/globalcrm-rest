@@ -5,7 +5,6 @@ import com.globalcrm.rest.repositories.AccountHistoryRepository;
 import com.globalcrm.rest.repositories.AccountRepository;
 import com.globalcrm.rest.repositories.ContactRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -31,27 +30,33 @@ public class RequiredDataBootstrap implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        createDummyContact();
-        loadDefaultAccount();
+        Account acct = loadDefaultAccount();
+        createDummyContact(acct);
 
     }
 
-    private void createDummyContact() {
+    private void createDummyContact(Account account) {
         log.info("Creating Dummy Contact");
 
         Contact contact = new Contact();
         Company company = new Company();
         company.setName("DUMMY COMPANY");
+        company.setAccount(account);
         contact.setCompany(company);
         contact.setNames("Mi Contacto");
-        Map<PhoneType,String> phones = new HashMap<>();
-        phones.put(PhoneType.HOME,"5550879089");
-        phones.put(PhoneType.MOBILE,"555087459");
+        Map<PhoneType, String> phones = new HashMap<>();
+        phones.put(PhoneType.HOME, "5550879089");
+        phones.put(PhoneType.MOBILE, "555087459");
         contact.setPhones(phones);
+
+        contact.setVisibleFor(VisibleFor.ALL);
+        contact.setLastNames("Dummy Last Names");
+        contact.getEmails().put(EmailType.PERSONAL,"correo@personal.com");
+        contact.getEmails().put(EmailType.WORK,"correo@trabajo.com");
         contactRepository.save(contact);
     }
 
-    public void loadDefaultAccount() {
+    public Account loadDefaultAccount() {
         log.info("Loading default account");
 
         Account acct = new Account();
@@ -79,6 +84,6 @@ public class RequiredDataBootstrap implements CommandLineRunner {
         u1.setFirstName("USER");
         u1.setLastName("ONE");
         acctSaved.addUser(u1);
-        accountRepository.save(acct);
+        return accountRepository.save(acct);
     }
 }

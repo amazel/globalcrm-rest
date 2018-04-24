@@ -1,6 +1,7 @@
 package com.globalcrm.rest.domain;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
 import java.util.HashMap;
@@ -10,6 +11,7 @@ import java.util.Map;
  * Created by Hugo Lezama on April - 2018
  */
 @Data
+@EqualsAndHashCode(exclude = {"company"})
 @Entity
 public class Contact {
     @Id
@@ -29,8 +31,9 @@ public class Contact {
     @MapKeyClass(EmailType.class)
     private Map<EmailType, String> emails = new HashMap<>();
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(optional = false, cascade = CascadeType.PERSIST)
     private Company company;
+
     @Enumerated(value = EnumType.STRING)
     private VisibleFor visibleFor;
 
