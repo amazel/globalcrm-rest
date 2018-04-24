@@ -5,6 +5,7 @@ import com.globalcrm.rest.domain.Account;
 import com.globalcrm.rest.domain.User;
 import com.globalcrm.rest.repositories.AccountRepository;
 import com.globalcrm.rest.repositories.UserRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -19,7 +20,7 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
-
+@Slf4j
 public class UserServiceImplTest {
     public static final String NAME = "Test Name";
     public static final String LAST_NAME = "Test LastName";
@@ -63,14 +64,21 @@ public class UserServiceImplTest {
         //Given
         User mockUser = new User();
         mockUser.setId(USER_ID);
-        when(userRepository.findById(anyLong())).thenReturn(Optional.of(mockUser));
+        mockUser.setEmail(EMAIL);
+
+        Account account = new Account();
+        account.setId(ACCT_ID);
+        account.getUsers().add(mockUser);
+
+
+        when(accountRepository.findById(anyLong())).thenReturn(Optional.of(account));
 
         //When
-        UserDTO userDTO = userService.getUserById(USER_ID);
+        UserDTO userDTO = userService.getAccountUserById(ACCT_ID, USER_ID);
 
         //Then
         assertEquals(USER_ID, userDTO.getId());
-        verify(userRepository, times(1)).findById(anyLong());
+        verify(accountRepository, times(1)).findById(anyLong());
     }
 
     @Test
@@ -78,35 +86,26 @@ public class UserServiceImplTest {
         //Given
         User savedUser = new User();
         savedUser.setId(USER_ID);
-        when(userRepository.save(any(User.class))).thenReturn(savedUser);
+        savedUser.setEmail(EMAIL);
+
+        Account retAccount = new Account();
+        retAccount.setId(ACCT_ID);
+        savedUser.setAccount(retAccount);
+        retAccount.getUsers().add(savedUser);
+        when(accountRepository.findById(anyLong())).thenReturn(Optional.of(retAccount));
+        when(accountRepository.save(any(Account.class))).thenReturn(retAccount);
+
+        UserDTO userDTO = new UserDTO();
+        userDTO.setEmail(EMAIL);
 
         //When
-        UserDTO retUser = userService.saveUser(ACCT_ID, new UserDTO());
+        UserDTO retUser = userService.createAccountUser(ACCT_ID, userDTO);
+
+        log.info(retUser.toString());
 
         //Then
-        assertEquals(USER_ID, retUser.getId());
-        verify(userRepository, times(1)).save(any(User.class));
-    }
-
-    @Test
-    public void deleteUser() {
-
-        userService.deleteUser(USER_ID);
-        verify(userRepository, times(1)).deleteById(anyLong());
-    }
-
-    @Test
-    public void updateUser() {
-        //Given
-        User savedUser = new User();
-        savedUser.setId(USER_ID);
-        when(userRepository.save(any(User.class))).thenReturn(savedUser);
-
-        //When
-        UserDTO retUser = userService.updateUser(ACCT_ID, USER_ID, new UserDTO());
-
-        //Then
-        assertEquals(USER_ID, retUser.getId());
-        verify(userRepository, times(1)).save(any(User.class));
+       // assertEquals(USER_ID, retUser.getId());
+        verify(accountRepository, times(1)).findById(anyLong());
+        verify(accountRepository, times(1)).save(any(Account.class));
     }
 }

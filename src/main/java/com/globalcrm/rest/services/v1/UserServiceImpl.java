@@ -9,6 +9,7 @@ import com.globalcrm.rest.exceptions.ResourceNotFoundException;
 import com.globalcrm.rest.repositories.AccountRepository;
 import com.globalcrm.rest.repositories.UserRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -31,35 +32,42 @@ public class UserServiceImpl implements UserService {
         Account acct = accountRepository.findById(accountId).orElseThrow(ResourceNotFoundException::new);
         return acct.getUsers()
                 .stream()
-                .map(user -> mapper.userToDto(user))
+                .map(mapper::userToDto)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public UserDTO getUserById(Long id) {
-        return userRepository.findById(id)
-                .map(user -> mapper.userToDto(user))
-                .orElseThrow(() -> ExceptionFactory.userNotFound(id));
+    public UserDTO getAccountUserById(Long accountId, Long userId) {
+        Account acct = accountRepository.findById(accountId).orElseThrow(() -> ExceptionFactory
+                .accountNotFound(accountId));
+        return mapper.userToDto(acct.getUsers().stream()
+                .filter(user -> user.getId().equals(userId))
+                .findFirst()
+                .orElseThrow(() -> ExceptionFactory.userNotFound(userId)));
     }
 
     @Override
-    public UserDTO saveUser(Long accountId, UserDTO userDTO) {
+    @Transactional
+    public UserDTO createAccountUser(Long accountId, UserDTO userDTO) {
         User user = mapper.dtoToUser(userDTO);
-        Account acct = accountRepository.findById(accountId).orElse(null);
-        user.setAccount(acct);
-        User savedUser = userRepository.save(user);
+        Account acct = accountRepository.findById(accountId).orElseThrow(() -> ExceptionFactory
+                .accountNotFound(accountId));
+        Account savedAcct = accountRepository.save(acct.addUser(user));
+        User savedUser = savedAcct.getUsers().stream()
+                .filter(user1 -> user1.getEmail().equals(userDTO.getEmail()))
+                .findFirst().orElseThrow(ExceptionFactory::userNotCreated);
         return mapper.userToDto(savedUser);
     }
 
-
-    @Override
-    public void deleteUser(Long id) {
-        userRepository.deleteById(id);
+/*
+    public void deleteAccountUserById(Long accountId, Long id) {
+        Account acct = accountRepository.findById(accountId).orElseThrow(() -> ExceptionFactory
+                .accountNotFound(accountId));
+        acct.getUsers().stream()
+                .filter(user -> user.getId().equals(id))
+                .map(user -> acct.getUsers().remove(user))
+                .collect(Collectors.toList());
+        accountRepository.save(acct);
     }
-
-    @Override
-    public UserDTO updateUser(Long accountId, Long id, UserDTO userDTO) {
-        userDTO.setId(id);
-        return saveUser(accountId, userDTO);
-    }
+    */
 }

@@ -23,12 +23,14 @@ public interface UserMapper {
     @Mappings({
             @Mapping(target = "accountHolder.account", ignore = true),
             @Mapping(target = "users", ignore = true),
+            @Mapping(target = "companies", ignore = true),
     })
     Account dtoToAccount(AccountDTO accountDTO);
 
     @Mappings({
             @Mapping(target = "accountHolder.account", ignore = true),
             @Mapping(target = "users", ignore = true),
+            @Mapping(target = "companies", ignore = true),
     })
     AccountDTO accountToDto(Account account);
 

@@ -1,20 +1,20 @@
 package com.globalcrm.rest.controllers.v1;
 
 import com.globalcrm.rest.api.v1.model.UserDTO;
-import com.globalcrm.rest.api.v1.model.UserListDTO;
 import com.globalcrm.rest.services.v1.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Slf4j
 @RestController
 @RequestMapping(UserController.BASE_URL)
 public class UserController {
 
-    public static final String BASE_URL = AccountController.BASE_URL+"/{accountId}/users";
+    public static final String BASE_URL = "/api/v1/accounts";
 
     private final UserService userService;
 
@@ -22,34 +22,29 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping
+    @GetMapping("/{accountId}/users")
     @ResponseStatus(HttpStatus.OK)
-    public UserListDTO getAllAccountUsers(@PathVariable Long accountId) {
-        return new UserListDTO(userService.getAllUsers(accountId));
+    public List<UserDTO> getAllAccountUsers(@PathVariable Long accountId) {
+        return userService.getAllUsers(accountId);
     }
 
-    @GetMapping("/{userId}")
+    @GetMapping("/{accountId}/users/{userId}")
     @ResponseStatus(HttpStatus.OK)
-    public UserDTO getUserById(@PathVariable Long userId) {
+    public UserDTO getUserById(@PathVariable Long accountId, @PathVariable Long userId) {
         log.info("Getting User: " + userId);
-        return userService.getUserById(userId);
+        return userService.getAccountUserById(accountId, userId);
     }
 
-    @PostMapping
+    @PostMapping("/{accountId}/users/new")
     @ResponseStatus(HttpStatus.CREATED)
     public UserDTO createNewUser(@PathVariable Long accountId, @Valid @RequestBody UserDTO userDTO) {
-        return userService.saveUser(accountId, userDTO);
+        return userService.createAccountUser(accountId, userDTO);
     }
-
-    @PutMapping({"/{userId}"})
+/*
+    @DeleteMapping({"/{accountId}/users/{userId}"})
     @ResponseStatus(HttpStatus.OK)
-    public UserDTO updateUser(@PathVariable Long accountId, @PathVariable Long userId, @RequestBody UserDTO userDTO) {
-        return userService.updateUser(accountId, userId, userDTO);
+    public void deleteUser(@PathVariable Long accountId, @PathVariable Long userId) {
+        userService.deleteAccountUserById(accountId, userId);
     }
-
-    @DeleteMapping({"/{userId}"})
-    @ResponseStatus(HttpStatus.OK)
-    public void deleteUser(@PathVariable Long userId) {
-        userService.deleteUser(userId);
-    }
+*/
 }

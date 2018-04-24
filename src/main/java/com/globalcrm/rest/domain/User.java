@@ -4,12 +4,14 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 /**
  * Created by Hugo Lezama on April - 2018
  */
 @Data
 @EqualsAndHashCode(exclude = {"account"})
+@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"account_id", "email"})})
 @Entity
 public class User {
 
@@ -20,6 +22,7 @@ public class User {
     private Account account;
     private String firstName;
     private String lastName;
+    @NotNull
     private String email;
     private String password;
 

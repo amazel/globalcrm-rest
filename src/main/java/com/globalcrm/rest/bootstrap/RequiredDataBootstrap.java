@@ -69,6 +69,7 @@ public class RequiredDataBootstrap implements CommandLineRunner {
         holder.setAccount(acct);
         holder.setFirstName("ACCOUNT");
         holder.setLastName("HOLDER");
+        holder.setEmail("EMAIL");
         //userRepository.save(holder);
         acct.setAccountHolder(holder);
 
@@ -83,6 +84,7 @@ public class RequiredDataBootstrap implements CommandLineRunner {
         User u1 = new User();
         u1.setFirstName("USER");
         u1.setLastName("ONE");
+        u1.setEmail("EMAIL2");
         acctSaved.addUser(u1);
         return accountRepository.save(acct);
     }
