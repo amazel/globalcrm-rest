@@ -2,6 +2,7 @@ package com.globalcrm.rest.domain;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.HashMap;
@@ -12,6 +13,8 @@ import java.util.Map;
  */
 @Data
 @EqualsAndHashCode(exclude = {"company"})
+@ToString(exclude = {"company"})
+@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"company_id", "names"})})
 @Entity
 public class Contact {
     @Id
@@ -19,6 +22,10 @@ public class Contact {
     private Long id;
     private String names;
     private String lastNames;
+
+    @ManyToOne(optional = false, cascade = CascadeType.PERSIST)
+    private Company company;
+
     @ElementCollection(targetClass=String.class)
     @MapKeyColumn(name="phone_type")
     @MapKeyEnumerated(value = EnumType.STRING)
@@ -30,9 +37,6 @@ public class Contact {
     @MapKeyEnumerated(value = EnumType.STRING)
     @MapKeyClass(EmailType.class)
     private Map<EmailType, String> emails = new HashMap<>();
-
-    @ManyToOne(optional = false, cascade = CascadeType.PERSIST)
-    private Company company;
 
     @Enumerated(value = EnumType.STRING)
     private VisibleFor visibleFor;

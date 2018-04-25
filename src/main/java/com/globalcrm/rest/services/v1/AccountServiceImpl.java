@@ -38,8 +38,10 @@ public class AccountServiceImpl implements AccountService {
         accountDTO.setAccountStatus(AccountStatus.NEW);
         accountDTO.setCreationDateTime(LocalDateTime.now());
         Account savedAcct = accountRepository.save(accountMapper.dtoToAccount(accountDTO));
-        generateAccountHistoryRecord(savedAcct, AccountEvent.CREATED);
-        return accountMapper.accountToDto(savedAcct);
+        savedAcct.getAccountHolder().setAccount(savedAcct);
+        Account retAcct = accountRepository.save(savedAcct);
+        generateAccountHistoryRecord(retAcct, AccountEvent.CREATED);
+        return accountMapper.accountToDto(retAcct);
     }
 
     @Override

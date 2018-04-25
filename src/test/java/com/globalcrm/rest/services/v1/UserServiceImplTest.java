@@ -43,45 +43,6 @@ public class UserServiceImplTest {
     }
 
     @Test
-    public void getAllUsers() {
-        //Given
-        Set<User> mockUsers = new HashSet<>();
-        mockUsers.add(new User());
-        Account mockAcct = new Account();
-        mockAcct.setId(ACCT_ID);
-        mockAcct.setUsers(mockUsers);
-        when(accountRepository.findById(anyLong())).thenReturn(Optional.of(mockAcct));
-
-        //When
-        List<UserDTO> users = userService.getAllUsers(ACCT_ID);
-
-        //Then
-        assertEquals(1, users.size());
-    }
-
-    @Test
-    public void getUserById() {
-        //Given
-        User mockUser = new User();
-        mockUser.setId(USER_ID);
-        mockUser.setEmail(EMAIL);
-
-        Account account = new Account();
-        account.setId(ACCT_ID);
-        account.getUsers().add(mockUser);
-
-
-        when(accountRepository.findById(anyLong())).thenReturn(Optional.of(account));
-
-        //When
-        UserDTO userDTO = userService.getAccountUserById(ACCT_ID, USER_ID);
-
-        //Then
-        assertEquals(USER_ID, userDTO.getId());
-        verify(accountRepository, times(1)).findById(anyLong());
-    }
-
-    @Test
     public void saveUser() {
         //Given
         User savedUser = new User();

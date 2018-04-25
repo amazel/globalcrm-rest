@@ -2,6 +2,7 @@ package com.globalcrm.rest.domain;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -11,6 +12,7 @@ import javax.validation.constraints.NotNull;
  */
 @Data
 @EqualsAndHashCode(exclude = {"account"})
+@ToString(exclude = {"account"})
 @Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"account_id", "email"})})
 @Entity
 public class User {
@@ -22,7 +24,7 @@ public class User {
     private Account account;
     private String firstName;
     private String lastName;
-    @NotNull
+    @Column(nullable = false)
     private String email;
     private String password;
 

@@ -22,8 +22,6 @@ public interface AccountMapper {
 
 
     Account dtoToAccount(AccountDTO accountDTO);
-
-
     AccountDTO accountToDto(Account account);
 
     @Mappings({

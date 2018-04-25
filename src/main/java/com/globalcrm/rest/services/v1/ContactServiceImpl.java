@@ -1,11 +1,15 @@
 package com.globalcrm.rest.services.v1;
 
+import com.globalcrm.rest.api.v1.mapper.CompanyMapper;
 import com.globalcrm.rest.api.v1.mapper.ContactMapper;
 import com.globalcrm.rest.api.v1.model.ContactDTO;
+import com.globalcrm.rest.domain.Company;
+import com.globalcrm.rest.domain.Contact;
 import com.globalcrm.rest.exceptions.ExceptionFactory;
-import com.globalcrm.rest.repositories.ContactRepository;
+import com.globalcrm.rest.repositories.CompanyRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Created by Hugo Lezama on April - 2018
@@ -13,23 +17,27 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 public class ContactServiceImpl implements ContactService {
-    ContactRepository contactRepository;
-    ContactMapper mapper = ContactMapper.INSTANCE;
+    CompanyRepository companyRepository;
+    CompanyService companyService;
+    CompanyMapper companyMapper = CompanyMapper.INSTANCE;
+    ContactMapper contactMapper = ContactMapper.INSTANCE;
 
-    public ContactServiceImpl(ContactRepository contactRepository) {
-        this.contactRepository = contactRepository;
+    public ContactServiceImpl(CompanyRepository companyRepository, CompanyService companyService) {
+        this.companyRepository = companyRepository;
+        this.companyService = companyService;
     }
 
     @Override
-    public ContactDTO createContact(ContactDTO accountDTO) {
-        return mapper.contactToDto(
-                contactRepository.save(mapper.dtoToContact(accountDTO)));
-    }
-
-    @Override
-    public ContactDTO findById(Long id) {
-        return contactRepository.findById(id)
-                .map(mapper::contactToDto)
-                .orElseThrow(() -> ExceptionFactory.contactNotFound(id));
+    @Transactional
+    public ContactDTO createContact(Long acctId, Long companyId, ContactDTO contactDTO) {
+        Company company = companyMapper.dtoToCompany(companyService.getAccountCompanyById(acctId, companyId));
+        Contact contact = contactMapper.dtoToContact(contactDTO);
+        Company companySaved = companyRepository.save(company.addContact(contact));
+        return companySaved.getContacts()
+                .stream()
+                .filter(contact1 -> contact1.getNames().equals(contactDTO.getNames()))
+                .findFirst()
+                .map(contactMapper::contactToDto)
+                .orElseThrow(ExceptionFactory::contactNotCreated);
     }
 }

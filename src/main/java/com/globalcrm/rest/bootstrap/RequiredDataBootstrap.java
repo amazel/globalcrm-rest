@@ -1,16 +1,20 @@
 package com.globalcrm.rest.bootstrap;
 
-import com.globalcrm.rest.domain.*;
-import com.globalcrm.rest.repositories.AccountHistoryRepository;
-import com.globalcrm.rest.repositories.AccountRepository;
-import com.globalcrm.rest.repositories.ContactRepository;
+import com.globalcrm.rest.api.v1.model.AccountDTO;
+import com.globalcrm.rest.api.v1.model.CompanyDTO;
+import com.globalcrm.rest.api.v1.model.ContactDTO;
+import com.globalcrm.rest.api.v1.model.UserDTO;
+import com.globalcrm.rest.domain.EmailType;
+import com.globalcrm.rest.domain.PhoneType;
+import com.globalcrm.rest.domain.SubscriptionType;
+import com.globalcrm.rest.domain.VisibleFor;
+import com.globalcrm.rest.services.v1.AccountService;
+import com.globalcrm.rest.services.v1.CompanyService;
+import com.globalcrm.rest.services.v1.ContactService;
+import com.globalcrm.rest.services.v1.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
-
-import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by Hugo Lezama on April - 2018
@@ -18,23 +22,83 @@ import java.util.Map;
 @Slf4j
 @Component
 public class RequiredDataBootstrap implements CommandLineRunner {
-    private final AccountRepository accountRepository;
-    private final AccountHistoryRepository accountHistoryRepository;
-    private final ContactRepository contactRepository;
 
-    public RequiredDataBootstrap(AccountRepository accountRepository, AccountHistoryRepository accountHistoryRepository, ContactRepository contactRepository) {
-        this.accountRepository = accountRepository;
-        this.accountHistoryRepository = accountHistoryRepository;
-        this.contactRepository = contactRepository;
+    AccountService accountService;
+    UserService userService;
+    CompanyService companyService;
+    ContactService contactService;
+
+    public RequiredDataBootstrap(AccountService accountService, UserService userService, CompanyService companyService, ContactService contactService) {
+        this.accountService = accountService;
+        this.userService = userService;
+        this.companyService = companyService;
+        this.contactService = contactService;
     }
 
     @Override
     public void run(String... args) {
-        Account acct = loadDefaultAccount();
-        createDummyContact(acct);
-
+        AccountDTO acct = loadDefaultAccount();
+        addUser(acct.getId());
+        CompanyDTO companyDTO = createDummyCompany(acct.getId());
+        createDummyContact(acct.getId(), companyDTO.getId());
     }
 
+    public AccountDTO loadDefaultAccount() {
+        log.info("Loading default account");
+
+        AccountDTO acct = new AccountDTO();
+        acct.setName("TEST");
+        acct.setWebsite("www.company.com");
+        acct.setSubscriptionType(SubscriptionType.MICRO);
+
+        UserDTO holder = new UserDTO();
+        holder.setFirstName("ACCOUNT");
+        holder.setLastName("HOLDER");
+        holder.setEmail("EMAIL");
+
+        acct.setAccountHolder(holder);
+
+        return accountService.createAccount(acct);
+    }
+
+    public UserDTO addUser(Long acctId) {
+        UserDTO u1 = new UserDTO();
+        u1.setFirstName("USER");
+        u1.setLastName("ONE");
+        u1.setEmail("EMAIL2");
+
+        return userService.createAccountUser(acctId, u1);
+    }
+
+    private CompanyDTO createDummyCompany(Long accId) {
+        CompanyDTO company = new CompanyDTO();
+        company.setName("DUMMY COMPANY");
+        company.setZipCode("ZIP");
+        company.setVisibleFor(VisibleFor.ALL);
+        company.setState("STATE");
+        company.setCity("CITY");
+        company.setAddress("ADDRESS");
+
+        return companyService.createCompany(accId, company);
+    }
+
+    private void createDummyContact(Long acctId ,Long companyId) {
+        log.info("Creating Dummy ContactDTO");
+
+        ContactDTO contact = new ContactDTO();
+        contact.setNames("Mi Contacto");
+        contact.setLastNames("Dummy Last Names");
+        contact.setVisibleFor(VisibleFor.ALL);
+        contact.getPhones().put(PhoneType.HOME, "5550879089");
+        contact.getPhones().put(PhoneType.MOBILE, "555087459");
+        contact.getEmails().put(EmailType.PERSONAL, "correo@personal.com");
+        contact.getEmails().put(EmailType.WORK, "correo@trabajo.com");
+
+        contactService.createContact(acctId, companyId, contact);
+    }
+
+
+    /*
     private void createDummyContact(Account account) {
         log.info("Creating Dummy Contact");
 
@@ -88,4 +152,5 @@ public class RequiredDataBootstrap implements CommandLineRunner {
         acctSaved.addUser(u1);
         return accountRepository.save(acct);
     }
+    */
 }

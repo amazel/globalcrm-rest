@@ -1,8 +1,10 @@
 package com.globalcrm.rest.controllers.v1;
 
+import com.globalcrm.rest.api.v1.model.AccountDTO;
 import com.globalcrm.rest.api.v1.model.UserDTO;
 import com.globalcrm.rest.exceptions.ResourceNotFoundException;
 import com.globalcrm.rest.exceptions.RestResponseEntityExceptionHandler;
+import com.globalcrm.rest.services.v1.AccountService;
 import com.globalcrm.rest.services.v1.UserService;
 import org.junit.Before;
 import org.junit.Test;
@@ -39,6 +41,9 @@ public class UserControllerTest extends AbstractRestControllerTest {
     @Mock
     UserService userService;
 
+    @Mock
+    AccountService accountService;
+
     MockMvc mockMvc;
 
     @Before
@@ -51,23 +56,28 @@ public class UserControllerTest extends AbstractRestControllerTest {
 
     @Test
     public void getAllUsers() throws Exception {
-        List<UserDTO> users = Arrays.asList(new UserDTO(), new UserDTO());
+        AccountDTO accountDTO = new AccountDTO();
+        accountDTO.getUsers().add(new UserDTO());
 
-        when(userService.getAllUsers(anyLong())).thenReturn(users);
+
+        when(accountService.findById(anyLong())).thenReturn(accountDTO);
 
         mockMvc.perform(get(UserController.BASE_URL + "/" + ACCT_ID + "/users/")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(2)));
+                .andExpect(jsonPath("$", hasSize(1)));
     }
 
     @Test
     public void getUserById() throws Exception {
         //Given
+        AccountDTO accountDTO = new AccountDTO();
         UserDTO mockUser = new UserDTO();
         mockUser.setId(USER_ID);
         mockUser.setFirstName(NAME);
-        when(userService.getAccountUserById(anyLong(), anyLong())).thenReturn(mockUser);
+        accountDTO.getUsers().add(mockUser);
+
+        when(accountService.findById(anyLong())).thenReturn(accountDTO);
 
         mockMvc.perform(get(UserController.BASE_URL + "/" + ACCT_ID + "/users/" + USER_ID)
                 .contentType(MediaType.APPLICATION_JSON))
@@ -115,8 +125,12 @@ public class UserControllerTest extends AbstractRestControllerTest {
 
     @Test
     public void getUserByIdNotFound() throws Exception {
-
-        when(userService.getAccountUserById(anyLong(), anyLong())).thenThrow(ResourceNotFoundException.class);
+        AccountDTO accountDTO = new AccountDTO();
+        UserDTO mockUser = new UserDTO();
+        mockUser.setId(USER_ID);
+        mockUser.setFirstName(NAME);
+        accountDTO.getUsers().add(mockUser);
+        when(accountService.findById(anyLong())).thenReturn(accountDTO);
 
         mockMvc.perform(get(UserController.BASE_URL + "/" + ACCT_ID + "/users/222")
                 .contentType(MediaType.APPLICATION_JSON))

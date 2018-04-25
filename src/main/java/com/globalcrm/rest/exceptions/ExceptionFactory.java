@@ -23,4 +23,16 @@ public class ExceptionFactory {
     public static ResourceNotFoundException userNotCreated() {
         return new ResourceNotFoundException("User not created");
     }
+
+    public static ResourceNotFoundException companyNotCreated() {
+        return new ResourceNotFoundException("Company was not created");
+    }
+
+    public static ResourceNotFoundException companyNotFound(Long id) {
+        return new ResourceNotFoundException("Company ID: " + id + " not found");
+    }
+
+    public static ResourceNotFoundException contactNotCreated() {
+        return new ResourceNotFoundException("Contact was not created");
+    }
 }

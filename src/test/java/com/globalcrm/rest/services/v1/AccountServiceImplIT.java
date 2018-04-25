@@ -51,11 +51,7 @@ public class AccountServiceImplIT {
     @Before
     public void setUp()  {
 
-        //setup data for testing
-        RequiredDataBootstrap bootstrap = new RequiredDataBootstrap(accountRepository, accountHistoryRepository, contactRepository);
-        bootstrap.run();
-
-        accountService = new AccountServiceImpl(accountRepository, accountHistoryRepository);
+            accountService = new AccountServiceImpl(accountRepository, accountHistoryRepository);
     }
 
     @Test

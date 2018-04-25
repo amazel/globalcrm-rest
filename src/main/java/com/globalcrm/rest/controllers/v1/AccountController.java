@@ -28,7 +28,7 @@ public class AccountController {
         return accountService.findById(acctId);
     }
 
-    @PostMapping
+    @PostMapping("/new")
     @ResponseStatus(HttpStatus.CREATED)
     public AccountDTO createAccount(@RequestBody AccountDTO accountDTO) {
         return accountService.createAccount(accountDTO);

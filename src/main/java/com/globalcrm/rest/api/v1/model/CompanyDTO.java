@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -23,5 +24,5 @@ public class CompanyDTO {
     private String city;
     private String state;
     private VisibleFor visibleFor;
-    private Set<ContactDTO> contacts;
+    private Set<ContactDTO> contacts = new HashSet<>();
 }

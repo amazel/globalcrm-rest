@@ -7,7 +7,5 @@ import com.globalcrm.rest.api.v1.model.ContactDTO;
  */
 
 public interface ContactService {
-    ContactDTO createContact(ContactDTO accountDTO);
-
-    ContactDTO findById(Long id);
+    ContactDTO createContact(Long acctId, Long companyId, ContactDTO accountDTO);
 }

@@ -94,7 +94,7 @@ public class AccountControllerTest {
         when(accountService.createAccount(any(AccountDTO.class))).thenReturn(retAcct);
 
         log.error(asJsonString(retAcct));
-        mockMvc.perform(post(AccountController.BASE_URL)
+        mockMvc.perform(post(AccountController.BASE_URL+"/new")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(accountDTO)))
                 .andExpect(status().isCreated())

@@ -1,6 +1,8 @@
 package com.globalcrm.rest.domain;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -12,6 +14,8 @@ import java.util.Set;
  * Created by Hugo Lezama on April - 2018
  */
 @Data
+@EqualsAndHashCode
+@ToString(exclude = {"accountHolder","users","companies"})
 @Entity
 public class Account {
     @Id
