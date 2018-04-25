@@ -5,6 +5,7 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -30,7 +31,7 @@ public class Company {
     @Enumerated(value = EnumType.STRING)
     private VisibleFor visibleFor;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "company")
-    private Set<Contact> contacts;
+    private Set<Contact> contacts = new HashSet<>();
     // Not for v1.0
     //private String country;
 

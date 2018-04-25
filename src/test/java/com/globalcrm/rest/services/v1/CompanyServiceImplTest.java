@@ -66,6 +66,12 @@ public class CompanyServiceImplTest {
 
         CompanyDTO  companyDTO = new CompanyDTO();
         companyDTO.setName(NAME);
+        companyDTO.setCity(CITY);
+        companyDTO.setName(NAME);
+        companyDTO.setState(STATE);
+        companyDTO.setVisibleFor(VisibleFor.ALL);
+        companyDTO.setZipCode(ZIP_CODE);
+
         CompanyDTO companyRet = companyService.createCompany(ACCT_ID,companyDTO);
 
         //assertEquals(COMPANY_ID, companyRet.getId());
