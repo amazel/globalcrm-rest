@@ -27,7 +27,8 @@ public interface AccountMapper {
     @Mappings({
             @Mapping(target = "account.accountHolder", ignore = true),
             @Mapping(target = "account.users", ignore = true),
-            @Mapping(target = "account.companies", ignore = true)
+            @Mapping(target = "account.companies", ignore = true),
+            @Mapping(target = "password", ignore = true)
 
     })
     User userDtoToUser(UserDTO userDTO);
@@ -35,7 +36,8 @@ public interface AccountMapper {
     @Mappings({
             @Mapping(target = "account.accountHolder", ignore = true),
             @Mapping(target = "account.users", ignore = true),
-            @Mapping(target = "account.companies", ignore = true)
+            @Mapping(target = "account.companies", ignore = true),
+
     })
     UserDTO userToUserDto(User user);
 

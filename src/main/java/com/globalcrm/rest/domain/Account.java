@@ -31,7 +31,7 @@ public class Account {
     @Enumerated(value = EnumType.STRING)
     private SubscriptionType subscriptionType;
     private LocalDateTime creationDateTime;
-
+    private LocalDateTime expirationDateTime;
     @Enumerated(value = EnumType.STRING)
     private AccountStatus accountStatus = AccountStatus.NEW;
 

@@ -1,6 +1,5 @@
 package com.globalcrm.rest.services.v1;
 
-import com.globalcrm.rest.api.v1.model.AccountDTO;
 import com.globalcrm.rest.api.v1.model.CompanyDTO;
 import com.globalcrm.rest.domain.Account;
 import com.globalcrm.rest.domain.Company;
@@ -17,9 +16,7 @@ import java.util.Optional;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class CompanyServiceImplTest {
 
@@ -64,7 +61,7 @@ public class CompanyServiceImplTest {
 
         when(accountRepository.save(any(Account.class))).thenReturn(account);
 
-        CompanyDTO  companyDTO = new CompanyDTO();
+        CompanyDTO companyDTO = new CompanyDTO();
         companyDTO.setName(NAME);
         companyDTO.setCity(CITY);
         companyDTO.setName(NAME);
@@ -72,7 +69,7 @@ public class CompanyServiceImplTest {
         companyDTO.setVisibleFor(VisibleFor.ALL);
         companyDTO.setZipCode(ZIP_CODE);
 
-        CompanyDTO companyRet = companyService.createCompany(ACCT_ID,companyDTO);
+        CompanyDTO companyRet = companyService.createCompany(ACCT_ID, companyDTO);
 
         //assertEquals(COMPANY_ID, companyRet.getId());
         assertEquals(CITY, companyRet.getCity());
@@ -80,5 +77,26 @@ public class CompanyServiceImplTest {
         assertEquals(NAME, companyRet.getName());
         assertEquals(STATE, companyRet.getState());
         verify(accountRepository, times(1)).save(any(Account.class));
+    }
+
+
+    @Test
+    public void getAccountCompanyById() {
+
+        Account account = new Account();
+        account.setId(ACCT_ID);
+
+        Company company = new Company();
+        company.setId(COMPANY_ID);
+
+        account.getCompanies().add(company);
+
+        when(accountRepository.findById(anyLong())).thenReturn(Optional.of(account));
+
+        CompanyDTO companyDTO = companyService.getAccountCompanyById(ACCT_ID, COMPANY_ID);
+
+        assertEquals(COMPANY_ID, companyDTO.getId());
+        verify(accountRepository, times(1)).findById(anyLong());
+
     }
 }

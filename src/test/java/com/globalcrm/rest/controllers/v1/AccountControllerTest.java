@@ -32,7 +32,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class AccountControllerTest {
     public static final Long ACCT_ID = 1L;
     public static final String COMPANY_NAME = "Company";
-    public static final LocalDateTime CREATION_TIME = LocalDateTime.now();
     public static final String COMPANY_WEBSITE = "www.company.com";
     public static final String USER_NAME = "UserT";
     public static final Long USER_ID = 2L;
@@ -87,7 +86,6 @@ public class AccountControllerTest {
         retUser.setFirstName(USER_NAME);
         retUser.setId(USER_ID);
         retAcct.setAccountHolder(retUser);
-        retAcct.setCreationDateTime(CREATION_TIME);
         retAcct.setAccountStatus(AccountStatus.NEW);
         retAcct.setWebsite(COMPANY_WEBSITE);
 

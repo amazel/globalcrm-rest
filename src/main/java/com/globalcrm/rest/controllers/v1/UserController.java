@@ -2,7 +2,7 @@ package com.globalcrm.rest.controllers.v1;
 
 import com.globalcrm.rest.api.v1.model.AccountDTO;
 import com.globalcrm.rest.api.v1.model.UserDTO;
-import com.globalcrm.rest.exceptions.ExceptionFactory;
+import com.globalcrm.rest.api.v1.model.UserAuthDTO;
 import com.globalcrm.rest.services.v1.AccountService;
 import com.globalcrm.rest.services.v1.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -39,11 +39,7 @@ public class UserController {
     @ResponseStatus(HttpStatus.OK)
     public UserDTO getUserById(@PathVariable Long accountId, @PathVariable Long userId) {
         log.info("Getting User: " + userId);
-        AccountDTO accountDTO = accountService.findById(accountId);
-        return accountDTO.getUsers()
-                .stream()
-                .filter(userDTO -> userDTO.getId().equals(userId))
-                .findFirst().orElseThrow(() ->  ExceptionFactory.userNotFound(userId));
+      return userService.getUserById(accountId,userId);
     }
 
     @PostMapping("/{accountId}/users/new")
@@ -51,4 +47,5 @@ public class UserController {
     public UserDTO createNewUser(@PathVariable Long accountId, @Valid @RequestBody UserDTO userDTO) {
         return userService.createAccountUser(accountId, userDTO);
     }
+
 }

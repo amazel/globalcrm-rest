@@ -2,6 +2,7 @@ package com.globalcrm.rest.exceptions;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -49,13 +50,24 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
                 .collect(Collectors.toList()), ex.getMessage()), new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }
 
+
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<Object> handleDataIntegrityViolationException(DataIntegrityViolationException ex, WebRequest
+            request) {
+        log.error("Handling DataIntegrityViolationException... ");
+
+        return handleExceptionInternal(ex, new ErrorDetails(LocalDateTime.now(), Stream.of("Data Integrity Violation")
+                .collect(Collectors.toList()), ex.getMessage()), new HttpHeaders(), HttpStatus.CONFLICT, request);
+    }
+
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders
             headers, HttpStatus status, WebRequest request) {
         log.error("Handling MethodArgumentNotValidException...");
         BindingResult result = ex.getBindingResult();
         List<FieldError> fieldErrors = result.getFieldErrors();
-        return handleExceptionInternal(ex, new ErrorDetails(LocalDateTime.now(),fieldErrors.stream()
+        return handleExceptionInternal(ex, new ErrorDetails(LocalDateTime.now(), fieldErrors.stream()
                 .map(DefaultMessageSourceResolvable::getDefaultMessage)
                 .collect(Collectors.toList()), ex.getMessage()), new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
 

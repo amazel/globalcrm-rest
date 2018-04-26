@@ -13,7 +13,7 @@ import javax.validation.constraints.NotNull;
 @Data
 @EqualsAndHashCode(exclude = {"account"})
 @ToString(exclude = {"account"})
-@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"account_id", "email"})})
+//@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"account_id", "email"})})
 @Entity
 public class User {
 
@@ -24,7 +24,7 @@ public class User {
     private Account account;
     private String firstName;
     private String lastName;
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String email;
     private String password;
 

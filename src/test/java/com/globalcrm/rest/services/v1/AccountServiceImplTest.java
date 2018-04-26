@@ -58,7 +58,6 @@ public class AccountServiceImplTest {
         assertEquals(NAME, accountDTO.getName());
         assertEquals(SubscriptionType.MEDIUM, accountDTO.getSubscriptionType());
         assertEquals(USER_ID, accountDTO.getAccountHolder().getId());
-        assertEquals(CREATION_TIME, accountDTO.getCreationDateTime());
         assertEquals(AccountStatus.NEW, accountDTO.getAccountStatus());
         assertEquals(WEBSITE, accountDTO.getWebsite());
         assertEquals(1, accountDTO.getUsers().size());
@@ -79,7 +78,6 @@ public class AccountServiceImplTest {
         assertEquals(NAME, accountDTO.getName());
         assertEquals(SubscriptionType.MEDIUM, accountDTO.getSubscriptionType());
         assertEquals(USER_ID, accountDTO.getAccountHolder().getId());
-        assertEquals(CREATION_TIME, accountDTO.getCreationDateTime());
         assertEquals(AccountStatus.NEW, accountDTO.getAccountStatus());
         assertEquals(WEBSITE, accountDTO.getWebsite());
         assertEquals(1, accountDTO.getUsers().size());
@@ -133,7 +131,6 @@ public class AccountServiceImplTest {
         userDTO.setFirstName(USER_NAME);
         userDTO.setId(USER_ID);
         accountDTO.setAccountHolder(userDTO);
-        accountDTO.setCreationDateTime(CREATION_TIME);
         accountDTO.setAccountStatus(AccountStatus.NEW);
         accountDTO.setWebsite(WEBSITE);
         Set<UserDTO> users = new HashSet<>();

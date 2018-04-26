@@ -2,10 +2,8 @@ package com.globalcrm.rest.services.v1;
 
 import com.globalcrm.rest.api.v1.model.AccountDTO;
 import com.globalcrm.rest.api.v1.model.UserDTO;
-import com.globalcrm.rest.bootstrap.RequiredDataBootstrap;
 import com.globalcrm.rest.domain.AccountStatus;
 import com.globalcrm.rest.domain.SubscriptionType;
-import com.globalcrm.rest.domain.User;
 import com.globalcrm.rest.repositories.AccountHistoryRepository;
 import com.globalcrm.rest.repositories.AccountRepository;
 import com.globalcrm.rest.repositories.ContactRepository;
@@ -16,9 +14,6 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import java.util.HashSet;
-import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -49,9 +44,9 @@ public class AccountServiceImplIT {
     ContactRepository contactRepository;
 
     @Before
-    public void setUp()  {
+    public void setUp() {
 
-            accountService = new AccountServiceImpl(accountRepository, accountHistoryRepository);
+        accountService = new AccountServiceImpl(accountRepository, accountHistoryRepository);
     }
 
     @Test
@@ -61,7 +56,6 @@ public class AccountServiceImplIT {
 
         log.info(retAcct.toString());
 
-        assertNotNull(retAcct.getCreationDateTime());
         assertNotNull(retAcct.getId());
         assertEquals(1, retAcct.getUsers().size());
     }
@@ -78,7 +72,7 @@ public class AccountServiceImplIT {
         accountDTO.setAccountStatus(AccountStatus.NEW);
         accountDTO.setWebsite(WEBSITE);
         UserDTO user1 = new UserDTO();
-        user1.setEmail("USER_EMAIL2");
+        user1.setEmail(USER_EMAIL2);
         accountDTO.getUsers().add(user1);
         return accountDTO;
     }

@@ -31,6 +31,7 @@ public class AccountController {
     @PostMapping("/new")
     @ResponseStatus(HttpStatus.CREATED)
     public AccountDTO createAccount(@RequestBody AccountDTO accountDTO) {
+        log.info("Creating new account");
         return accountService.createAccount(accountDTO);
     }
 }

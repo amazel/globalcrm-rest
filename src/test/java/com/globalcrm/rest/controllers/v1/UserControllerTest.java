@@ -71,13 +71,11 @@ public class UserControllerTest extends AbstractRestControllerTest {
     @Test
     public void getUserById() throws Exception {
         //Given
-        AccountDTO accountDTO = new AccountDTO();
         UserDTO mockUser = new UserDTO();
         mockUser.setId(USER_ID);
         mockUser.setFirstName(NAME);
-        accountDTO.getUsers().add(mockUser);
 
-        when(accountService.findById(anyLong())).thenReturn(accountDTO);
+        when(userService.getUserById(anyLong(),anyLong())).thenReturn(mockUser);
 
         mockMvc.perform(get(UserController.BASE_URL + "/" + ACCT_ID + "/users/" + USER_ID)
                 .contentType(MediaType.APPLICATION_JSON))

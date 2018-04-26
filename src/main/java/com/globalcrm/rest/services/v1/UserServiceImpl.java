@@ -25,13 +25,29 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public UserDTO createAccountUser(Long accountId, UserDTO userDTO) {
-        User user = mapper.dtoToUser(userDTO);
-        Account acct = accountRepository.findById(accountId).orElseThrow(() -> ExceptionFactory
-                .accountNotFound(accountId));
-        Account savedAcct = accountRepository.save(acct.addUser(user));
-        User savedUser = savedAcct.getUsers().stream()
-                .filter(user1 -> user1.getEmail().equals(userDTO.getEmail()))
+        return mapper.userToDto(saveUser(accountId, mapper.dtoToUser(userDTO)));
+    }
+
+    private User saveUser(Long accountId, User user) {
+        Account account = accountRepository.findById(accountId)
+                .orElseThrow(() -> ExceptionFactory.accountNotFound(accountId));
+        Account savedAcct = accountRepository.save(account.addUser(user));
+        return savedAcct.getUsers().stream()
+                .filter(user1 -> user1.getEmail().equals(user.getEmail()))
                 .findFirst().orElseThrow(ExceptionFactory::userNotCreated);
-        return mapper.userToDto(savedUser);
+    }
+
+    public UserDTO getUserById(Long accountId, Long userId) {
+        return mapper.userToDto(findUserById(accountId, userId));
+    }
+
+    private User findUserById(Long accountId, Long userId) {
+        Account acct = accountRepository.findById(accountId)
+                .orElseThrow(() -> ExceptionFactory.accountNotFound(accountId));
+
+        return acct.getUsers().stream()
+                .filter(user -> user.getId().equals(userId))
+                .findFirst()
+                .orElseThrow(() -> ExceptionFactory.userNotFound(userId));
     }
 }

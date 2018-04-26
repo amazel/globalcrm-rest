@@ -22,6 +22,5 @@ public class UserDTO {
     private String lastName;
     @Email
     private String email;
-    private String password;
 
 }

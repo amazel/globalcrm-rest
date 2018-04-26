@@ -56,7 +56,6 @@ public class AccountMapperTest {
         assertEquals(COMPANY_NAME, accountDTO.getName());
         assertEquals(SubscriptionType.MEDIUM, accountDTO.getSubscriptionType());
         assertEquals(USER_ID, accountDTO.getAccountHolder().getId());
-        assertEquals(CREATION_TIME, accountDTO.getCreationDateTime());
         assertEquals(AccountStatus.NEW, accountDTO.getAccountStatus());
         assertEquals(COMPANY_WEBSITE, accountDTO.getWebsite());
         assertEquals(1, accountDTO.getUsers().size());
@@ -73,7 +72,7 @@ public class AccountMapperTest {
         userDTO.setFirstName(USER_NAME);
         userDTO.setId(USER_ID);
         accountDTO.setAccountHolder(userDTO);
-        accountDTO.setCreationDateTime(CREATION_TIME);
+        
         accountDTO.setAccountStatus(AccountStatus.NEW);
         accountDTO.setWebsite(COMPANY_WEBSITE);
         Set<UserDTO> users = new HashSet<>();

@@ -37,7 +37,6 @@ public class UserMapperTest {
         accountDTO.setId(ACCT_ID);
         accountDTO.setName(ACCOUNT_NAME);
         accountDTO.setSubscriptionType(SubscriptionType.MEDIUM);
-        accountDTO.setCreationDateTime(CREATION_TIME);
         accountDTO.setAccountStatus(AccountStatus.NEW);
         accountDTO.setWebsite(ACCOUNT_WEBSITE);
         accountDTO.setAccountHolder(userDTO1);

@@ -2,14 +2,12 @@ package com.globalcrm.rest.api.v1.model;
 
 import com.globalcrm.rest.domain.AccountStatus;
 import com.globalcrm.rest.domain.SubscriptionType;
-import com.globalcrm.rest.domain.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.URL;
 
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -27,7 +25,6 @@ public class AccountDTO {
     @NotNull
     private UserDTO accountHolder;
     private SubscriptionType subscriptionType;
-    private LocalDateTime creationDateTime;
     private AccountStatus accountStatus;
     private Set<UserDTO> users = new HashSet<>();
     private Set<CompanyDTO> companies = new HashSet<>();

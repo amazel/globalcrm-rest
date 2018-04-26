@@ -17,11 +17,15 @@ public interface UserMapper {
 
     UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
 
+    @Mappings({
+            @Mapping(target = "password", ignore = true)
+    })
     User dtoToUser(UserDTO userDTO);
     UserDTO userToDto(User user);
 
     @Mappings({
             @Mapping(target = "accountHolder.account", ignore = true),
+            @Mapping(target = "accountHolder.password", ignore = true),
             @Mapping(target = "users", ignore = true),
             @Mapping(target = "companies", ignore = true),
     })

@@ -35,9 +35,11 @@ public class AccountServiceImpl implements AccountService {
     @Transactional
     public AccountDTO createAccount(AccountDTO accountDTO) {
         log.info("CREATING ACCOUNT");
-        accountDTO.setAccountStatus(AccountStatus.NEW);
-        accountDTO.setCreationDateTime(LocalDateTime.now());
-        Account savedAcct = accountRepository.save(accountMapper.dtoToAccount(accountDTO));
+        Account account = accountMapper.dtoToAccount(accountDTO);
+        account.setAccountStatus(AccountStatus.NEW);
+        account.setCreationDateTime(LocalDateTime.now());
+        account.setExpirationDateTime(LocalDateTime.now().plusDays(30));
+        Account savedAcct = accountRepository.save(account);
         savedAcct.getAccountHolder().setAccount(savedAcct);
         Account retAcct = accountRepository.save(savedAcct);
         generateAccountHistoryRecord(retAcct, AccountEvent.CREATED);
