@@ -8,7 +8,6 @@ import com.globalcrm.rest.domain.SubscriptionType;
 import com.globalcrm.rest.domain.User;
 import org.junit.Test;
 
-import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -19,7 +18,6 @@ public class AccountMapperTest {
 
     public static final Long ID = 1L;
     public static final String COMPANY_NAME = "Company";
-    public static final LocalDateTime CREATION_TIME = LocalDateTime.now();
     public static final String COMPANY_WEBSITE = "www.company.com";
     public static final String USER_NAME = "UserT";
     public static final Long USER_ID = 2L;
@@ -37,7 +35,6 @@ public class AccountMapperTest {
         user.setId(USER_ID);
         user.setAccount(account);
         account.setAccountHolder(user);
-        account.setCreationDateTime(CREATION_TIME);
         account.setAccountStatus(AccountStatus.NEW);
         account.setWebsite(COMPANY_WEBSITE);
         Set<User> users = new HashSet<>();
@@ -72,7 +69,7 @@ public class AccountMapperTest {
         userDTO.setFirstName(USER_NAME);
         userDTO.setId(USER_ID);
         accountDTO.setAccountHolder(userDTO);
-        
+
         accountDTO.setAccountStatus(AccountStatus.NEW);
         accountDTO.setWebsite(COMPANY_WEBSITE);
         Set<UserDTO> users = new HashSet<>();
@@ -85,7 +82,6 @@ public class AccountMapperTest {
         assertEquals(COMPANY_NAME, account.getName());
         assertEquals(SubscriptionType.MEDIUM, account.getSubscriptionType());
         assertEquals(USER_ID, account.getAccountHolder().getId());
-        assertEquals(CREATION_TIME, account.getCreationDateTime());
         assertEquals(AccountStatus.NEW, account.getAccountStatus());
         assertEquals(COMPANY_WEBSITE, account.getWebsite());
         assertEquals(1, account.getUsers().size());

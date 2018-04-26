@@ -2,6 +2,7 @@ package com.globalcrm.rest.controllers.v1;
 
 import com.globalcrm.rest.api.v1.model.AccountDTO;
 import com.globalcrm.rest.api.v1.model.UserDTO;
+import com.globalcrm.rest.exceptions.ExceptionFactory;
 import com.globalcrm.rest.exceptions.ResourceNotFoundException;
 import com.globalcrm.rest.exceptions.RestResponseEntityExceptionHandler;
 import com.globalcrm.rest.services.v1.AccountService;
@@ -123,12 +124,7 @@ public class UserControllerTest extends AbstractRestControllerTest {
 
     @Test
     public void getUserByIdNotFound() throws Exception {
-        AccountDTO accountDTO = new AccountDTO();
-        UserDTO mockUser = new UserDTO();
-        mockUser.setId(USER_ID);
-        mockUser.setFirstName(NAME);
-        accountDTO.getUsers().add(mockUser);
-        when(accountService.findById(anyLong())).thenReturn(accountDTO);
+        when(userService.getUserById(anyLong(),anyLong())).thenThrow(ExceptionFactory.userNotFound(222L));
 
         mockMvc.perform(get(UserController.BASE_URL + "/" + ACCT_ID + "/users/222")
                 .contentType(MediaType.APPLICATION_JSON))
