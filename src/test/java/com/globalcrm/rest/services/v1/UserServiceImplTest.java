@@ -10,20 +10,17 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.util.HashSet;
-import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
-import static org.junit.Assert.assertEquals;
+import static junit.framework.TestCase.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
+
 @Slf4j
 public class UserServiceImplTest {
-    public static final String NAME = "Test Name";
-    public static final String LAST_NAME = "Test LastName";
     public static final String EMAIL = "test@email.com";
     public static final Long USER_ID = 1L;
     public static final Long ACCT_ID = 1L;
@@ -34,6 +31,9 @@ public class UserServiceImplTest {
     @Mock
     AccountRepository accountRepository;
 
+    @Mock
+    PasswordEncoder passwordEncoder;
+
     UserService userService;
 
     @Before
@@ -43,7 +43,7 @@ public class UserServiceImplTest {
     }
 
     @Test
-    public void saveUser() {
+    public void createAccountUser() {
         //Given
         User savedUser = new User();
         savedUser.setId(USER_ID);
@@ -65,8 +65,26 @@ public class UserServiceImplTest {
         log.info(retUser.toString());
 
         //Then
-       // assertEquals(USER_ID, retUser.getId());
+        // assertEquals(USER_ID, retUser.getId());
         verify(accountRepository, times(1)).findById(anyLong());
         verify(accountRepository, times(1)).save(any(Account.class));
+    }
+
+    @Test
+    public void getUserById() {
+
+        Account retAccount = new Account();
+        retAccount.setId(ACCT_ID);
+        User savedUser = new User();
+        savedUser.setId(USER_ID);
+        savedUser.setEmail(EMAIL);
+        retAccount.getUsers().add(savedUser);
+
+        when(accountRepository.findById(anyLong())).thenReturn(Optional.of(retAccount));
+
+        UserDTO userDTO = userService.getUserById(ACCT_ID, USER_ID);
+
+        assertEquals(USER_ID, userDTO.getId());
+        verify(accountRepository, times(1)).findById(anyLong());
     }
 }

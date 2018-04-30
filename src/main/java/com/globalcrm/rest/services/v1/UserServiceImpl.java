@@ -1,12 +1,15 @@
 package com.globalcrm.rest.services.v1;
 
+import com.globalcrm.rest.api.v1.mapper.UserAuthMapper;
 import com.globalcrm.rest.api.v1.mapper.UserMapper;
+import com.globalcrm.rest.api.v1.model.UserAuthDTO;
 import com.globalcrm.rest.api.v1.model.UserDTO;
 import com.globalcrm.rest.domain.Account;
 import com.globalcrm.rest.domain.User;
 import com.globalcrm.rest.exceptions.ExceptionFactory;
 import com.globalcrm.rest.repositories.AccountRepository;
 import com.globalcrm.rest.repositories.UserRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

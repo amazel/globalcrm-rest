@@ -5,7 +5,6 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 
 /**
  * Created by Hugo Lezama on April - 2018
@@ -27,5 +26,6 @@ public class User {
     @Column(nullable = false, unique = true)
     private String email;
     private String password;
+    private boolean enabled = true;
 
 }

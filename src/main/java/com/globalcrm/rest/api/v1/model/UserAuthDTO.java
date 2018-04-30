@@ -6,24 +6,26 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.validation.constraints.NotNull;
-import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Collection;
 
 /**
  * Created by Hugo Lezama on April - 2018
  */
 @Data
-public class UserAuthDTO implements UserDetails, Serializable {
+public class UserAuthDTO implements UserDetails {
     private static final long serialVersionUID = 6713555369928042367L;
     private String password;
     @NotNull
     private String email;
+    private String firstName;
+    Collection<GrantedAuthority> authorities;
+    private String jwtToken;
+    private boolean enabled;
 
     @JsonIgnore
     @Override
     public Collection<GrantedAuthority> getAuthorities() {
-        return new ArrayList<>();
+        return authorities;
     }
 
     @JsonIgnore
@@ -59,6 +61,6 @@ public class UserAuthDTO implements UserDetails, Serializable {
     @JsonIgnore
     @Override
     public boolean isEnabled() {
-        return true;
+        return enabled;
     }
 }
