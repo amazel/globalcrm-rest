@@ -4,9 +4,11 @@ import com.globalcrm.rest.domain.AccountStatus;
 import com.globalcrm.rest.domain.SubscriptionType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.URL;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.Set;
@@ -17,11 +19,13 @@ import java.util.Set;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode
 public class AccountDTO {
     private Long id;
     private String name;
     @URL
     private String website;
+    @Valid
     @NotNull
     private UserDTO accountHolder;
     private SubscriptionType subscriptionType;

@@ -22,18 +22,23 @@ public class Contact {
     private Long id;
     private String names;
     private String lastNames;
+    @Lob
+    private Byte[] picture;
 
     @ManyToOne(optional = false, cascade = CascadeType.PERSIST)
     private Company company;
 
-    @ElementCollection(targetClass=String.class)
-    @MapKeyColumn(name="phone_type")
+    @Enumerated(value = EnumType.STRING)
+    private ContactType contactType;
+
+    @ElementCollection(targetClass = String.class)
+    @MapKeyColumn(name = "phone_type")
     @MapKeyEnumerated(value = EnumType.STRING)
     @MapKeyClass(PhoneType.class)
     private Map<PhoneType, String> phones = new HashMap<>();
 
-    @ElementCollection(targetClass=String.class)
-    @MapKeyColumn(name="email_type")
+    @ElementCollection(targetClass = String.class)
+    @MapKeyColumn(name = "email_type")
     @MapKeyEnumerated(value = EnumType.STRING)
     @MapKeyClass(EmailType.class)
     private Map<EmailType, String> emails = new HashMap<>();

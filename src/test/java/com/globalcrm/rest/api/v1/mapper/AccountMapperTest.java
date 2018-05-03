@@ -6,14 +6,17 @@ import com.globalcrm.rest.domain.Account;
 import com.globalcrm.rest.domain.AccountStatus;
 import com.globalcrm.rest.domain.SubscriptionType;
 import com.globalcrm.rest.domain.User;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 
+import javax.validation.constraints.Size;
 import java.util.HashSet;
 import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
+@Slf4j
 public class AccountMapperTest {
 
     public static final Long ID = 1L;
@@ -68,15 +71,26 @@ public class AccountMapperTest {
         UserDTO userDTO = new UserDTO();
         userDTO.setFirstName(USER_NAME);
         userDTO.setId(USER_ID);
+        userDTO.setAccount(accountDTO);
+
         accountDTO.setAccountHolder(userDTO);
 
         accountDTO.setAccountStatus(AccountStatus.NEW);
         accountDTO.setWebsite(COMPANY_WEBSITE);
-        Set<UserDTO> users = new HashSet<>();
-        users.add(new UserDTO());
-        accountDTO.setUsers(users);
+
+
+
+        UserDTO user2 = new UserDTO();
+        user2.setFirstName(USER_NAME);
+        user2.setId(3L);
+        user2.setAccount(accountDTO);
+
+
+        accountDTO.getUsers().add(user2);
 
         Account account = accountMapper.dtoToAccount(accountDTO);
+
+        log.info(account.toString());
 
         assertEquals(ID, account.getId());
         assertEquals(COMPANY_NAME, account.getName());

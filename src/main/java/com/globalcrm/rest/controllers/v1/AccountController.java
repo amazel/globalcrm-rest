@@ -6,6 +6,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 /**
  * Created by Hugo Lezama on April - 2018
  */
@@ -30,7 +32,7 @@ public class AccountController {
 
     @PostMapping("/new")
     @ResponseStatus(HttpStatus.CREATED)
-    public AccountDTO createAccount(@RequestBody AccountDTO accountDTO) {
+    public AccountDTO createAccount(@Valid @RequestBody AccountDTO accountDTO) {
         log.info("Creating new account");
         return accountService.createAccount(accountDTO);
     }

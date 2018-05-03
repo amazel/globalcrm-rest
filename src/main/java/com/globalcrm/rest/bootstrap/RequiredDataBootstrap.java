@@ -8,10 +8,7 @@ import com.globalcrm.rest.domain.EmailType;
 import com.globalcrm.rest.domain.PhoneType;
 import com.globalcrm.rest.domain.SubscriptionType;
 import com.globalcrm.rest.domain.VisibleFor;
-import com.globalcrm.rest.services.v1.AccountService;
-import com.globalcrm.rest.services.v1.CompanyService;
-import com.globalcrm.rest.services.v1.ContactService;
-import com.globalcrm.rest.services.v1.UserService;
+import com.globalcrm.rest.services.v1.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -25,12 +22,14 @@ public class RequiredDataBootstrap implements CommandLineRunner {
 
     AccountService accountService;
     UserService userService;
+    final UserAuthenticationService userAuthenticationService;
     CompanyService companyService;
     ContactService contactService;
 
-    public RequiredDataBootstrap(AccountService accountService, UserService userService, CompanyService companyService, ContactService contactService) {
+    public RequiredDataBootstrap(AccountService accountService, UserService userService, UserAuthenticationService userAuthenticationService, CompanyService companyService, ContactService contactService) {
         this.accountService = accountService;
         this.userService = userService;
+        this.userAuthenticationService = userAuthenticationService;
         this.companyService = companyService;
         this.contactService = contactService;
     }
@@ -38,10 +37,13 @@ public class RequiredDataBootstrap implements CommandLineRunner {
     @Override
     public void run(String... args) {
         AccountDTO acct = loadDefaultAccount();
-        addUser(acct.getId());
+        UserDTO usr = addUser(acct.getId());
+        setUserPassword(acct.getAccountHolder(),"password");
         CompanyDTO companyDTO = createDummyCompany(acct.getId());
         createDummyContact(acct.getId(), companyDTO.getId());
     }
+
+
 
     public AccountDTO loadDefaultAccount() {
         log.info("Loading default account");
@@ -54,7 +56,7 @@ public class RequiredDataBootstrap implements CommandLineRunner {
         UserDTO holder = new UserDTO();
         holder.setFirstName("ACCOUNT");
         holder.setLastName("HOLDER");
-        holder.setEmail("EMAIL");
+        holder.setEmail("holder@mail.com");
 
         acct.setAccountHolder(holder);
 
@@ -65,9 +67,13 @@ public class RequiredDataBootstrap implements CommandLineRunner {
         UserDTO u1 = new UserDTO();
         u1.setFirstName("USER");
         u1.setLastName("ONE");
-        u1.setEmail("EMAIL2");
+        u1.setEmail("user1@mail.com");
 
         return userService.createAccountUser(acctId, u1);
+    }
+
+    private void setUserPassword(UserDTO usr, String password) {
+        userAuthenticationService.setUserPassword(usr.getEmail(),password);
     }
 
     private CompanyDTO createDummyCompany(Long accId) {

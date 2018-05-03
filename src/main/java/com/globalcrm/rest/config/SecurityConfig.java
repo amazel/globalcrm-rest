@@ -95,17 +95,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(WebSecurity web) {
         web
                 .ignoring()
-                .antMatchers("/h2-console/**/**")
-                .antMatchers("/v2/api-docs",
-                        "/configuration/ui",
-                        "/swagger-resources/**",
-                        "/configuration/**",
-                        "/swagger-ui.html",
-                        "/webjars/**")
-                .antMatchers(
-                        HttpMethod.POST,
-                        "/auth/**/**"
-                )
+                .antMatchers("/**/**")
+//                .antMatchers("/h2-console/**/**")
+//                .antMatchers("/v2/api-docs",
+//                        "/configuration/ui",
+//                        "/swagger-resources/**",
+//                        "/configuration/**",
+//                        "/swagger-ui.html",
+//                        "/webjars/**")
+//                .antMatchers(
+//                        HttpMethod.POST,
+//                        "/auth/**/**"
+//                )
 //
 //                // allow anonymous resource requests
                 .and()

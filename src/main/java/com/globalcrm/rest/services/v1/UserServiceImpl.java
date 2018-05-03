@@ -28,7 +28,11 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public UserDTO createAccountUser(Long accountId, UserDTO userDTO) {
-        return mapper.userToDto(saveUser(accountId, mapper.dtoToUser(userDTO)));
+        User newUser = mapper.dtoToUser(userDTO);
+        newUser.setId(null);
+        newUser.setPassword(null);
+        newUser.setEnabled(true);
+        return mapper.userToDto(saveUser(accountId, newUser));
     }
 
     private User saveUser(Long accountId, User user) {

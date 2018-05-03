@@ -158,6 +158,7 @@
                         <exclude>com/globalcrm/rest/config/**/*</exclude>
                         <exclude>com/globalcrm/rest/bootstrap/**/*</exclude>
                         <exclude>com/globalcrm/rest/exceptions/**/*</exclude>
+                        <exclude>com/globalcrm/rest/security/**/*</exclude>
                     </excludes>
                 </configuration>
                 <executions>

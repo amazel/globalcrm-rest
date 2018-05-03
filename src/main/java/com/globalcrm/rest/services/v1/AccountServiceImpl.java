@@ -2,10 +2,7 @@ package com.globalcrm.rest.services.v1;
 
 import com.globalcrm.rest.api.v1.mapper.AccountMapper;
 import com.globalcrm.rest.api.v1.model.AccountDTO;
-import com.globalcrm.rest.domain.Account;
-import com.globalcrm.rest.domain.AccountEvent;
-import com.globalcrm.rest.domain.AccountHistory;
-import com.globalcrm.rest.domain.AccountStatus;
+import com.globalcrm.rest.domain.*;
 import com.globalcrm.rest.exceptions.ExceptionFactory;
 import com.globalcrm.rest.repositories.AccountHistoryRepository;
 import com.globalcrm.rest.repositories.AccountRepository;
@@ -14,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 
 /**
  * Created by Hugo Lezama on April - 2018
@@ -39,6 +37,11 @@ public class AccountServiceImpl implements AccountService {
         account.setAccountStatus(AccountStatus.NEW);
         account.setCreationDateTime(LocalDateTime.now());
         account.setExpirationDateTime(LocalDateTime.now().plusDays(30));
+        account.setSubscriptionType(SubscriptionType.MICRO);
+        account.getAccountHolder().setPassword(null);
+        account.getAccountHolder().setId(null);
+        account.setUsers(new HashSet<>());
+        account.setCompanies(new HashSet<>());
         Account savedAcct = accountRepository.save(account);
         savedAcct.getAccountHolder().setAccount(savedAcct);
         Account retAcct = accountRepository.save(savedAcct);
