@@ -3,10 +3,7 @@ package com.globalcrm.rest.api.v1.model;
 import com.globalcrm.rest.domain.EmailType;
 import com.globalcrm.rest.domain.PhoneType;
 import com.globalcrm.rest.domain.VisibleFor;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,6 +14,7 @@ import java.util.Map;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode(exclude = {"company"})
 public class ContactDTO {
     private Long id;
     private String names;

@@ -2,11 +2,7 @@ package com.globalcrm.rest.api.v1.model;
 
 import com.globalcrm.rest.domain.AccountStatus;
 import com.globalcrm.rest.domain.SubscriptionType;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import org.hibernate.validator.constraints.URL;
+import lombok.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -20,10 +16,10 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode
+//@ToString(exclude = {"accountHolder.account","users.account","companies.account"})
 public class AccountDTO {
     private Long id;
     private String name;
-    @URL
     private String website;
     @Valid
     @NotNull
@@ -32,6 +28,5 @@ public class AccountDTO {
     private AccountStatus accountStatus;
     private Set<UserDTO> users = new HashSet<>();
     private Set<CompanyDTO> companies = new HashSet<>();
-
 
 }

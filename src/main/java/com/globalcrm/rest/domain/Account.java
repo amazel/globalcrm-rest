@@ -15,7 +15,7 @@ import java.util.Set;
  */
 @Data
 @EqualsAndHashCode
-@ToString(exclude = {"accountHolder","users","companies"})
+@ToString(exclude = {"accountHolder.account","users.account","companies.account"})
 @Entity
 public class Account {
     @Id

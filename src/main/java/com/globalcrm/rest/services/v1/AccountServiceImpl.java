@@ -52,7 +52,7 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public AccountDTO findById(Long acctId) {
         return accountRepository.findById(acctId)
-                .map(accountMapper::accountToDto)
+                .map(account -> accountMapper.accountToDto(account))
                 .orElseThrow(() -> ExceptionFactory.accountNotFound(acctId));
     }
 

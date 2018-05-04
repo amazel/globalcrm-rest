@@ -3,6 +3,7 @@ package com.globalcrm.rest.api.v1.model;
 import com.globalcrm.rest.domain.VisibleFor;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.util.HashSet;
@@ -14,6 +15,7 @@ import java.util.Set;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode(exclude = {"account"})
 public class CompanyDTO {
 
     private Long id;

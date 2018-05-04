@@ -1,9 +1,6 @@
 package com.globalcrm.rest.api.v1.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Size;
@@ -14,7 +11,8 @@ import javax.validation.constraints.Size;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode
+@EqualsAndHashCode(exclude = {"account"})
+@ToString(exclude = {"account"})
 public class UserDTO {
     private Long id;
     private AccountDTO account;

@@ -66,6 +66,7 @@ public class CompanyServiceImplTest {
         companyDTO.setCity(CITY);
         companyDTO.setName(NAME);
         companyDTO.setState(STATE);
+        companyDTO.setAddress(ADDRESS);
         companyDTO.setVisibleFor(VisibleFor.ALL);
         companyDTO.setZipCode(ZIP_CODE);
 

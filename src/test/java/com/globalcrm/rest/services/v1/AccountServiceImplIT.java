@@ -57,7 +57,7 @@ public class AccountServiceImplIT {
         log.info(retAcct.toString());
 
         assertNotNull(retAcct.getId());
-        assertEquals(1, retAcct.getUsers().size());
+        assertEquals(NAME,retAcct.getName());
     }
 
     private AccountDTO createDummyAccountDTO() {

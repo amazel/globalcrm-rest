@@ -20,6 +20,7 @@ import org.mapstruct.factory.Mappers;
 public interface AccountMapper {
     AccountMapper INSTANCE = Mappers.getMapper(AccountMapper.class);
 
+
     Account dtoToAccount(AccountDTO accountDTO);
 
     AccountDTO accountToDto(Account account);
@@ -66,5 +67,4 @@ public interface AccountMapper {
             @Mapping(target = "company.contacts", ignore = true)
     })
     Contact dtoToContact(ContactDTO contactDTO);
-
 }
