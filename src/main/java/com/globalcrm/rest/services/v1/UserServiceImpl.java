@@ -31,7 +31,7 @@ public class UserServiceImpl implements UserService {
         User newUser = mapper.dtoToUser(userDTO);
         newUser.setId(null);
         newUser.setPassword(null);
-        newUser.setEnabled(true);
+        newUser.setEnabled(false);
         return mapper.userToDto(saveUser(accountId, newUser));
     }
 
@@ -45,10 +45,10 @@ public class UserServiceImpl implements UserService {
     }
 
     public UserDTO getUserById(Long accountId, Long userId) {
-        return mapper.userToDto(findUserById(accountId, userId));
+        return mapper.userToDto(findUserByAccountAndId(accountId, userId));
     }
 
-    private User findUserById(Long accountId, Long userId) {
+    public User findUserByAccountAndId(Long accountId, Long userId) {
         Account acct = accountRepository.findById(accountId)
                 .orElseThrow(() -> ExceptionFactory.accountNotFound(accountId));
 
@@ -56,5 +56,10 @@ public class UserServiceImpl implements UserService {
                 .filter(user -> user.getId().equals(userId))
                 .findFirst()
                 .orElseThrow(() -> ExceptionFactory.userNotFound(userId));
+    }
+
+    @Override
+    public User findById(Long id){
+        return userRepository.findById(id).orElseThrow(() ->  ExceptionFactory.userNotFound(id));
     }
 }

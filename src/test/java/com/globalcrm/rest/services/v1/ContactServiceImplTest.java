@@ -3,8 +3,8 @@ package com.globalcrm.rest.services.v1;
 import com.globalcrm.rest.api.v1.model.CompanyDTO;
 import com.globalcrm.rest.api.v1.model.ContactDTO;
 import com.globalcrm.rest.domain.*;
-import com.globalcrm.rest.repositories.AccountRepository;
 import com.globalcrm.rest.repositories.CompanyRepository;
+import com.globalcrm.rest.repositories.ContactRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -29,7 +29,7 @@ public class ContactServiceImplTest {
     CompanyService companyService;
 
     @Mock
-    AccountRepository accountRepository;
+    ContactRepository contactRepository;
 
     @Mock
     CompanyRepository companyRepository;
@@ -37,8 +37,8 @@ public class ContactServiceImplTest {
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-       // companyService = new CompanyServiceImpl(companyRepository, accountRepository);
-        contactService = new ContactServiceImpl(companyRepository, companyService);
+        // companyService = new CompanyServiceImpl(companyRepository, accountRepository);
+        contactService = new ContactServiceImpl(contactRepository, companyRepository, companyService);
     }
 
     @Test

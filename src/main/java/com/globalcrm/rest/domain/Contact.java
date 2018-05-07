@@ -6,7 +6,9 @@ import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by Hugo Lezama on April - 2018
@@ -46,6 +48,11 @@ public class Contact {
     @Enumerated(value = EnumType.STRING)
     private VisibleFor visibleFor;
 
-    // Not for v1.0
-    //private String country;
+    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "contact")
+    private Set<Sale> sales = new HashSet<>();
+
+    public void addSale(Sale sale){
+        sale.setContact(this);
+        sales.add(sale);
+    }
 }

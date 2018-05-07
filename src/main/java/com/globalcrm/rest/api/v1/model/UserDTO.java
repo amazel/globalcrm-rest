@@ -1,9 +1,13 @@
 package com.globalcrm.rest.api.v1.model;
 
+import com.globalcrm.rest.domain.Sale;
+import com.globalcrm.rest.domain.Task;
 import lombok.*;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Size;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by Hugo Lezama on April - 2018
@@ -22,5 +26,9 @@ public class UserDTO {
     private String lastName;
     @Email
     private String email;
+
+    private Set<TaskDTO> createdTasks = new HashSet<>();
+    private Set<TaskDTO> assignedTasks = new HashSet<>();
+    private Set<SaleDTO> sales = new HashSet<>();
 
 }

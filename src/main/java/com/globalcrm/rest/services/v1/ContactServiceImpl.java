@@ -5,8 +5,10 @@ import com.globalcrm.rest.api.v1.mapper.ContactMapper;
 import com.globalcrm.rest.api.v1.model.ContactDTO;
 import com.globalcrm.rest.domain.Company;
 import com.globalcrm.rest.domain.Contact;
+import com.globalcrm.rest.domain.Sale;
 import com.globalcrm.rest.exceptions.ExceptionFactory;
 import com.globalcrm.rest.repositories.CompanyRepository;
+import com.globalcrm.rest.repositories.ContactRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,12 +19,15 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 @Service
 public class ContactServiceImpl implements ContactService {
+
+    final ContactRepository contactRepository;
     CompanyRepository companyRepository;
     CompanyService companyService;
     CompanyMapper companyMapper = CompanyMapper.INSTANCE;
     ContactMapper contactMapper = ContactMapper.INSTANCE;
 
-    public ContactServiceImpl(CompanyRepository companyRepository, CompanyService companyService) {
+    public ContactServiceImpl(ContactRepository contactRepository, CompanyRepository companyRepository, CompanyService companyService) {
+        this.contactRepository = contactRepository;
         this.companyRepository = companyRepository;
         this.companyService = companyService;
     }
@@ -39,5 +44,10 @@ public class ContactServiceImpl implements ContactService {
                 .findFirst()
                 .map(contactMapper::contactToDto)
                 .orElseThrow(ExceptionFactory::contactNotCreated);
+    }
+
+    @Override
+    public Contact findById(Long id) {
+        return contactRepository.findById(id).orElseThrow(() -> ExceptionFactory.contactNotFound(id));
     }
 }

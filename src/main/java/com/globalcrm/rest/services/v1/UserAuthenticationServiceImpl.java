@@ -41,6 +41,7 @@ public class UserAuthenticationServiceImpl implements UserAuthenticationService 
     public UserAuthDTO setUserPassword(String email, String password) {
         User user = findByEmail(email);
         user.setPassword(passwordEncoder.encode(password));
+        user.setEnabled(true);
         return userAuthMapper.userToDto(userRepository.save(user));
     }
 

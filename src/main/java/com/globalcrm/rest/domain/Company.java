@@ -32,8 +32,6 @@ public class Company {
     private VisibleFor visibleFor;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "company")
     private Set<Contact> contacts = new HashSet<>();
-    // Not for v1.0
-    //private String country;
 
     public Company addContact(Contact contact) {
         contact.setCompany(this);

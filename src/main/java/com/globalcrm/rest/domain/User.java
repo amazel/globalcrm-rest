@@ -28,16 +28,30 @@ public class User {
     @Column(nullable = false, unique = true)
     private String email;
     private String password;
-    private boolean enabled = true;
+    private boolean enabled = false;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "createdBy")
+    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "createdBy")
     private Set<Task> createdTasks = new HashSet<>();
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "assignedTo")
+    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "assignedTo")
     private Set<Task> assignedTasks = new HashSet<>();
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "responsible")
+    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "responsible")
     private Set<Sale> sales = new HashSet<>();
 
+    public void addCreatedTask(Task task){
+        task.setCreatedBy(this);
+        createdTasks.add(task);
+    }
+
+    public void addAssignedTask(Task task){
+        task.setAssignedTo(this);
+        assignedTasks.add(task);
+    }
+
+    public void addSale(Sale sale){
+        sale.setResponsible(this);
+        sales.add(sale);
+    }
 
 }
