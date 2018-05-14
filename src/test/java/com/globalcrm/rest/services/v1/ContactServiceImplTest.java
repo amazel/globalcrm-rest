@@ -58,7 +58,7 @@ public class ContactServiceImplTest {
 
         company.getContacts().add(contact);
 
-        when(companyService.getAccountCompanyById(anyLong(), anyLong())).thenReturn(new CompanyDTO());
+        when(companyService.getCompanyByAccountAndId(anyLong(), anyLong())).thenReturn(new CompanyDTO());
         when(companyRepository.save(any(Company.class))).thenReturn(company);
 
         ContactDTO contactDTO = new ContactDTO();

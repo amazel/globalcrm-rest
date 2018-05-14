@@ -37,7 +37,7 @@ public class ContactServiceImpl implements ContactService {
     @Override
     @Transactional
     public ContactDTO createContact(Long acctId, Long companyId, ContactDTO contactDTO) {
-        Company company = companyMapper.dtoToCompany(companyService.getAccountCompanyById(acctId, companyId));
+        Company company = companyMapper.dtoToCompany(companyService.getCompanyByAccountAndId(acctId, companyId));
         Contact contact = contactMapper.dtoToContact(contactDTO);
         Company companySaved = companyRepository.save(company.addContact(contact));
         return companySaved.getContacts()

@@ -15,7 +15,7 @@ import java.util.List;
 @RestController
 @RequestMapping(SaleController.BASE_URL)
 public class SaleController {
-    public static final String BASE_URL = "/api/v1/accounts";
+    public static final String BASE_URL = "/api/v1/sales";
 
     final SaleService saleService;
 
@@ -23,9 +23,10 @@ public class SaleController {
         this.saleService = saleService;
     }
 
-    @PostMapping("/{accountId}/users/{userId}/contacts/{contactId}/sales/new")
+    @PostMapping("/new")
     @ResponseStatus(HttpStatus.CREATED)
-    public SaleDTO createNewSale(@PathVariable Long accountId, @PathVariable Long userId, @PathVariable Long contactId, @RequestBody SaleDTO saleDTO) {
+    public SaleDTO createNewSale(@RequestParam Long accountId, @RequestParam Long userId, @RequestParam Long contactId,
+                                 @RequestBody SaleDTO saleDTO) {
         return saleService.createNewSale(accountId, userId, contactId, saleDTO);
     }
 

@@ -19,7 +19,7 @@ import java.util.List;
 @RestController
 @RequestMapping(CompanyController.BASE_URL)
 public class CompanyController {
-    public static final String BASE_URL = "/api/v1/accounts";
+    public static final String BASE_URL = "/api/v1/companies";
 
     CompanyService companyService;
     AccountService accountService;
@@ -29,26 +29,26 @@ public class CompanyController {
         this.accountService = accountService;
     }
 
-    @GetMapping("/{accountId}/companies")
+    @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<CompanyDTO> getCompanies(@PathVariable Long accountId) {
+    public List<CompanyDTO> getCompanies(@RequestParam Long accountId) {
         log.info("Getting companies for account: " + accountId);
         AccountDTO accountDTO = accountService.findById(accountId);
         return new ArrayList<>(accountDTO.getCompanies());
     }
 
-    @PostMapping("/{accountId}/companies/new")
+    @PostMapping("/new")
     @ResponseStatus(HttpStatus.CREATED)
-    public CompanyDTO createNewCompany(@PathVariable Long accountId, @Valid @RequestBody CompanyDTO companyDTO) {
+    public CompanyDTO createNewCompany(@RequestParam Long accountId, @Valid @RequestBody CompanyDTO companyDTO) {
         return companyService.createCompany(accountId, companyDTO);
     }
 
-    @GetMapping("/{accountId}/companies/{companyId}")
+    @GetMapping("/{companyId}")
     @ResponseStatus(HttpStatus.OK)
-    public CompanyDTO getAccountCompany(@PathVariable Long accountId, @PathVariable Long companyId) {
+    public CompanyDTO getCompanyById(@RequestParam Long accountId, @PathVariable Long companyId) {
         log.info("Getting company: " + companyId);
 
-        return companyService.getAccountCompanyById(accountId, companyId);
+        return companyService.getCompanyByAccountAndId(accountId, companyId);
     }
 
 }

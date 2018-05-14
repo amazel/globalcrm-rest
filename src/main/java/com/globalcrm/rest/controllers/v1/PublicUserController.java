@@ -18,7 +18,7 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping(PublicUserController.BASE_URL)
 public class PublicUserController {
-    public static final String BASE_URL = "/auth";
+    public static final String BASE_URL = "/public";
 
     final UserAuthenticationService userAuthenticationService;
 
@@ -31,7 +31,7 @@ public class PublicUserController {
         return userAuthenticationService.login(email, password);
     }
 
-    @PostMapping("/{email}/set-password")
+    @PostMapping("/set-password")
     UserAuthDTO setUserPassword(@RequestParam String email, @RequestBody String password) {
         return userAuthenticationService.setUserPassword(email, password);
     }

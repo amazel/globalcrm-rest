@@ -56,8 +56,10 @@ public class CompanyControllerTest {
 
         when(accountService.findById(anyLong())).thenReturn(accountDTO);
 
-        mockMvc.perform(get(CompanyController.BASE_URL + "/" + ACCT_ID + "/companies/")
-                .contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(
+                get(CompanyController.BASE_URL)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .param("accountId", ACCT_ID.toString()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)));
     }
@@ -72,10 +74,29 @@ public class CompanyControllerTest {
 
         //When & then
         mockMvc.perform(
-                post(CompanyController.BASE_URL + "/" + ACCT_ID + "/companies/new")
+                post(CompanyController.BASE_URL + "/new")
                         .contentType(MediaType.APPLICATION_JSON)
+                        .param("accountId", ACCT_ID.toString())
                         .content(asJsonString(companyDTO)))
                 .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.name", equalTo(COMPANY)));
+    }
+
+    @Test
+    public void getAccountCompany() throws Exception {
+
+        CompanyDTO companyDTO = new CompanyDTO();
+        companyDTO.setName(COMPANY);
+
+        when(companyService.getCompanyByAccountAndId(anyLong(), anyLong())).thenReturn(companyDTO);
+
+        //When & then
+        mockMvc.perform(
+                get(CompanyController.BASE_URL + "/" + ACCT_ID)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .param("accountId", ACCT_ID.toString())
+                        .content(asJsonString(companyDTO)))
+                .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name", equalTo(COMPANY)));
     }
 }

@@ -11,5 +11,5 @@ import java.util.List;
 public interface CompanyService {
     CompanyDTO createCompany(Long accountId, CompanyDTO companyDTO);
     List<Company> getAllCompaniesByAccount(Long accountId);
-    CompanyDTO getAccountCompanyById(Long accountId, Long companyId);
+    CompanyDTO getCompanyByAccountAndId(Long accountId, Long companyId);
 }

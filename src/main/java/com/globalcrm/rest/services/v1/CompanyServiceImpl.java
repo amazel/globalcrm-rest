@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -46,7 +47,7 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public CompanyDTO getAccountCompanyById(Long accountId, Long companyId) {
+    public CompanyDTO getCompanyByAccountAndId(Long accountId, Long companyId) {
         return getAllCompaniesByAccount(accountId)
                 .stream()
                 .filter(company -> company.getId().equals(companyId))
@@ -59,6 +60,6 @@ public class CompanyServiceImpl implements CompanyService {
     public List<Company> getAllCompaniesByAccount(Long accountId) {
         Account acct = accountRepository.findById(accountId)
                 .orElseThrow(() -> ExceptionFactory.accountNotFound(accountId));
-        return acct.getCompanies().stream().collect(Collectors.toList());
+        return new ArrayList<>(acct.getCompanies());
     }
 }

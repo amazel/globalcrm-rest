@@ -12,7 +12,7 @@ import java.util.Set;
  * Created by Hugo Lezama on April - 2018
  */
 @Data
-@EqualsAndHashCode(exclude = {"account"})
+@EqualsAndHashCode(exclude = {"account","groups"})
 @ToString(exclude = {"account"})
 @Entity
 public class User {

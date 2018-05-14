@@ -18,7 +18,7 @@ import java.util.List;
 @RequestMapping(UserController.BASE_URL)
 public class UserController {
 
-    public static final String BASE_URL = "/api/v1/accounts";
+    public static final String BASE_URL = "/api/v1/users";
 
     private final AccountService accountService;
     private final UserService userService;
@@ -28,23 +28,23 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/{accountId}/users")
+    @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<UserDTO> getAllAccountUsers(@PathVariable Long accountId) {
+    public List<UserDTO> getAllAccountUsers(@RequestParam Long accountId) {
         AccountDTO accountDTO = accountService.findById(accountId);
         return new ArrayList<>(accountDTO.getUsers());
     }
 
-    @GetMapping("/{accountId}/users/{userId}")
+    @GetMapping("/{userId}")
     @ResponseStatus(HttpStatus.OK)
-    public UserDTO getUserById(@PathVariable Long accountId, @PathVariable Long userId) {
+    public UserDTO getUserById(@RequestParam Long accountId, @PathVariable Long userId) {
         log.info("Getting User: " + userId);
       return userService.getUserById(accountId,userId);
     }
 
-    @PostMapping("/{accountId}/users/new")
+    @PostMapping("/new")
     @ResponseStatus(HttpStatus.CREATED)
-    public UserDTO createNewUser(@PathVariable Long accountId, @Valid @RequestBody UserDTO userDTO) {
+    public UserDTO createNewUser(@RequestParam Long accountId, @Valid @RequestBody UserDTO userDTO) {
         return userService.createAccountUser(accountId, userDTO);
     }
 

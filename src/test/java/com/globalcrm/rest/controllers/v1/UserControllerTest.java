@@ -63,8 +63,9 @@ public class UserControllerTest extends AbstractRestControllerTest {
 
         when(accountService.findById(anyLong())).thenReturn(accountDTO);
 
-        mockMvc.perform(get(UserController.BASE_URL + "/" + ACCT_ID + "/users/")
-                .contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(get(UserController.BASE_URL)
+                .contentType(MediaType.APPLICATION_JSON)
+                .param("accountId", ACCT_ID.toString()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)));
     }
@@ -78,8 +79,9 @@ public class UserControllerTest extends AbstractRestControllerTest {
 
         when(userService.getUserById(anyLong(),anyLong())).thenReturn(mockUser);
 
-        mockMvc.perform(get(UserController.BASE_URL + "/" + ACCT_ID + "/users/" + USER_ID)
-                .contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(get(UserController.BASE_URL + "/" + USER_ID)
+                .contentType(MediaType.APPLICATION_JSON)
+                .param("accountId", ACCT_ID.toString()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.firstName", equalTo(NAME)));
     }
@@ -103,8 +105,9 @@ public class UserControllerTest extends AbstractRestControllerTest {
 
         //When & then
         mockMvc.perform(
-                post(UserController.BASE_URL + "/" + ACCT_ID + "/users/new")
+                post(UserController.BASE_URL + "/new")
                         .contentType(MediaType.APPLICATION_JSON)
+                        .param("accountId", ACCT_ID.toString())
                         .content(asJsonString(newUser)))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.firstName", equalTo(NAME)))
@@ -126,15 +129,25 @@ public class UserControllerTest extends AbstractRestControllerTest {
     public void getUserByIdNotFound() throws Exception {
         when(userService.getUserById(anyLong(),anyLong())).thenThrow(ExceptionFactory.userNotFound(222L));
 
-        mockMvc.perform(get(UserController.BASE_URL + "/" + ACCT_ID + "/users/222")
-                .contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(get(UserController.BASE_URL +"/222")
+                .contentType(MediaType.APPLICATION_JSON)
+                .param("accountId", ACCT_ID.toString()))
                 .andExpect(status().isNotFound());
     }
 
     @Test
     public void getUserByIdBadRequest() throws Exception {
 
-        mockMvc.perform(get(UserController.BASE_URL + "/" + ACCT_ID + "/users/WWW")
+        mockMvc.perform(get(UserController.BASE_URL + "/WWW")
+                .contentType(MediaType.APPLICATION_JSON)
+                .param("accountId", ACCT_ID.toString()))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void getUserByIdNoAccount() throws Exception {
+
+        mockMvc.perform(get(UserController.BASE_URL + "/1")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
     }

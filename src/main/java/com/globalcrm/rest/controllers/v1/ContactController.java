@@ -19,7 +19,7 @@ import java.util.List;
 @RestController
 @RequestMapping(ContactController.BASE_URL)
 public class ContactController {
-    public static final String BASE_URL = "/api/v1/accounts";
+    public static final String BASE_URL = "/api/v1/contacts";
 
     private final CompanyService companyService;
     private final ContactService contactService;
@@ -29,27 +29,22 @@ public class ContactController {
         this.contactService = contactService;
     }
 
-    @GetMapping("/{accountId}/companies/{companyId}/contacts")
+    @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<ContactDTO> getCompanyContacts(@PathVariable Long accountId, @PathVariable Long companyId) {
-        log.info("Getting contacts for company: " + companyId);
-
-        CompanyDTO companyDTO = companyService.getAccountCompanyById(accountId, companyId);
-        return new ArrayList<>(companyDTO.getContacts());
+    public List<ContactDTO> getContactsByAccountAndCompany(@RequestParam Long accountId, @RequestParam(required = false) Long companyId) {
+        log.info("Getting contacts for accountId: " + accountId + " and companyID: " + companyId);
+        if (companyId != null) {
+            CompanyDTO companyDTO = companyService.getCompanyByAccountAndId(accountId,companyId);
+            return new ArrayList<>(companyDTO.getContacts());
+        } else {
+            return contactService.getAllContactsByAccount(accountId);
+        }
     }
 
-    @PostMapping("/{accountId}/companies/{companyId}/contacts/new")
+    @PostMapping("/new")
     @ResponseStatus(HttpStatus.CREATED)
-    public ContactDTO createNewContact(@PathVariable Long accountId, @PathVariable Long companyId, @Valid
+    public ContactDTO createNewContact(@RequestParam Long accountId, @RequestParam Long companyId, @Valid
     @RequestBody ContactDTO contactDTO) {
         return contactService.createContact(accountId, companyId, contactDTO);
-    }
-
-
-    @GetMapping("/{accountId}/contacts")
-    @ResponseStatus(HttpStatus.OK)
-    public List<ContactDTO> getAllAccountContacts(@PathVariable Long accountId) {
-        log.info("Getting contacts for account: " + accountId);
-        return contactService.getAllContactsByAccount(accountId);
     }
 }

@@ -94,7 +94,7 @@ public class CompanyServiceImplTest {
 
         when(accountRepository.findById(anyLong())).thenReturn(Optional.of(account));
 
-        CompanyDTO companyDTO = companyService.getAccountCompanyById(ACCT_ID, COMPANY_ID);
+        CompanyDTO companyDTO = companyService.getCompanyByAccountAndId(ACCT_ID, COMPANY_ID);
 
         assertEquals(COMPANY_ID, companyDTO.getId());
         verify(accountRepository, times(1)).findById(anyLong());
