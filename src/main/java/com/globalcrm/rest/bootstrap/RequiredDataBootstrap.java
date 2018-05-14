@@ -1,9 +1,6 @@
 package com.globalcrm.rest.bootstrap;
 
-import com.globalcrm.rest.api.v1.model.AccountDTO;
-import com.globalcrm.rest.api.v1.model.CompanyDTO;
-import com.globalcrm.rest.api.v1.model.ContactDTO;
-import com.globalcrm.rest.api.v1.model.UserDTO;
+import com.globalcrm.rest.api.v1.model.*;
 import com.globalcrm.rest.domain.EmailType;
 import com.globalcrm.rest.domain.PhoneType;
 import com.globalcrm.rest.domain.SubscriptionType;
@@ -42,7 +39,9 @@ public class RequiredDataBootstrap implements CommandLineRunner {
         UserDTO usr = addUser(acct.getId());
         setUserPassword(acct.getAccountHolder(), "password");
         CompanyDTO companyDTO = createDummyCompany(acct.getId());
-        createDummyContact(acct.getId(), companyDTO.getId());
+        ContactDTO createdContact = createDummyContact(acct.getId(), companyDTO.getId());
+        createSale(acct.getId(),usr.getId(),createdContact.getId());
+
     }
 
     public AccountDTO loadDefaultAccount() {
@@ -88,7 +87,7 @@ public class RequiredDataBootstrap implements CommandLineRunner {
         return companyService.createCompany(accId, company);
     }
 
-    private void createDummyContact(Long acctId, Long companyId) {
+    private ContactDTO createDummyContact(Long acctId, Long companyId) {
         log.info("Creating Dummy ContactDTO");
 
         ContactDTO contact = new ContactDTO();
@@ -100,62 +99,13 @@ public class RequiredDataBootstrap implements CommandLineRunner {
         contact.getEmails().put(EmailType.PERSONAL, "correo@personal.com");
         contact.getEmails().put(EmailType.WORK, "correo@trabajo.com");
 
-        contactService.createContact(acctId, companyId, contact);
+        return contactService.createContact(acctId, companyId, contact);
     }
 
-    /*
-    private void createDummyContact(Account account) {
-        log.info("Creating Dummy Contact");
-
-        Contact contact = new Contact();
-        Company company = new Company();
-        company.setName("DUMMY COMPANY");
-        company.setAccount(account);
-        contact.setCompany(company);
-        contact.setNames("Mi Contacto");
-        Map<PhoneType, String> phones = new HashMap<>();
-        phones.put(PhoneType.HOME, "5550879089");
-        phones.put(PhoneType.MOBILE, "555087459");
-        contact.setPhones(phones);
-
-        contact.setVisibleFor(VisibleFor.ALL);
-        contact.setLastNames("Dummy Last Names");
-        contact.getEmails().put(EmailType.PERSONAL,"correo@personal.com");
-        contact.getEmails().put(EmailType.WORK,"correo@trabajo.com");
-        contactRepository.save(contact);
+    private SaleDTO createSale(Long accountId, Long userId, Long contactId) {
+        SaleDTO saleDTO = new SaleDTO();
+        saleDTO.setDescription("Sale Description");
+        saleDTO.setTitle("Sale Title");
+        return saleService.createNewSale(accountId, userId, contactId, saleDTO);
     }
-
-    public Account loadDefaultAccount() {
-        log.info("Loading default account");
-
-        Account acct = new Account();
-        acct.setName("TEST");
-        acct.setWebsite("www.company.com");
-        acct.setCreationDateTime(LocalDateTime.now());
-        acct.setSubscriptionType(SubscriptionType.MICRO);
-
-        User holder = new User();
-        holder.setAccount(acct);
-        holder.setFirstName("ACCOUNT");
-        holder.setLastName("HOLDER");
-        holder.setEmail("EMAIL");
-        //userRepository.save(holder);
-        acct.setAccountHolder(holder);
-
-        Account acctSaved = accountRepository.save(acct);
-
-        AccountHistory acctHistory = new AccountHistory();
-        acctHistory.setAccount(acctSaved);
-        acctHistory.setAccountEvent(AccountEvent.CREATED);
-        acctHistory.setDateTime(LocalDateTime.now());
-        accountHistoryRepository.save(acctHistory);
-
-        User u1 = new User();
-        u1.setFirstName("USER");
-        u1.setLastName("ONE");
-        u1.setEmail("EMAIL2");
-        acctSaved.addUser(u1);
-        return accountRepository.save(acct);
-    }
-    */
 }

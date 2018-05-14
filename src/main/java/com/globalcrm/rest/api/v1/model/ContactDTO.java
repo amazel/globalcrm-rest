@@ -3,6 +3,7 @@ package com.globalcrm.rest.api.v1.model;
 import com.globalcrm.rest.domain.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -18,7 +19,7 @@ public class ContactDTO {
     private Long id;
     private String names;
     private String lastNames;
-    private Byte[] picture;
+    private LocalDateTime created;
     private ContactType contactType;
     private Map<PhoneType, String> phones = new HashMap<>();
     private Map<EmailType, String> emails = new HashMap<>();

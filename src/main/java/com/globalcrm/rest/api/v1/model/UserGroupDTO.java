@@ -11,7 +11,8 @@ import java.util.Set;
  * Created by Hugo Lezama on May - 2018
  */
 @Data
-public class GroupDTO {
+public class UserGroupDTO {
+
     private Long id;
     private String name;
     private AccountDTO account;

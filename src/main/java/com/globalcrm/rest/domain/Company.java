@@ -5,6 +5,7 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -24,6 +25,7 @@ public class Company {
     private String name;
     @ManyToOne
     private Account account;
+    private LocalDateTime created;
     private String address;
     private String zipCode;
     private String city;

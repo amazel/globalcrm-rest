@@ -1,7 +1,5 @@
 package com.globalcrm.rest.api.v1.model;
 
-import com.globalcrm.rest.domain.Sale;
-import com.globalcrm.rest.domain.Task;
 import lombok.*;
 
 import javax.validation.constraints.Email;
@@ -20,12 +18,13 @@ import java.util.Set;
 public class UserDTO {
     private Long id;
     private AccountDTO account;
-    @Size(min = 2, message="Name should have at least 2 characters")
+    @Size(min = 2, message = "Name should have at least 2 characters")
     private String firstName;
     @Size(min = 2)
     private String lastName;
     @Email
     private String email;
+    private Byte[] picture;
 
     private Set<TaskDTO> createdTasks = new HashSet<>();
     private Set<TaskDTO> assignedTasks = new HashSet<>();

@@ -42,4 +42,8 @@ public class ExceptionFactory {
     public static RuntimeException invalidLogin() {
         return new RuntimeException("invalid login and/or password");
     }
+
+    public static ResourceNotFoundException saleNotFound(Long saleId) {
+        return new ResourceNotFoundException("Sale ID: " + saleId + " not found");
+    }
 }

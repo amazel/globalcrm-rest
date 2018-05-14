@@ -24,6 +24,8 @@ public class User {
     private Account account;
     private String firstName;
     private String lastName;
+    @Lob
+    private Byte[] picture;
     @Column(nullable = false, unique = true)
     private String email;
     private String password;
@@ -31,11 +33,11 @@ public class User {
 
     @ManyToMany
     @JoinTable(
-            name = "user_group",
+            name = "user_user_group",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "group_id")
     )
-    private Set<Group> groups = new HashSet<>();
+    private Set<UserGroup> groups = new HashSet<>();
 
     @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "createdBy")
     private Set<Task> createdTasks = new HashSet<>();

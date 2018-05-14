@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -21,6 +22,7 @@ public class CompanyDTO {
     private Long id;
     private String name;
     private AccountDTO account;
+    private LocalDateTime created;
     private String address;
     private String zipCode;
     private String city;

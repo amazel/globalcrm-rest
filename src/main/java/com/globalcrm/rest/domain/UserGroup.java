@@ -11,10 +11,10 @@ import java.util.Set;
  * Created by Hugo Lezama on May - 2018
  */
 @Data
+@EqualsAndHashCode(exclude = {"account","users"})
 @Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"account_id", "name"})})
-@EqualsAndHashCode(exclude = {"account"})
 @Entity
-public class Group {
+public class UserGroup {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

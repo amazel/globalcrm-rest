@@ -30,9 +30,9 @@ public class SaleController {
         return saleService.createNewSale(accountId, userId, contactId, saleDTO);
     }
 
-    @GetMapping("/{accountId}/sales")
+    @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<SaleDTO> getAllAccountSales(@PathVariable Long accountId) {
+    public List<SaleDTO> getAllAccountSales(@RequestParam Long accountId) {
         log.info("Getting all sales for account: " + accountId);
         return saleService.getAllSalesByAccount(accountId);
     }

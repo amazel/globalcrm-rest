@@ -5,6 +5,7 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -24,9 +25,7 @@ public class Contact {
     private Long id;
     private String names;
     private String lastNames;
-    @Lob
-    private Byte[] picture;
-
+    private LocalDateTime created;
     @ManyToOne(optional = false, cascade = CascadeType.PERSIST)
     private Company company;
 
