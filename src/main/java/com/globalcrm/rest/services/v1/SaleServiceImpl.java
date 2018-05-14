@@ -2,14 +2,14 @@ package com.globalcrm.rest.services.v1;
 
 import com.globalcrm.rest.api.v1.mapper.SaleMapper;
 import com.globalcrm.rest.api.v1.model.SaleDTO;
-import com.globalcrm.rest.domain.Contact;
-import com.globalcrm.rest.domain.Sale;
-import com.globalcrm.rest.domain.SaleStage;
-import com.globalcrm.rest.domain.User;
+import com.globalcrm.rest.domain.*;
 import com.globalcrm.rest.repositories.SaleRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by Hugo Lezama on May - 2018
@@ -31,8 +31,9 @@ public class SaleServiceImpl implements SaleService {
 
     @Transactional
     @Override
-    public SaleDTO createNewSale(Long userId, Long contactId, SaleDTO saleDTO) {
-        User user = userService.findById(userId);
+    public SaleDTO createNewSale(Long accountId, Long userId, Long contactId, SaleDTO saleDTO) {
+        log.info("Saving sale, AcctId: {}, userID: {}, contactId: {}",accountId,userId,contactId);
+        User user = userService.findUserByAccountAndId(accountId,userId);
         Contact contact = contactService.findById(contactId);
         Sale sale = saleMapper.dtoToSale(saleDTO);
 
@@ -45,7 +46,16 @@ public class SaleServiceImpl implements SaleService {
         contact.addSale(sale);
 
         Sale savedSale = saleRepository.save(sale);
+
         return saleMapper.saleToDto(savedSale);
     }
 
+    public List<SaleDTO> getAllSalesByAccount(Long accountId){
+        Account account = new Account();
+        return account.getUsers()
+                .stream()
+                .flatMap(user -> user.getSales().stream())
+                .map(saleMapper::saleToDto)
+                .collect(Collectors.toList());
+    }
 }

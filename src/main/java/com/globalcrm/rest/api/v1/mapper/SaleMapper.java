@@ -27,7 +27,17 @@ public interface SaleMapper {
     })
     ContactDTO contactToDto(Contact contact);
 
+    @Mappings({
+            @Mapping(target = "accountHolder", ignore = true),
+            @Mapping(target = "users", ignore = true),
+            @Mapping(target = "companies", ignore = true),
+    })
     Account dtoToAccount(AccountDTO accountDTO);
+    @Mappings({
+            @Mapping(target = "accountHolder", ignore = true),
+            @Mapping(target = "users", ignore = true),
+            @Mapping(target = "companies", ignore = true),
+    })
     AccountDTO accountToDto(Account account);
 
     @Mappings({

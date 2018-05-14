@@ -11,6 +11,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 /**
  * Created by Hugo Lezama on April - 2018
  */
@@ -44,14 +47,18 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public CompanyDTO getAccountCompanyById(Long accountId, Long companyId) {
-        Account acct = accountRepository
-                .findById(accountId)
-                .orElseThrow(() -> ExceptionFactory.accountNotFound(accountId));
-        return acct.getCompanies()
+        return getAllCompaniesByAccount(accountId)
                 .stream()
                 .filter(company -> company.getId().equals(companyId))
                 .findFirst()
                 .map(mapper::companyToDto)
                 .orElseThrow(() -> ExceptionFactory.companyNotFound(companyId));
+    }
+
+    @Override
+    public List<Company> getAllCompaniesByAccount(Long accountId) {
+        Account acct = accountRepository.findById(accountId)
+                .orElseThrow(() -> ExceptionFactory.accountNotFound(accountId));
+        return acct.getCompanies().stream().collect(Collectors.toList());
     }
 }

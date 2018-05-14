@@ -8,7 +8,6 @@ import com.globalcrm.rest.domain.Account;
 import com.globalcrm.rest.domain.Company;
 import com.globalcrm.rest.domain.Contact;
 import com.globalcrm.rest.domain.User;
-import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
@@ -31,6 +30,7 @@ public interface AccountMapper {
             @Mapping(target = "account.users", ignore = true),
             @Mapping(target = "account.companies", ignore = true),
             @Mapping(target = "password", ignore = true)
+
 
     })
     User userDtoToUser(UserDTO userDTO);

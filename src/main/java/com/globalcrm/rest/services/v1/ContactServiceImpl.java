@@ -5,13 +5,15 @@ import com.globalcrm.rest.api.v1.mapper.ContactMapper;
 import com.globalcrm.rest.api.v1.model.ContactDTO;
 import com.globalcrm.rest.domain.Company;
 import com.globalcrm.rest.domain.Contact;
-import com.globalcrm.rest.domain.Sale;
 import com.globalcrm.rest.exceptions.ExceptionFactory;
 import com.globalcrm.rest.repositories.CompanyRepository;
 import com.globalcrm.rest.repositories.ContactRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by Hugo Lezama on April - 2018
@@ -49,5 +51,14 @@ public class ContactServiceImpl implements ContactService {
     @Override
     public Contact findById(Long id) {
         return contactRepository.findById(id).orElseThrow(() -> ExceptionFactory.contactNotFound(id));
+    }
+
+    @Override
+    public List<ContactDTO> getAllContactsByAccount(Long accountId) {
+        return companyService.getAllCompaniesByAccount(accountId)
+                .stream()
+                .flatMap(company -> company.getContacts().stream())
+                .map(contactMapper::contactToDto)
+                .collect(Collectors.toList());
     }
 }

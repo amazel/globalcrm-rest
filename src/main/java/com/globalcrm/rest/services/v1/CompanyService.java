@@ -1,6 +1,7 @@
 package com.globalcrm.rest.services.v1;
 
 import com.globalcrm.rest.api.v1.model.CompanyDTO;
+import com.globalcrm.rest.domain.Company;
 
 import java.util.List;
 
@@ -9,6 +10,6 @@ import java.util.List;
  */
 public interface CompanyService {
     CompanyDTO createCompany(Long accountId, CompanyDTO companyDTO);
-    //List<CompanyDTO> getAccountCompanies(Long accountId);
+    List<Company> getAllCompaniesByAccount(Long accountId);
     CompanyDTO getAccountCompanyById(Long accountId, Long companyId);
 }

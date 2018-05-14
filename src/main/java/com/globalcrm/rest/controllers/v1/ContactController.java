@@ -31,10 +31,10 @@ public class ContactController {
 
     @GetMapping("/{accountId}/companies/{companyId}/contacts")
     @ResponseStatus(HttpStatus.OK)
-    public List<ContactDTO> getCompanyContacts(@PathVariable Long accountId,@PathVariable Long companyId) {
+    public List<ContactDTO> getCompanyContacts(@PathVariable Long accountId, @PathVariable Long companyId) {
         log.info("Getting contacts for company: " + companyId);
 
-        CompanyDTO companyDTO = companyService.getAccountCompanyById(accountId,companyId);
+        CompanyDTO companyDTO = companyService.getAccountCompanyById(accountId, companyId);
         return new ArrayList<>(companyDTO.getContacts());
     }
 
@@ -45,4 +45,11 @@ public class ContactController {
         return contactService.createContact(accountId, companyId, contactDTO);
     }
 
+
+    @GetMapping("/{accountId}/contacts")
+    @ResponseStatus(HttpStatus.OK)
+    public List<ContactDTO> getAllAccountContacts(@PathVariable Long accountId) {
+        log.info("Getting contacts for account: " + accountId);
+        return contactService.getAllContactsByAccount(accountId);
+    }
 }

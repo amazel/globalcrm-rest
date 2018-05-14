@@ -6,6 +6,8 @@ import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by Hugo Lezama on May - 2018
@@ -35,5 +37,8 @@ public class Task {
     @ManyToOne
     private Sale linkedToSale;
 
-    private boolean privateTask;
+    private VisibleFor visibleFor;
+
+   // private Set<User> visibleForUsers = new HashSet<>();
+    //private set<Groups> visibleForGroups = new HashSet<>();
 }

@@ -14,7 +14,6 @@ import java.util.Set;
 @Data
 @EqualsAndHashCode(exclude = {"account"})
 @ToString(exclude = {"account"})
-//@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"account_id", "email"})})
 @Entity
 public class User {
 
@@ -29,6 +28,14 @@ public class User {
     private String email;
     private String password;
     private boolean enabled = false;
+
+    @ManyToMany
+    @JoinTable(
+            name = "user_group",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "group_id")
+    )
+    private Set<Group> groups = new HashSet<>();
 
     @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "createdBy")
     private Set<Task> createdTasks = new HashSet<>();

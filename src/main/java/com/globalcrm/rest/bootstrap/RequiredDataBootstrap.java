@@ -25,25 +25,25 @@ public class RequiredDataBootstrap implements CommandLineRunner {
     final UserAuthenticationService userAuthenticationService;
     CompanyService companyService;
     ContactService contactService;
+    final SaleService saleService;
 
-    public RequiredDataBootstrap(AccountService accountService, UserService userService, UserAuthenticationService userAuthenticationService, CompanyService companyService, ContactService contactService) {
+    public RequiredDataBootstrap(AccountService accountService, UserService userService, UserAuthenticationService userAuthenticationService, CompanyService companyService, ContactService contactService, SaleService saleService) {
         this.accountService = accountService;
         this.userService = userService;
         this.userAuthenticationService = userAuthenticationService;
         this.companyService = companyService;
         this.contactService = contactService;
+        this.saleService = saleService;
     }
 
     @Override
     public void run(String... args) {
         AccountDTO acct = loadDefaultAccount();
         UserDTO usr = addUser(acct.getId());
-        setUserPassword(acct.getAccountHolder(),"password");
+        setUserPassword(acct.getAccountHolder(), "password");
         CompanyDTO companyDTO = createDummyCompany(acct.getId());
         createDummyContact(acct.getId(), companyDTO.getId());
     }
-
-
 
     public AccountDTO loadDefaultAccount() {
         log.info("Loading default account");
@@ -73,7 +73,7 @@ public class RequiredDataBootstrap implements CommandLineRunner {
     }
 
     private void setUserPassword(UserDTO usr, String password) {
-        userAuthenticationService.setUserPassword(usr.getEmail(),password);
+        userAuthenticationService.setUserPassword(usr.getEmail(), password);
     }
 
     private CompanyDTO createDummyCompany(Long accId) {
@@ -88,7 +88,7 @@ public class RequiredDataBootstrap implements CommandLineRunner {
         return companyService.createCompany(accId, company);
     }
 
-    private void createDummyContact(Long acctId ,Long companyId) {
+    private void createDummyContact(Long acctId, Long companyId) {
         log.info("Creating Dummy ContactDTO");
 
         ContactDTO contact = new ContactDTO();
@@ -102,7 +102,6 @@ public class RequiredDataBootstrap implements CommandLineRunner {
 
         contactService.createContact(acctId, companyId, contact);
     }
-
 
     /*
     private void createDummyContact(Account account) {

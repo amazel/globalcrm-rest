@@ -7,5 +7,6 @@ import com.globalcrm.rest.domain.User;
 public interface UserService {
     UserDTO createAccountUser(Long accountId, UserDTO userDTO);
     UserDTO getUserById(Long accountId, Long userId);
+    User findUserByAccountAndId(Long accountId, Long userId);
     User findById(Long id);
 }

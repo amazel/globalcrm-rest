@@ -2,6 +2,7 @@ package com.globalcrm.rest.api.v1.model;
 
 import com.globalcrm.rest.domain.TaskStatus;
 import com.globalcrm.rest.domain.TaskType;
+import com.globalcrm.rest.domain.VisibleFor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -26,4 +27,5 @@ public class TaskDTO {
     private ContactDTO linkedToContact;
     private SaleDTO linkedToSale;
     private boolean privateTask;
+    private VisibleFor visibleFor;
 }
