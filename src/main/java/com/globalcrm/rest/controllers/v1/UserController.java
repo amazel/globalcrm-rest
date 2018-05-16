@@ -31,7 +31,7 @@ public class UserController {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<UserDTO> getAllAccountUsers(@RequestParam Long accountId) {
-        AccountDTO accountDTO = accountService.findById(accountId);
+        AccountDTO accountDTO = accountService.findDTOById(accountId);
         return new ArrayList<>(accountDTO.getUsers());
     }
 
@@ -47,5 +47,4 @@ public class UserController {
     public UserDTO createNewUser(@RequestParam Long accountId, @Valid @RequestBody UserDTO userDTO) {
         return userService.createAccountUser(accountId, userDTO);
     }
-
 }

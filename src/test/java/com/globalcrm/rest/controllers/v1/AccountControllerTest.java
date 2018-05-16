@@ -57,7 +57,7 @@ public class AccountControllerTest {
 
         AccountDTO accountDTO = new AccountDTO();
         accountDTO.setId(ACCT_ID);
-        when(accountService.findById(anyLong())).thenReturn(accountDTO);
+        when(accountService.findDTOById(anyLong())).thenReturn(accountDTO);
 
         mockMvc.perform(get(AccountController.BASE_URL + "/" + ACCT_ID)
                 .contentType(MediaType.APPLICATION_JSON))

@@ -54,7 +54,7 @@ public class CompanyControllerTest {
         AccountDTO accountDTO = new AccountDTO();
         accountDTO.getCompanies().add(new CompanyDTO());
 
-        when(accountService.findById(anyLong())).thenReturn(accountDTO);
+        when(accountService.findDTOById(anyLong())).thenReturn(accountDTO);
 
         mockMvc.perform(
                 get(CompanyController.BASE_URL)

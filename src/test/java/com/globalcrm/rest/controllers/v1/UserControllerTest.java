@@ -61,7 +61,7 @@ public class UserControllerTest extends AbstractRestControllerTest {
         accountDTO.getUsers().add(new UserDTO());
 
 
-        when(accountService.findById(anyLong())).thenReturn(accountDTO);
+        when(accountService.findDTOById(anyLong())).thenReturn(accountDTO);
 
         mockMvc.perform(get(UserController.BASE_URL)
                 .contentType(MediaType.APPLICATION_JSON)

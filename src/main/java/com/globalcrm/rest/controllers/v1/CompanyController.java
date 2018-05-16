@@ -33,7 +33,7 @@ public class CompanyController {
     @ResponseStatus(HttpStatus.OK)
     public List<CompanyDTO> getCompanies(@RequestParam Long accountId) {
         log.info("Getting companies for account: " + accountId);
-        AccountDTO accountDTO = accountService.findById(accountId);
+        AccountDTO accountDTO = accountService.findDTOById(accountId);
         return new ArrayList<>(accountDTO.getCompanies());
     }
 

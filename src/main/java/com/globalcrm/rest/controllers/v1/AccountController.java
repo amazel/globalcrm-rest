@@ -27,7 +27,7 @@ public class AccountController {
     @ResponseStatus(HttpStatus.OK)
     public AccountDTO getAccountById(@PathVariable Long acctId) {
         log.info("Getting Account: " + acctId);
-        return accountService.findById(acctId);
+        return accountService.findDTOById(acctId);
     }
 
     @PostMapping("/new")

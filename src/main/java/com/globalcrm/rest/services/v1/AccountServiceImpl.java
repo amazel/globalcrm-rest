@@ -50,9 +50,13 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public AccountDTO findById(Long acctId) {
+    public AccountDTO findDTOById(Long acctId) {
+        return accountMapper.accountToDto(findById(acctId));
+    }
+
+    @Override
+    public Account findById(Long acctId) {
         return accountRepository.findById(acctId)
-                .map(account -> accountMapper.accountToDto(account))
                 .orElseThrow(() -> ExceptionFactory.accountNotFound(acctId));
     }
 

@@ -21,17 +21,20 @@ import java.util.stream.Collectors;
 @Service
 public class SaleServiceImpl implements SaleService {
 
-    private final SaleRepository saleRepository;
     private final UserService userService;
     private final ContactService contactService;
+    private final SaleRepository saleRepository;
     private final SaleHistoryRepository saleHistoryRepository;
+    private final AccountService accountService;
     private final SaleMapper saleMapper = SaleMapper.INSTANCE;
 
-    public SaleServiceImpl(UserService userService, ContactService contactService, SaleRepository saleRepository, SaleHistoryRepository saleHistoryRepository) {
+    public SaleServiceImpl(UserService userService, ContactService contactService, SaleRepository saleRepository,
+                           SaleHistoryRepository saleHistoryRepository, AccountService accountService) {
         this.saleRepository = saleRepository;
         this.userService = userService;
         this.contactService = contactService;
         this.saleHistoryRepository = saleHistoryRepository;
+        this.accountService = accountService;
     }
 
     @Transactional
@@ -75,7 +78,7 @@ public class SaleServiceImpl implements SaleService {
     }
 
     public List<SaleDTO> getAllSalesByAccount(Long accountId) {
-        Account account = new Account();
+        Account account = accountService.findById(accountId);
         return account.getUsers()
                 .stream()
                 .flatMap(user -> user.getSales().stream())

@@ -71,7 +71,7 @@ public class AccountServiceImplTest {
         when(accountRepository.findById(anyLong())).thenReturn(Optional.of(createDummyAccount()));
 
         //When
-        AccountDTO accountDTO = accountService.findById(ID);
+        AccountDTO accountDTO = accountService.findDTOById(ID);
 
         //Then
         assertEquals(ID, accountDTO.getId());
