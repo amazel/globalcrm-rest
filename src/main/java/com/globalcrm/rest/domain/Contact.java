@@ -25,7 +25,9 @@ public class Contact {
     private Long id;
     private String names;
     private String lastNames;
-    private LocalDateTime created;
+    private LocalDateTime creationDateTime;
+    @ManyToOne
+    private User createdBy;
     @ManyToOne(optional = false, cascade = CascadeType.PERSIST)
     private Company company;
 
@@ -47,10 +49,13 @@ public class Contact {
     @Enumerated(value = EnumType.STRING)
     private VisibleFor visibleFor;
 
+//    private Set<User> visibleForUsers = new HashSet<>();
+//    private Set<Group> visibleForGroups = new HashSet<>();
+
     @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "contact")
     private Set<Sale> sales = new HashSet<>();
 
-    public void addSale(Sale sale){
+    public void addSale(Sale sale) {
         sale.setContact(this);
         sales.add(sale);
     }

@@ -3,9 +3,11 @@ package com.globalcrm.rest.api.v1.mapper;
 import com.globalcrm.rest.api.v1.model.CompanyDTO;
 import com.globalcrm.rest.api.v1.model.ContactDTO;
 import com.globalcrm.rest.api.v1.model.SaleDTO;
+import com.globalcrm.rest.api.v1.model.UserDTO;
 import com.globalcrm.rest.domain.Company;
 import com.globalcrm.rest.domain.Contact;
 import com.globalcrm.rest.domain.Sale;
+import com.globalcrm.rest.domain.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
@@ -54,6 +56,23 @@ public interface ContactMapper {
 
     })
     SaleDTO saleToDto(Sale sale);
+    @Mappings({
+            @Mapping(target = "account", ignore = true),
+            @Mapping(target = "sales", ignore = true),
+            @Mapping(target = "createdTasks", ignore = true),
+            @Mapping(target = "assignedTasks", ignore = true)
+
+    })
+    User userDtoToUser(UserDTO userDTO);
+
+    @Mappings({
+            @Mapping(target = "account", ignore = true),
+            @Mapping(target = "sales", ignore = true),
+            @Mapping(target = "createdTasks", ignore = true),
+            @Mapping(target = "assignedTasks", ignore = true)
+
+    })
+    UserDTO userToUserDto(User user);
 
 
 }

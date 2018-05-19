@@ -19,7 +19,8 @@ public class ContactDTO {
     private Long id;
     private String names;
     private String lastNames;
-    private LocalDateTime created;
+    private LocalDateTime creationDateTime;
+    private User createdBy;
     private ContactType contactType;
     private Map<PhoneType, String> phones = new HashMap<>();
     private Map<EmailType, String> emails = new HashMap<>();

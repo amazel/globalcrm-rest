@@ -14,4 +14,6 @@ public interface ContactService {
     Contact findById(Long id);
 
     List<ContactDTO> getAllContactsByAccount(Long accountId);
+
+    ContactDTO findByUserAndId(Long userId, Long contactId);
 }

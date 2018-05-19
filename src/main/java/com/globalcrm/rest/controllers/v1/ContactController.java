@@ -16,6 +16,7 @@ import java.util.List;
  * Created by Hugo Lezama on April - 2018
  */
 @Slf4j
+@CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
 @RestController
 @RequestMapping(ContactController.BASE_URL)
 public class ContactController {
@@ -34,7 +35,7 @@ public class ContactController {
     public List<ContactDTO> getContactsByAccountAndCompany(@RequestParam Long accountId, @RequestParam(required = false) Long companyId) {
         log.info("Getting contacts for accountId: " + accountId + " and companyID: " + companyId);
         if (companyId != null) {
-            CompanyDTO companyDTO = companyService.getCompanyByAccountAndId(accountId,companyId);
+            CompanyDTO companyDTO = companyService.getCompanyByAccountAndId(accountId, companyId);
             return new ArrayList<>(companyDTO.getContacts());
         } else {
             return contactService.getAllContactsByAccount(accountId);
@@ -46,5 +47,12 @@ public class ContactController {
     public ContactDTO createNewContact(@RequestParam Long accountId, @RequestParam Long companyId, @Valid
     @RequestBody ContactDTO contactDTO) {
         return contactService.createContact(accountId, companyId, contactDTO);
+    }
+
+    @GetMapping("/{contactId}")
+    @ResponseStatus(HttpStatus.OK)
+    public ContactDTO getContact(@RequestParam Long userId, @PathVariable Long contactId) {
+        log.info("Getting contact : " + contactId + " - user: " + userId);
+        return contactService.findByUserAndId(userId, contactId);
     }
 }
