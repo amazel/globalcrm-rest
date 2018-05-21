@@ -3,6 +3,7 @@ package com.globalcrm.rest.api.v1.model;
 import com.globalcrm.rest.domain.*;
 import lombok.*;
 
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -25,6 +26,7 @@ public class ContactDTO {
     private Map<PhoneType, String> phones = new HashMap<>();
     private Map<EmailType, String> emails = new HashMap<>();
     private CompanyDTO company;
+    @NotNull
     private VisibleFor visibleFor;
     private Set<SaleDTO> sales = new HashSet<>();
 }

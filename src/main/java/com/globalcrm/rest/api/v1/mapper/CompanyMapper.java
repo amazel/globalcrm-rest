@@ -38,12 +38,14 @@ public interface CompanyMapper {
 
     @Mappings({
             @Mapping(target = "company.account", ignore = true),
-            @Mapping(target = "company.contacts", ignore = true)
+            @Mapping(target = "company.contacts", ignore = true),
+            @Mapping(target = "sales", ignore = true)
     })
     ContactDTO contactToDto(Contact contact);
     @Mappings({
             @Mapping(target = "company.account", ignore = true),
-            @Mapping(target = "company.contacts", ignore = true)
+            @Mapping(target = "company.contacts", ignore = true),
+            @Mapping(target = "sales", ignore = true)
     })
     Contact dtoToContact(ContactDTO contactDTO);
 }
