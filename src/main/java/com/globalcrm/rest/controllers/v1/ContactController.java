@@ -16,7 +16,6 @@ import java.util.List;
  * Created by Hugo Lezama on April - 2018
  */
 @Slf4j
-@CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
 @RestController
 @RequestMapping(ContactController.BASE_URL)
 public class ContactController {

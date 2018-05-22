@@ -70,6 +70,7 @@ public class JwtTokenUtil  {
         final Date createdDate = clock.now();
         Map<String, Object> claims = new HashMap<>();
         claims.put("name", userDetails.getFirstName());
+        claims.put("uid", userDetails.getId());
         return Jwts.builder()
                 .setClaims(claims)
                 .setSubject(userDetails.getUsername())
@@ -87,7 +88,7 @@ public class JwtTokenUtil  {
 
     public String refreshToken(String token) {
         final Date createdDate = clock.now();
-        final Date expirationDate = new Date(createdDate.getTime() + 300000);
+        final Date expirationDate = new Date(createdDate.getTime() + expiration);
 
         final Claims claims = getAllClaimsFromToken(token);
         claims.setIssuedAt(createdDate);

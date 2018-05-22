@@ -14,6 +14,7 @@ import java.util.Collection;
 @Data
 public class UserAuthDTO implements UserDetails {
     private static final long serialVersionUID = 6713555369928042367L;
+    private Long id;
     private String password;
     @NotNull
     private String email;

@@ -50,8 +50,6 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
                 .collect(Collectors.toList()), ex.getMessage()), new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }
 
-
-
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<Object> handleDataIntegrityViolationException(DataIntegrityViolationException ex, WebRequest
             request) {
@@ -73,4 +71,12 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
 
     }
 
+    @ExceptionHandler(BadLoginException.class)
+    public ResponseEntity<Object> badLoginException(BadLoginException ex, WebRequest
+            request) {
+        log.error("Handling BadLoginException... ");
+
+        return handleExceptionInternal(ex, new ErrorDetails(LocalDateTime.now(), Stream.of("Bad login credentials")
+                .collect(Collectors.toList()), ex.getMessage()), new HttpHeaders(), HttpStatus.UNAUTHORIZED, request);
+    }
 }

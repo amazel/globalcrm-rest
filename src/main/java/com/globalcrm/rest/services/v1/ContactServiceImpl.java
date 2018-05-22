@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -42,6 +43,8 @@ public class ContactServiceImpl implements ContactService {
     public ContactDTO createContact(Long acctId, Long companyId, ContactDTO contactDTO) {
         Company company = companyMapper.dtoToCompany(companyService.getCompanyByAccountAndId(acctId, companyId));
         Contact contact = contactMapper.dtoToContact(contactDTO);
+//        contact.setCreatedBy();
+        contact.setCreationDateTime(LocalDateTime.now());
         Company companySaved = companyRepository.save(company.addContact(contact));
         return companySaved.getContacts()
                 .stream()

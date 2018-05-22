@@ -16,6 +16,7 @@ import javax.validation.Valid;
  */
 @Slf4j
 @RestController
+@CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
 @RequestMapping(PublicUserController.BASE_URL)
 public class PublicUserController {
     public static final String BASE_URL = "/public";

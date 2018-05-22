@@ -3,7 +3,7 @@ package com.globalcrm.rest.services.v1;
 import com.globalcrm.rest.api.v1.mapper.UserAuthMapper;
 import com.globalcrm.rest.api.v1.model.UserAuthDTO;
 import com.globalcrm.rest.domain.User;
-import com.globalcrm.rest.exceptions.AuthenticationException;
+import com.globalcrm.rest.exceptions.BadLoginException;
 import com.globalcrm.rest.exceptions.ExceptionFactory;
 import com.globalcrm.rest.repositories.UserRepository;
 import com.globalcrm.rest.security.JwtTokenUtil;
@@ -47,10 +47,10 @@ public class UserAuthenticationServiceImpl implements UserAuthenticationService 
 
     @Override
     public UserAuthDTO login(String email, String password) {
-        log.info("Login... {},{}",email,password);
+        log.info("Login... {},{}", email, password);
 
         UserAuthDTO reloaded = userAuthMapper.userToDto(userRepository.findByEmail
-                (email).orElseThrow(() -> ExceptionFactory.userNotFound(email)));
+                (email).orElseThrow(ExceptionFactory::badLoginException));
 
         log.info(reloaded.toString());
         authenticate(email, password);
@@ -67,9 +67,9 @@ public class UserAuthenticationServiceImpl implements UserAuthenticationService 
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
         } catch (DisabledException e) {
-            throw new AuthenticationException("User is disabled!", e);
+            throw new BadLoginException("User is disabled!", e);
         } catch (BadCredentialsException e) {
-            throw new AuthenticationException("Bad credentials!", e);
+            ExceptionFactory.badLoginException();
         }
     }
 
