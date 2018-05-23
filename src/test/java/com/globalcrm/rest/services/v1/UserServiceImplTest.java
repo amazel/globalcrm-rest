@@ -78,13 +78,14 @@ public class UserServiceImplTest {
         User savedUser = new User();
         savedUser.setId(USER_ID);
         savedUser.setEmail(EMAIL);
+        savedUser.setAccount(retAccount);
         retAccount.getUsers().add(savedUser);
 
-        when(accountRepository.findById(anyLong())).thenReturn(Optional.of(retAccount));
+        when(userRepository.findById(anyLong())).thenReturn(Optional.of(savedUser));
 
-        UserDTO userDTO = userService.getUserById(ACCT_ID, USER_ID);
+        UserDTO userDTO = userService.getUserById(USER_ID);
 
         assertEquals(USER_ID, userDTO.getId());
-        verify(accountRepository, times(1)).findById(anyLong());
+        verify(userRepository, times(1)).findById(anyLong());
     }
 }

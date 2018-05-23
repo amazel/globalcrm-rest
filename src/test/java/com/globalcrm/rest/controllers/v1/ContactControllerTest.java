@@ -2,6 +2,7 @@ package com.globalcrm.rest.controllers.v1;
 
 import com.globalcrm.rest.api.v1.model.CompanyDTO;
 import com.globalcrm.rest.api.v1.model.ContactDTO;
+import com.globalcrm.rest.domain.VisibleFor;
 import com.globalcrm.rest.exceptions.RestResponseEntityExceptionHandler;
 import com.globalcrm.rest.services.v1.CompanyService;
 import com.globalcrm.rest.services.v1.ContactService;
@@ -61,6 +62,7 @@ public class ContactControllerTest {
 
         ContactDTO contactDTO = new ContactDTO();
         contactDTO.setNames(NAMES);
+        contactDTO.setVisibleFor(VisibleFor.ALL);
 
         when(contactService.createContact(anyLong(), anyLong(), any(ContactDTO.class))).thenReturn(contactDTO);
 
@@ -68,8 +70,8 @@ public class ContactControllerTest {
         mockMvc.perform(
                 post(ContactController.BASE_URL + "/new")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .param("accountId", ACCT_ID.toString())
                         .param("companyId", COMPANY_ID.toString())
+                        .param("accountId", ACCT_ID.toString())
                         .content(asJsonString(contactDTO)))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.names", equalTo(NAMES)));

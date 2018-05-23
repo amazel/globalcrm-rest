@@ -3,7 +3,6 @@ package com.globalcrm.rest.controllers.v1;
 import com.globalcrm.rest.api.v1.model.AccountDTO;
 import com.globalcrm.rest.api.v1.model.UserDTO;
 import com.globalcrm.rest.exceptions.ExceptionFactory;
-import com.globalcrm.rest.exceptions.ResourceNotFoundException;
 import com.globalcrm.rest.exceptions.RestResponseEntityExceptionHandler;
 import com.globalcrm.rest.services.v1.AccountService;
 import com.globalcrm.rest.services.v1.UserService;
@@ -15,9 +14,6 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-
-import java.util.Arrays;
-import java.util.List;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
@@ -77,7 +73,7 @@ public class UserControllerTest extends AbstractRestControllerTest {
         mockUser.setId(USER_ID);
         mockUser.setFirstName(NAME);
 
-        when(userService.getUserById(anyLong(),anyLong())).thenReturn(mockUser);
+        when(userService.getUserById(anyLong())).thenReturn(mockUser);
 
         mockMvc.perform(get(UserController.BASE_URL + "/" + USER_ID)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -127,9 +123,9 @@ public class UserControllerTest extends AbstractRestControllerTest {
 
     @Test
     public void getUserByIdNotFound() throws Exception {
-        when(userService.getUserById(anyLong(),anyLong())).thenThrow(ExceptionFactory.userNotFound(222L));
+        when(userService.getUserById(anyLong())).thenThrow(ExceptionFactory.userNotFound(222L));
 
-        mockMvc.perform(get(UserController.BASE_URL +"/222")
+        mockMvc.perform(get(UserController.BASE_URL + "/222")
                 .contentType(MediaType.APPLICATION_JSON)
                 .param("accountId", ACCT_ID.toString()))
                 .andExpect(status().isNotFound());
@@ -139,15 +135,6 @@ public class UserControllerTest extends AbstractRestControllerTest {
     public void getUserByIdBadRequest() throws Exception {
 
         mockMvc.perform(get(UserController.BASE_URL + "/WWW")
-                .contentType(MediaType.APPLICATION_JSON)
-                .param("accountId", ACCT_ID.toString()))
-                .andExpect(status().isBadRequest());
-    }
-
-    @Test
-    public void getUserByIdNoAccount() throws Exception {
-
-        mockMvc.perform(get(UserController.BASE_URL + "/1")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
     }

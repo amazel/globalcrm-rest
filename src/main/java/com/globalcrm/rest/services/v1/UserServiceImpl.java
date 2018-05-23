@@ -41,8 +41,8 @@ public class UserServiceImpl implements UserService {
                 .findFirst().orElseThrow(ExceptionFactory::userNotCreated);
     }
 
-    public UserDTO getUserById(Long accountId, Long userId) {
-        return mapper.userToDto(findUserByAccountAndId(accountId, userId));
+    public UserDTO getUserById(Long userId) {
+        return mapper.userToDto(findById(userId));
     }
 
     public User findUserByAccountAndId(Long accountId, Long userId) {

@@ -37,9 +37,9 @@ public class UserController {
 
     @GetMapping("/{userId}")
     @ResponseStatus(HttpStatus.OK)
-    public UserDTO getUserById(@RequestParam Long accountId, @PathVariable Long userId) {
+    public UserDTO getUserById(@PathVariable Long userId) {
         log.info("Getting User: " + userId);
-      return userService.getUserById(accountId,userId);
+      return userService.getUserById(userId);
     }
 
     @PostMapping("/new")

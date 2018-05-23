@@ -20,7 +20,8 @@ public interface UserAuthMapper {
     User dtoToUser(UserAuthDTO userAuthDTO);
 
     @Mappings({
-            @Mapping(source = "id", target = "id")
+            @Mapping(source = "id", target = "id"),
+            @Mapping(source = "account.id", target = "accountId"),
     })
     UserAuthDTO userToDto(User user);
 }
