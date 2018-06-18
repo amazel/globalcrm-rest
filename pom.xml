@@ -21,13 +21,14 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <java.version>9</java.version>
+        <java.version>1.8</java.version>
         <lombok.version>1.16.20</lombok.version>
         <org.mapstruct.version>1.2.0.Final</org.mapstruct.version>
         <jacoco.version>0.8.1</jacoco.version>
         <springfox-swagger.version>2.7.0</springfox-swagger.version>
         <maven-failsafe-plugin.version>2.20</maven-failsafe-plugin.version>
         <jjwt.version>0.9.0</jjwt.version>
+        <artifactrepo.url>global-crm-rest</artifactrepo.url>
     </properties>
 
     <dependencies>
@@ -114,7 +115,6 @@
             <artifactId>jjwt</artifactId>
             <version>${jjwt.version}</version>
         </dependency>
-
     </dependencies>
 
     <build>
@@ -200,6 +200,14 @@
                 </executions>
             </plugin>
         </plugins>
+
+        <extensions>
+            <extension>
+                <groupId>org.kuali.maven.wagons</groupId>
+                <artifactId>maven-s3-wagon</artifactId>
+                <version>LATEST</version>
+            </extension>
+        </extensions>
     </build>
     <repositories>
         <repository>
@@ -219,7 +227,16 @@
             </snapshots>
         </repository>
     </repositories>
-
+<distributionManagement>
+    <repository>
+        <id>s3.artifacts.release</id>
+        <url>s3://${artifactrepo.url}/release</url>
+    </repository>
+    <snapshotRepository>
+        <id>s3.artifacts.snapshot</id>
+        <url>s3://${artifactrepo.url}/snapshot</url>
+    </snapshotRepository>
+</distributionManagement>
     <pluginRepositories>
         <pluginRepository>
             <id>spring-snapshots</id>

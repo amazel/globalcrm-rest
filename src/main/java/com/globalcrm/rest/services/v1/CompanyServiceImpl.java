@@ -4,16 +4,18 @@ import com.globalcrm.rest.api.v1.mapper.CompanyMapper;
 import com.globalcrm.rest.api.v1.model.CompanyDTO;
 import com.globalcrm.rest.domain.Account;
 import com.globalcrm.rest.domain.Company;
+import com.globalcrm.rest.domain.Contact;
 import com.globalcrm.rest.exceptions.ExceptionFactory;
 import com.globalcrm.rest.repositories.AccountRepository;
 import com.globalcrm.rest.repositories.CompanyRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Created by Hugo Lezama on April - 2018
@@ -32,27 +34,31 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public CompanyDTO createCompany(Long accountId, CompanyDTO companyDTO) {
         Account acct = accountRepository.findById(accountId)
                 .orElseThrow(() -> ExceptionFactory.accountNotFound(accountId));
         Company company = mapper.dtoToCompany(companyDTO);
-        Account saved = accountRepository.save(acct.addCompany(company));
-        return saved.getCompanies()
-                .stream()
-                .filter(company1 -> company1.getName().equals(companyDTO.getName()))
-                .findFirst()
-                .map(mapper::companyToDto)
-                .orElseThrow(ExceptionFactory::companyNotCreated);
+        company.setAccount(acct);
+        for(Contact c: company.getContacts()) {
+            c.setCompany(company);
+        }
+        company.setCreationDateTime(LocalDateTime.now());
+
+        return mapper.companyToDto(companyRepository.saveAndFlush(company));
     }
 
     @Override
-    public CompanyDTO getCompanyByAccountAndId(Long accountId, Long companyId) {
+    public CompanyDTO getCompanyDTO(Long accountId, Long companyId) {
+        return mapper.companyToDto(getCompanyByAccountAndId(accountId, companyId));
+    }
+
+    @Override
+    public Company getCompanyByAccountAndId(Long accountId, Long companyId){
         return getAllCompaniesByAccount(accountId)
                 .stream()
                 .filter(company -> company.getId().equals(companyId))
                 .findFirst()
-                .map(mapper::companyToDto)
                 .orElseThrow(() -> ExceptionFactory.companyNotFound(companyId));
     }
 

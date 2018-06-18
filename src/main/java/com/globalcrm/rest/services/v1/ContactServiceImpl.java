@@ -11,6 +11,7 @@ import com.globalcrm.rest.repositories.CompanyRepository;
 import com.globalcrm.rest.repositories.ContactRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
@@ -24,7 +25,7 @@ import java.util.stream.Collectors;
 @Service
 public class ContactServiceImpl implements ContactService {
 
-    final ContactRepository contactRepository;
+    ContactRepository contactRepository;
     CompanyRepository companyRepository;
     CompanyService companyService;
     CompanyMapper companyMapper = CompanyMapper.INSTANCE;
@@ -39,19 +40,26 @@ public class ContactServiceImpl implements ContactService {
     }
 
     @Override
-    @Transactional
-    public ContactDTO createContact(Long acctId, Long companyId, ContactDTO contactDTO) {
-        Company company = companyMapper.dtoToCompany(companyService.getCompanyByAccountAndId(acctId, companyId));
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public ContactDTO createContact(Long acctId, Long companyId, Long userId, ContactDTO contactDTO) {
+        Company company = companyService.getCompanyByAccountAndId(acctId, companyId);
         Contact contact = contactMapper.dtoToContact(contactDTO);
-//        contact.setCreatedBy();
+        User createdBy = userService.findById(userId);
+        contact.getPhones().clear();
+        contact.getEmails().clear();
+        contact.getSales().clear();
+
+        contactDTO.getPhones().iterator().forEachRemaining(
+                phone -> contact.addPhone(contactMapper.dtoToPhone(phone)));
+        contactDTO.getEmails().iterator().forEachRemaining(
+                email -> contact.addEmail(contactMapper.dtoToEmail(email)));
+        contactDTO.getSales().iterator().forEachRemaining(
+                sale -> contact.addSale(contactMapper.dtoToSale(sale)));
+
         contact.setCreationDateTime(LocalDateTime.now());
-        Company companySaved = companyRepository.save(company.addContact(contact));
-        return companySaved.getContacts()
-                .stream()
-                .filter(contact1 -> contact1.getNames().equals(contactDTO.getNames()))
-                .findFirst()
-                .map(contactMapper::contactToDto)
-                .orElseThrow(ExceptionFactory::contactNotCreated);
+        contact.setCompany(company);
+        contact.setCreatedBy(createdBy);
+        return contactMapper.contactToDto(contactRepository.saveAndFlush(contact));
     }
 
     @Override

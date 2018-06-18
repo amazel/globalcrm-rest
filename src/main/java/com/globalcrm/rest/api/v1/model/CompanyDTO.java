@@ -22,7 +22,7 @@ public class CompanyDTO {
     private Long id;
     private String name;
     private AccountDTO account;
-    private LocalDateTime created;
+    private LocalDateTime creationDateTime;
     private String address;
     private String zipCode;
     private String city;

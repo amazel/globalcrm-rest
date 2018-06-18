@@ -8,6 +8,7 @@ import com.globalcrm.rest.repositories.SaleHistoryRepository;
 import com.globalcrm.rest.repositories.SaleRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
@@ -37,8 +38,9 @@ public class SaleServiceImpl implements SaleService {
         this.accountService = accountService;
     }
 
-    @Transactional
+
     @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public SaleDTO createNewSale(Long accountId, Long userId, Long contactId, SaleDTO saleDTO) {
         log.info("Saving sale, AcctId: {}, userID: {}, contactId: {}", accountId, userId, contactId);
         User user = userService.findUserByAccountAndId(accountId, userId);

@@ -61,7 +61,7 @@ public class AccountServiceImplTest {
         assertEquals(AccountStatus.NEW, accountDTO.getAccountStatus());
         assertEquals(WEBSITE, accountDTO.getWebsite());
         assertEquals(1, accountDTO.getUsers().size());
-        verify(accountRepository, times(2)).save(any(Account.class));
+        verify(accountRepository, times(1)).save(any(Account.class));
     }
 
     @Test

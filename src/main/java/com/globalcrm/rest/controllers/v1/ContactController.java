@@ -34,7 +34,7 @@ public class ContactController {
     public List<ContactDTO> getContactsByAccountAndCompany(@RequestParam Long accountId, @RequestParam(required = false) Long companyId) {
         log.info("Getting contacts for accountId: " + accountId + " and companyID: " + companyId);
         if (companyId != null) {
-            CompanyDTO companyDTO = companyService.getCompanyByAccountAndId(accountId, companyId);
+            CompanyDTO companyDTO = companyService.getCompanyDTO(accountId, companyId);
             return new ArrayList<>(companyDTO.getContacts());
         } else {
             return contactService.getAllContactsByAccount(accountId);
@@ -43,9 +43,10 @@ public class ContactController {
 
     @PostMapping("/new")
     @ResponseStatus(HttpStatus.CREATED)
-    public ContactDTO createNewContact(@RequestParam Long accountId, @RequestParam Long companyId, @Valid
-    @RequestBody ContactDTO contactDTO) {
-        return contactService.createContact(accountId, companyId, contactDTO);
+    public ContactDTO createNewContact(@RequestParam Long accountId, @RequestParam Long companyId, @RequestParam Long
+            userId, @Valid @RequestBody ContactDTO contactDTO) {
+        log.info("Creating contact");
+        return contactService.createContact(accountId, companyId, userId, contactDTO);
     }
 
     @GetMapping("/{contactId}")

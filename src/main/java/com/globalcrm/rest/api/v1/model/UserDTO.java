@@ -26,6 +26,7 @@ public class UserDTO {
     private String email;
     private Byte[] picture;
 
+
     private Set<TaskDTO> createdTasks = new HashSet<>();
     private Set<TaskDTO> assignedTasks = new HashSet<>();
     private Set<SaleDTO> sales = new HashSet<>();

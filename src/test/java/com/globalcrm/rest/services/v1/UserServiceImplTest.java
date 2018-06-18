@@ -54,7 +54,7 @@ public class UserServiceImplTest {
         savedUser.setAccount(retAccount);
         retAccount.getUsers().add(savedUser);
         when(accountRepository.findById(anyLong())).thenReturn(Optional.of(retAccount));
-        when(accountRepository.save(any(Account.class))).thenReturn(retAccount);
+        when(userRepository.save(any(User.class))).thenReturn(savedUser);
 
         UserDTO userDTO = new UserDTO();
         userDTO.setEmail(EMAIL);
@@ -67,7 +67,7 @@ public class UserServiceImplTest {
         //Then
         // assertEquals(USER_ID, retUser.getId());
         verify(accountRepository, times(1)).findById(anyLong());
-        verify(accountRepository, times(1)).save(any(Account.class));
+        verify(userRepository, times(1)).save(any(User.class));
     }
 
     @Test
@@ -87,5 +87,24 @@ public class UserServiceImplTest {
 
         assertEquals(USER_ID, userDTO.getId());
         verify(userRepository, times(1)).findById(anyLong());
+    }
+
+
+    @Test
+    public void findUserByAccountAndId() {
+        Account retAccount = new Account();
+        retAccount.setId(ACCT_ID);
+        User savedUser = new User();
+        savedUser.setId(USER_ID);
+        savedUser.setEmail(EMAIL);
+        savedUser.setAccount(retAccount);
+        retAccount.getUsers().add(savedUser);
+
+        when(accountRepository.findById(anyLong())).thenReturn(Optional.of(retAccount));
+
+        User found = userService.findUserByAccountAndId(ACCT_ID, USER_ID);
+
+        assertEquals(USER_ID, found.getId());
+        verify(accountRepository, times(1)).findById(anyLong());
     }
 }

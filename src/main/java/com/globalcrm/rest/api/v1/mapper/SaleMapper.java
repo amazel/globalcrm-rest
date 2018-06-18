@@ -66,5 +66,23 @@ public interface SaleMapper {
             @Mapping(target = "linkedToSale", ignore = true)
     })
     TaskDTO taskToDto(Task task);
+    Phone dtoToPhone(PhoneDTO phoneDTO);
+    @Mappings({
+            @Mapping(target = "contact", ignore = true)
 
+    })
+    PhoneDTO phoneToDto(Phone phone);
+
+
+    @Mappings({
+            @Mapping(target = "contact", ignore = true)
+
+    })
+    Email dtoToEmail(EmailDTO emailDTO);
+
+    @Mappings({
+            @Mapping(target = "contact", ignore = true)
+
+    })
+    EmailDTO emailToDto(Email email);
 }

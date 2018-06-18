@@ -8,6 +8,7 @@ import com.globalcrm.rest.repositories.AccountHistoryRepository;
 import com.globalcrm.rest.repositories.AccountRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
@@ -30,7 +31,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public AccountDTO createAccount(AccountDTO accountDTO) {
         log.info("CREATING ACCOUNT");
         Account account = accountMapper.dtoToAccount(accountDTO);
@@ -40,13 +41,14 @@ public class AccountServiceImpl implements AccountService {
         account.setSubscriptionType(SubscriptionType.MICRO);
         account.getAccountHolder().setPassword(null);
         account.getAccountHolder().setId(null);
+        account.getAccountHolder().setAccount(account);
         account.setUsers(new HashSet<>());
         account.setCompanies(new HashSet<>());
         Account savedAcct = accountRepository.save(account);
-        savedAcct.getAccountHolder().setAccount(savedAcct);
-        Account retAcct = accountRepository.save(savedAcct);
-        generateAccountHistoryRecord(retAcct, AccountEvent.CREATED);
-        return accountMapper.accountToDto(retAcct);
+//        savedAcct.getAccountHolder().setAccount(savedAcct);
+//        Account retAcct = accountRepository.save(savedAcct);
+        generateAccountHistoryRecord(savedAcct, AccountEvent.CREATED);
+        return accountMapper.accountToDto(savedAcct);
     }
 
     @Override

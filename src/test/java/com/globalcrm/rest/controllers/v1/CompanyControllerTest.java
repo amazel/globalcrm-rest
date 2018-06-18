@@ -88,7 +88,7 @@ public class CompanyControllerTest {
         CompanyDTO companyDTO = new CompanyDTO();
         companyDTO.setName(COMPANY);
 
-        when(companyService.getCompanyByAccountAndId(anyLong(), anyLong())).thenReturn(companyDTO);
+        when(companyService.getCompanyDTO(anyLong(), anyLong())).thenReturn(companyDTO);
 
         //When & then
         mockMvc.perform(

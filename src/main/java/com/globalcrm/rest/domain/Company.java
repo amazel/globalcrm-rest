@@ -25,7 +25,7 @@ public class Company {
     private String name;
     @ManyToOne
     private Account account;
-    private LocalDateTime created;
+    private LocalDateTime creationDateTime;
     private String address;
     private String zipCode;
     private String city;

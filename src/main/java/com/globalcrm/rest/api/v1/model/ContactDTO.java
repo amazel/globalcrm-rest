@@ -1,14 +1,13 @@
 package com.globalcrm.rest.api.v1.model;
 
 import com.globalcrm.rest.domain.*;
-import lombok.*;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by Hugo Lezama on April - 2018
@@ -21,10 +20,10 @@ public class ContactDTO {
     private String names;
     private String lastNames;
     private LocalDateTime creationDateTime;
-    private User createdBy;
+    private UserDTO createdBy;
     private ContactType contactType;
-    private Map<PhoneType, String> phones = new HashMap<>();
-    private Map<EmailType, String> emails = new HashMap<>();
+    private Set<PhoneDTO> phones = new HashSet<>();
+    private Set<EmailDTO> emails = new HashSet<>();
     private CompanyDTO company;
     @NotNull
     private VisibleFor visibleFor;

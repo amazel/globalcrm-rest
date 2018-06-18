@@ -1,6 +1,5 @@
 package com.globalcrm.rest.services.v1;
 
-import com.globalcrm.rest.api.v1.model.CompanyDTO;
 import com.globalcrm.rest.api.v1.model.ContactDTO;
 import com.globalcrm.rest.domain.*;
 import com.globalcrm.rest.repositories.CompanyRepository;
@@ -22,6 +21,7 @@ public class ContactServiceImplTest {
     public static final Long COMPANY_ID = 1L;
     public static final String FIRST_NAMES = "FIRST NAMES";
     public static final String LAST_NAMES = "LAST NAMES";
+    public static final long USER_ID = 1l;
 
 
     ContactService contactService;
@@ -54,34 +54,65 @@ public class ContactServiceImplTest {
         contact.setLastNames(LAST_NAMES);
         contact.setCompany(company);
         contact.setVisibleFor(VisibleFor.ALL);
-        contact.getPhones().put(PhoneType.HOME, "535353");
-        contact.getPhones().put(PhoneType.SKYPE, "SKYPE 565656");
-        contact.getEmails().put(EmailType.PERSONAL, "hleper@gsd.com");
-        contact.getEmails().put(EmailType.WORK, "hleper@work.com");
+        contact.getPhones().add(
+                new Phone(null, null, PhoneType.FAX, "5552342323"));
+        contact.getPhones().add(
+                new Phone(null, null, PhoneType.WORK, "5552342357"));
+        contact.getPhones().add(
+                new Phone(null, null, PhoneType.WORK, "5556734677"));
+
+        contact.getEmails().add(
+                new Email(null, null, EmailType.PERSONAL, "correo@personal.com"));
+        contact.getEmails().add(
+                new Email(null, null, EmailType.WORK, "correo@work.com"));
+        contact.getEmails().add(
+                new Email(null, null, EmailType.WORK, "correo2@work.com"));
 
         company.getContacts().add(contact);
 
-        when(companyService.getCompanyByAccountAndId(anyLong(), anyLong())).thenReturn(new CompanyDTO());
-        when(companyRepository.save(any(Company.class))).thenReturn(company);
+        when(companyService.getCompanyByAccountAndId(anyLong(), anyLong())).thenReturn(new Company());
+        when(contactRepository.saveAndFlush(any(Contact.class))).thenReturn(contact);
 
         ContactDTO contactDTO = new ContactDTO();
         contactDTO.setNames(FIRST_NAMES);
         contactDTO.setLastNames(LAST_NAMES);
         contactDTO.setVisibleFor(VisibleFor.ALL);
-        contactDTO.getEmails().put(EmailType.PERSONAL, "hleper@gsd.com");
-        contactDTO.getEmails().put(EmailType.WORK, "hleper@work.com");
-        contactDTO.getPhones().put(PhoneType.SKYPE, "SKYPE 565656");
-        contactDTO.getPhones().put(PhoneType.HOME, "535353");
+        contact.getPhones().add(
+                new Phone(null, null, PhoneType.FAX, "5552342323"));
+        contact.getPhones().add(
+                new Phone(null, null, PhoneType.WORK, "5552342357"));
+        contact.getPhones().add(
+                new Phone(null, null, PhoneType.WORK, "5556734677"));
+
+        contact.getEmails().add(
+                new Email(null, null, EmailType.PERSONAL, "correo@personal.com"));
+        contact.getEmails().add(
+                new Email(null, null, EmailType.WORK, "correo@work.com"));
+        contact.getEmails().add(
+                new Email(null, null, EmailType.WORK, "correo2@work.com"));
 
         //When
-        ContactDTO savedContactDTO = contactService.createContact(ACCT_ID, COMPANY_ID, contactDTO);
+        ContactDTO savedContactDTO = contactService.createContact(ACCT_ID, COMPANY_ID, USER_ID, contactDTO);
 
         //Then
 
-        assertEquals(2, savedContactDTO.getEmails().size());
-        assertEquals(2, savedContactDTO.getPhones().size());
+        assertEquals(3, savedContactDTO.getEmails().size());
+        assertEquals(3, savedContactDTO.getPhones().size());
         assertEquals(FIRST_NAMES, savedContactDTO.getNames());
         assertEquals(LAST_NAMES, savedContactDTO.getLastNames());
         assertEquals(VisibleFor.ALL, savedContactDTO.getVisibleFor());
+    }
+
+
+    @Test
+    public void findById() {
+    }
+
+    @Test
+    public void getAllContactsByAccount() {
+    }
+
+    @Test
+    public void findByUserAndId() {
     }
 }

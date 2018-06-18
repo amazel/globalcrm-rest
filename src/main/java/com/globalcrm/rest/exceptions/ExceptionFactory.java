@@ -8,7 +8,7 @@ public class ExceptionFactory {
         return new ResourceNotFoundException("User ID: " + id + " not found");
     }
     public static ResourceNotFoundException userNotFound(String email) {
-        return new ResourceNotFoundException("User not found. Email: "+email);
+        return new ResourceNotFoundException("User not found. EmailDTO: "+email);
     }
 
     public static ResourceNotFoundException accountNotFound(Long id) {
@@ -24,11 +24,11 @@ public class ExceptionFactory {
     }
 
     public static ResourceNotFoundException userNotCreated() {
-        return new ResourceNotFoundException("User not created");
+        return new ResourceNotFoundException("User not creationDateTime");
     }
 
     public static ResourceNotFoundException companyNotCreated() {
-        return new ResourceNotFoundException("Company was not created");
+        return new ResourceNotFoundException("Company was not creationDateTime");
     }
 
     public static ResourceNotFoundException companyNotFound(Long id) {
@@ -36,7 +36,7 @@ public class ExceptionFactory {
     }
 
     public static ResourceNotFoundException contactNotCreated() {
-        return new ResourceNotFoundException("Contact was not created");
+        return new ResourceNotFoundException("Contact was not creationDateTime");
     }
 
     public static ResourceNotFoundException saleNotFound(Long saleId) {

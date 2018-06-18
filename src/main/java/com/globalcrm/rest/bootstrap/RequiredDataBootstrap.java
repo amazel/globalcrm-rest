@@ -1,14 +1,16 @@
 package com.globalcrm.rest.bootstrap;
 
 import com.globalcrm.rest.api.v1.model.*;
-import com.globalcrm.rest.domain.EmailType;
-import com.globalcrm.rest.domain.PhoneType;
-import com.globalcrm.rest.domain.SubscriptionType;
-import com.globalcrm.rest.domain.VisibleFor;
+import com.globalcrm.rest.domain.*;
 import com.globalcrm.rest.services.v1.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.HashSet;
+import java.util.Random;
+import java.util.Set;
 
 /**
  * Created by Hugo Lezama on April - 2018
@@ -34,14 +36,24 @@ public class RequiredDataBootstrap implements CommandLineRunner {
     }
 
     @Override
+    @Transactional
     public void run(String... args) {
         AccountDTO acct = loadDefaultAccount();
         UserDTO usr = addUser(acct.getId());
         setUserPassword(acct.getAccountHolder(), "password");
         CompanyDTO companyDTO = createDummyCompany(acct.getId());
-        ContactDTO createdContact = createDummyContact(acct.getId(), companyDTO.getId());
-        createSale(acct.getId(),usr.getId(),createdContact.getId());
 
+        ContactDTO createdContact = createDummyContact(acct.getId(), companyDTO.getId(),  usr.getId(),"Contacto Uno");
+        createSale(acct.getId(), usr.getId(), createdContact.getId());
+        createDummyContact(acct.getId(), companyDTO.getId(), usr.getId(), "Contacto Dos");
+        createDummyContact(acct.getId(), companyDTO.getId(), usr.getId(), "Contacto Tres");
+        createDummyContact(acct.getId(), companyDTO.getId(), usr.getId(), "Otro Uno");
+        createDummyContact(acct.getId(), companyDTO.getId(), usr.getId(), "Another One");
+        createDummyContact(acct.getId(), companyDTO.getId(), usr.getId(), "Contact");
+        createDummyContact(acct.getId(), companyDTO.getId(), usr.getId(), "Maximiliano");
+        createDummyContact(acct.getId(), companyDTO.getId(), usr.getId(), "Pedro");
+        createDummyContact(acct.getId(), companyDTO.getId(), usr.getId(), "Mario");
+        createDummyContact(acct.getId(), companyDTO.getId(), usr.getId(), "Jose ");
     }
 
     public AccountDTO loadDefaultAccount() {
@@ -87,19 +99,27 @@ public class RequiredDataBootstrap implements CommandLineRunner {
         return companyService.createCompany(accId, company);
     }
 
-    private ContactDTO createDummyContact(Long acctId, Long companyId) {
-        log.info("Creating Dummy ContactDTO");
+    private ContactDTO createDummyContact(Long accId, Long companyId, Long userId, String name) {
+        log.info("Creating contact {}", name);
 
-        ContactDTO contact = new ContactDTO();
-        contact.setNames("Mi Contacto");
-        contact.setLastNames("Dummy Last Names");
-        contact.setVisibleFor(VisibleFor.ALL);
-        contact.getPhones().put(PhoneType.HOME, "5550879089");
-        contact.getPhones().put(PhoneType.MOBILE, "555087459");
-        contact.getEmails().put(EmailType.PERSONAL, "correo@personal.com");
-        contact.getEmails().put(EmailType.WORK, "correo@trabajo.com");
+        ContactDTO contactDTO = new ContactDTO();
+        contactDTO.setNames(name);
+        contactDTO.setLastNames("Last Names");
+        contactDTO.setVisibleFor(VisibleFor.ALL);
+        contactDTO.setContactType(ContactType.LEAD);
+        Set<PhoneDTO> phones = new HashSet<>();
+        Set<EmailDTO> emails = new HashSet<>();
+        phones.add(new PhoneDTO(null, null, PhoneType.FAX, genPhone()));
+        phones.add(new PhoneDTO(null, null, PhoneType.WORK, genPhone()));
+        phones.add(new PhoneDTO(null, null, PhoneType.WORK, genPhone()));
+        contactDTO.setPhones(phones);
+        emails.add(new EmailDTO(null, null, EmailType.PERSONAL, "correo@personal.com"));
+        emails.add(new EmailDTO(null, null, EmailType.WORK, "correo@work.com"));
+        emails.add(new EmailDTO(null, null, EmailType.WORK, "correo2@work.com"));
+        contactDTO.setEmails(emails);
 
-        return contactService.createContact(acctId, companyId, contact);
+
+        return contactService.createContact(accId, companyId, userId, contactDTO);
     }
 
     private SaleDTO createSale(Long accountId, Long userId, Long contactId) {
@@ -107,5 +127,11 @@ public class RequiredDataBootstrap implements CommandLineRunner {
         saleDTO.setDescription("Sale Description");
         saleDTO.setTitle("Sale Title");
         return saleService.createNewSale(accountId, userId, contactId, saleDTO);
+    }
+
+    private String genPhone() {
+        Random r = new Random();
+        Integer i = r.nextInt((99999999 - 11111111) + 1) + 11111111;
+        return i.toString();
     }
 }

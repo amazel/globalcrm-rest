@@ -59,7 +59,7 @@ public class UserServiceImplIT {
 
         Account acctSaved = accountRepository.saveAndFlush(acct);
         ACCT_ID = acctSaved.getId();
-        log.info("Account created, ID: " + ACCT_ID);
+        log.info("Account creationDateTime, ID: " + ACCT_ID);
     }
 
     @Test

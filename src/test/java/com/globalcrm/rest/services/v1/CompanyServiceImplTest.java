@@ -59,7 +59,7 @@ public class CompanyServiceImplTest {
 
         account.getCompanies().add(company);
 
-        when(accountRepository.save(any(Account.class))).thenReturn(account);
+        when(companyRepository.saveAndFlush(any(Company.class))).thenReturn(company);
 
         CompanyDTO companyDTO = new CompanyDTO();
         companyDTO.setName(NAME);
@@ -77,7 +77,8 @@ public class CompanyServiceImplTest {
         assertEquals(ADDRESS, companyRet.getAddress());
         assertEquals(NAME, companyRet.getName());
         assertEquals(STATE, companyRet.getState());
-        verify(accountRepository, times(1)).save(any(Account.class));
+        verify(accountRepository, times(1)).findById(anyLong());
+        verify(companyRepository, times(1)).saveAndFlush(any(Company.class));
     }
 
 
@@ -94,7 +95,7 @@ public class CompanyServiceImplTest {
 
         when(accountRepository.findById(anyLong())).thenReturn(Optional.of(account));
 
-        CompanyDTO companyDTO = companyService.getCompanyByAccountAndId(ACCT_ID, COMPANY_ID);
+        CompanyDTO companyDTO = companyService.getCompanyDTO(ACCT_ID, COMPANY_ID);
 
         assertEquals(COMPANY_ID, companyDTO.getId());
         verify(accountRepository, times(1)).findById(anyLong());

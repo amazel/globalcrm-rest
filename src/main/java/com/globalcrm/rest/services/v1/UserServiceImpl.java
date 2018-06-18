@@ -8,6 +8,7 @@ import com.globalcrm.rest.exceptions.ExceptionFactory;
 import com.globalcrm.rest.repositories.AccountRepository;
 import com.globalcrm.rest.repositories.UserRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
@@ -23,7 +24,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public UserDTO createAccountUser(Long accountId, UserDTO userDTO) {
         User newUser = mapper.dtoToUser(userDTO);
         newUser.setId(null);
@@ -35,10 +36,8 @@ public class UserServiceImpl implements UserService {
     private User saveUser(Long accountId, User user) {
         Account account = accountRepository.findById(accountId)
                 .orElseThrow(() -> ExceptionFactory.accountNotFound(accountId));
-        Account savedAcct = accountRepository.save(account.addUser(user));
-        return savedAcct.getUsers().stream()
-                .filter(user1 -> user1.getEmail().equals(user.getEmail()))
-                .findFirst().orElseThrow(ExceptionFactory::userNotCreated);
+        user.setAccount(account);
+       return userRepository.save(user);
     }
 
     public UserDTO getUserById(Long userId) {

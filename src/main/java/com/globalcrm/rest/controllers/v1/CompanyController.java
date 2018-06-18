@@ -48,7 +48,7 @@ public class CompanyController {
     public CompanyDTO getCompanyById(@RequestParam Long accountId, @PathVariable Long companyId) {
         log.info("Getting company: " + companyId);
 
-        return companyService.getCompanyByAccountAndId(accountId, companyId);
+        return companyService.getCompanyDTO(accountId, companyId);
     }
 
 }

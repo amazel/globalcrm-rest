@@ -79,4 +79,6 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
         return handleExceptionInternal(ex, new ErrorDetails(LocalDateTime.now(), Stream.of("Bad login credentials")
                 .collect(Collectors.toList()), ex.getMessage()), new HttpHeaders(), HttpStatus.UNAUTHORIZED, request);
     }
+
+
 }

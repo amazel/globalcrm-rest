@@ -6,6 +6,7 @@ import com.globalcrm.rest.exceptions.ExceptionFactory;
 import com.globalcrm.rest.exceptions.RestResponseEntityExceptionHandler;
 import com.globalcrm.rest.services.v1.AccountService;
 import com.globalcrm.rest.services.v1.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -14,6 +15,8 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+
+import java.util.Random;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
@@ -25,6 +28,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@Slf4j
 public class UserControllerTest extends AbstractRestControllerTest {
     public static final String NAME = "Test Name";
     public static final String LAST_NAME = "Test LastName";

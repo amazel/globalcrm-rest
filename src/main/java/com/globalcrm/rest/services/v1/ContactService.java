@@ -10,7 +10,7 @@ import java.util.List;
  */
 
 public interface ContactService {
-    ContactDTO createContact(Long acctId, Long companyId, ContactDTO accountDTO);
+    ContactDTO createContact(Long acctId, Long companyId, Long userId, ContactDTO accountDTO);
     Contact findById(Long id);
 
     List<ContactDTO> getAllContactsByAccount(Long accountId);

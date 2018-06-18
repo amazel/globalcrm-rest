@@ -6,6 +6,7 @@ import com.globalcrm.rest.domain.VisibleFor;
 import com.globalcrm.rest.exceptions.RestResponseEntityExceptionHandler;
 import com.globalcrm.rest.services.v1.CompanyService;
 import com.globalcrm.rest.services.v1.ContactService;
+import jdk.nashorn.internal.objects.NativeDate;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -37,6 +38,7 @@ public class ContactControllerTest {
     public static final Long COMPANY2_ID = 2345L;
     private static final Long CONTACT2_ID = 2323L;
     private static final String NAMES2 = "names3 names4";
+    private static final Long USER_ID = 1L;
 
     @InjectMocks
     ContactController contactController;
@@ -64,7 +66,7 @@ public class ContactControllerTest {
         contactDTO.setNames(NAMES);
         contactDTO.setVisibleFor(VisibleFor.ALL);
 
-        when(contactService.createContact(anyLong(), anyLong(), any(ContactDTO.class))).thenReturn(contactDTO);
+        when(contactService.createContact(anyLong(), anyLong(), anyLong(), any(ContactDTO.class))).thenReturn(contactDTO);
 
         //When & then
         mockMvc.perform(
@@ -72,6 +74,7 @@ public class ContactControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .param("companyId", COMPANY_ID.toString())
                         .param("accountId", ACCT_ID.toString())
+                        .param("userId", USER_ID.toString())
                         .content(asJsonString(contactDTO)))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.names", equalTo(NAMES)));
@@ -89,7 +92,7 @@ public class ContactControllerTest {
 
         companyDTO.getContacts().add(contactDTO1);
 
-        when(companyService.getCompanyByAccountAndId(anyLong(), anyLong())).thenReturn(companyDTO);
+        when(companyService.getCompanyDTO(anyLong(), anyLong())).thenReturn(companyDTO);
         //When & then
         mockMvc.perform(
                 get(ContactController.BASE_URL)

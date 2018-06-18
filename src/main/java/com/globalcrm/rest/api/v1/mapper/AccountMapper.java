@@ -29,7 +29,8 @@ public interface AccountMapper {
             @Mapping(target = "account.accountHolder", ignore = true),
             @Mapping(target = "account.users", ignore = true),
             @Mapping(target = "account.companies", ignore = true),
-            @Mapping(target = "password", ignore = true)
+            @Mapping(target = "password", ignore = true),
+            @Mapping(target = "sales", ignore = true)
 
 
     })
@@ -38,7 +39,8 @@ public interface AccountMapper {
     @Mappings({
             @Mapping(target = "account.accountHolder", ignore = true),
             @Mapping(target = "account.users", ignore = true),
-            @Mapping(target = "account.companies", ignore = true)
+            @Mapping(target = "account.companies", ignore = true),
+            @Mapping(target = "sales", ignore = true)
 
     })
     UserDTO userToUserDto(User user);
@@ -59,13 +61,15 @@ public interface AccountMapper {
 
     @Mappings({
             @Mapping(target = "company.account", ignore = true),
-            @Mapping(target = "company.contacts", ignore = true)
+            @Mapping(target = "company.contacts", ignore = true),
+            @Mapping(target = "sales", ignore = true)
     })
     ContactDTO contactToDto(Contact contact);
 
     @Mappings({
             @Mapping(target = "company.account", ignore = true),
-            @Mapping(target = "company.contacts", ignore = true)
+            @Mapping(target = "company.contacts", ignore = true),
+            @Mapping(target = "sales", ignore = true)
     })
     Contact dtoToContact(ContactDTO contactDTO);
 }
