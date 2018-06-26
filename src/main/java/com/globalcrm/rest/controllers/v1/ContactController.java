@@ -55,4 +55,11 @@ public class ContactController {
         log.info("Getting contact : " + contactId + " - user: " + userId);
         return contactService.findByUserAndId(userId, contactId);
     }
+
+    @DeleteMapping("/{contactId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteContact(@PathVariable Long contactId) {
+        log.info("Deleting contact");
+        contactService.deleteContact(contactId);
+    }
 }

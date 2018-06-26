@@ -28,8 +28,8 @@ public class PublicUserController {
     }
 
     @PostMapping("/login")
-    UserAuthDTO login(@RequestParam String email, @RequestParam String password) {
-        return userAuthenticationService.login(email, password);
+    UserAuthDTO login(@RequestBody UserAuthDTO userAuthDTO) {
+        return userAuthenticationService.login(userAuthDTO.getEmail(), userAuthDTO.getPassword());
     }
 
     @PostMapping("/set-password")

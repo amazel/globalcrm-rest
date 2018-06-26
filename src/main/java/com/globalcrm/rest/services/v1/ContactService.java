@@ -16,4 +16,6 @@ public interface ContactService {
     List<ContactDTO> getAllContactsByAccount(Long accountId);
 
     ContactDTO findByUserAndId(Long userId, Long contactId);
+
+    void deleteContact(Long contactId);
 }

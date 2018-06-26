@@ -36,7 +36,6 @@ public class UserAuthDTO implements UserDetails {
         return email;
     }
 
-    @JsonIgnore
     @Override
     public String getPassword() {
         return password;

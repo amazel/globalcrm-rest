@@ -57,18 +57,20 @@ public class UserAuthenticationServiceImpl implements UserAuthenticationService 
         final String token = jwtTokenUtil.generateToken(reloaded);
 
         reloaded.setJwtToken(token);
+        reloaded.setPassword(null);
         return reloaded;
     }
 
     private void authenticate(String username, String password) {
         Objects.requireNonNull(username);
         Objects.requireNonNull(password);
-
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
         } catch (DisabledException e) {
+            log.error(e.getMessage());
             throw new BadLoginException("User is disabled!", e);
         } catch (BadCredentialsException e) {
+            log.error(e.getMessage());
             ExceptionFactory.badLoginException();
         }
     }

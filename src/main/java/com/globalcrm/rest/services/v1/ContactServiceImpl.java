@@ -103,4 +103,10 @@ public class ContactServiceImpl implements ContactService {
         }
         return contactDTO;
     }
+
+    @Override
+    public void deleteContact(Long contactId) {
+        Contact contact = findById(contactId);
+        contactRepository.delete(contact);
+    }
 }
