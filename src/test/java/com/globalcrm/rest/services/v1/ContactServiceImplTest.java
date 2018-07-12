@@ -41,7 +41,7 @@ public class ContactServiceImplTest {
     public void setUp() {
         MockitoAnnotations.initMocks(this);
         // companyService = new CompanyServiceImpl(companyRepository, accountRepository);
-        contactService = new ContactServiceImpl(contactRepository, companyRepository, companyService, userService);
+        contactService = new ContactServiceImpl(contactRepository, companyService, userService);
     }
 
     @Test
