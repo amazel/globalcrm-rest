@@ -74,7 +74,7 @@ public class SaleServiceImpl implements SaleService {
     private void createSaleHistory(Sale sale, SaleStage saleStage) {
         SaleHistory saleHistory = new SaleHistory();
         saleHistory.setCurrentStage(saleStage);
-        saleHistory.setDateTime(LocalDateTime.now());
+        saleHistory.setCreationDateTime(LocalDateTime.now());
         saleHistory.setSale(sale);
         saleHistoryRepository.save(saleHistory);
     }

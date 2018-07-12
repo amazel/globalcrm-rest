@@ -37,18 +37,28 @@ public class CompanyController {
         return new ArrayList<>(accountDTO.getCompanies());
     }
 
-    @PostMapping("/new")
-    @ResponseStatus(HttpStatus.CREATED)
-    public CompanyDTO createNewCompany(@RequestParam Long accountId, @Valid @RequestBody CompanyDTO companyDTO) {
-        return companyService.createCompany(accountId, companyDTO);
-    }
-
     @GetMapping("/{companyId}")
     @ResponseStatus(HttpStatus.OK)
     public CompanyDTO getCompanyById(@RequestParam Long accountId, @PathVariable Long companyId) {
         log.info("Getting company: " + companyId);
 
         return companyService.getCompanyDTO(accountId, companyId);
+    }
+
+
+    @PostMapping("/new")
+    @ResponseStatus(HttpStatus.CREATED)
+    public CompanyDTO createNewCompany(@RequestParam Long accountId, @Valid @RequestBody CompanyDTO companyDTO) {
+        log.info("Creating Company {} {}", companyDTO, accountId);
+        return companyService.createCompany(accountId, companyDTO);
+    }
+
+
+    @PostMapping("/edit")
+    @ResponseStatus(HttpStatus.OK)
+    public CompanyDTO editCompany(@Valid @RequestBody CompanyDTO companyDTO) {
+        log.info("Updating Company {}", companyDTO);
+        return companyService.updateCompany(companyDTO);
     }
 
 }

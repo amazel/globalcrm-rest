@@ -1,13 +1,11 @@
 package com.globalcrm.rest.services.v1;
 
-import com.globalcrm.rest.api.v1.mapper.CompanyMapper;
 import com.globalcrm.rest.api.v1.mapper.ContactMapper;
 import com.globalcrm.rest.api.v1.model.ContactDTO;
 import com.globalcrm.rest.domain.Company;
 import com.globalcrm.rest.domain.Contact;
 import com.globalcrm.rest.domain.User;
 import com.globalcrm.rest.exceptions.ExceptionFactory;
-import com.globalcrm.rest.repositories.CompanyRepository;
 import com.globalcrm.rest.repositories.ContactRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -25,16 +23,13 @@ import java.util.stream.Collectors;
 @Service
 public class ContactServiceImpl implements ContactService {
 
-    ContactRepository contactRepository;
-    CompanyRepository companyRepository;
-    CompanyService companyService;
-    CompanyMapper companyMapper = CompanyMapper.INSTANCE;
-    ContactMapper contactMapper = ContactMapper.INSTANCE;
+    private ContactRepository contactRepository;
+    private CompanyService companyService;
+    private ContactMapper contactMapper = ContactMapper.INSTANCE;
     private final UserService userService;
 
-    public ContactServiceImpl(ContactRepository contactRepository, CompanyRepository companyRepository, CompanyService companyService, UserService userService) {
+    public ContactServiceImpl(ContactRepository contactRepository, CompanyService companyService, UserService userService) {
         this.contactRepository = contactRepository;
-        this.companyRepository = companyRepository;
         this.companyService = companyService;
         this.userService = userService;
     }
@@ -108,5 +103,38 @@ public class ContactServiceImpl implements ContactService {
     public void deleteContact(Long contactId) {
         Contact contact = findById(contactId);
         contactRepository.delete(contact);
+    }
+
+    @Override
+    public ContactDTO updateContact(ContactDTO contactDTO) {
+        Contact contact = findById(contactDTO.getId());
+        contact.getEmails().clear();
+        contact.getEmails().addAll(contactDTO.getEmails()
+                .stream()
+                .map(contactMapper::dtoToEmail)
+                .collect(Collectors.toList()));
+        contact.getEmails().forEach(email -> {
+            if (email.getId() == null) {
+                email.setContact(contact);
+            }
+        });
+        contact.getPhones().clear();
+        contact.getPhones().addAll(contactDTO.getPhones()
+                .stream()
+                .map(contactMapper::dtoToPhone)
+                .collect(Collectors.toList()));
+        contact.getPhones().forEach(
+                phone -> {
+                    if (phone.getId() == null) {
+                        phone.setContact(contact);
+                    }
+                }
+        );
+        contact.setContactType(contactDTO.getContactType());
+        contact.setNames(contactDTO.getNames());
+        contact.setVisibleFor(contactDTO.getVisibleFor());
+        contact.setLastNames(contactDTO.getLastNames());
+
+        return contactMapper.contactToDto(contactRepository.save(contact));
     }
 }

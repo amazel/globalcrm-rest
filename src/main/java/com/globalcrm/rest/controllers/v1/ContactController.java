@@ -41,6 +41,13 @@ public class ContactController {
         }
     }
 
+
+    @GetMapping("/{contactId}")
+    @ResponseStatus(HttpStatus.OK)
+    public ContactDTO getContact(@RequestParam Long userId, @PathVariable Long contactId) {
+        log.info("Getting contact : " + contactId + " - user: " + userId);
+        return contactService.findByUserAndId(userId, contactId);
+    }
     @PostMapping("/new")
     @ResponseStatus(HttpStatus.CREATED)
     public ContactDTO createNewContact(@RequestParam Long accountId, @RequestParam Long companyId, @RequestParam Long
@@ -49,11 +56,11 @@ public class ContactController {
         return contactService.createContact(accountId, companyId, userId, contactDTO);
     }
 
-    @GetMapping("/{contactId}")
+    @PostMapping("/edit")
     @ResponseStatus(HttpStatus.OK)
-    public ContactDTO getContact(@RequestParam Long userId, @PathVariable Long contactId) {
-        log.info("Getting contact : " + contactId + " - user: " + userId);
-        return contactService.findByUserAndId(userId, contactId);
+    public ContactDTO updateContact(@Valid @RequestBody ContactDTO contactDTO) {
+        log.info("Updating contact");
+        return contactService.updateContact(contactDTO);
     }
 
     @DeleteMapping("/{contactId}")

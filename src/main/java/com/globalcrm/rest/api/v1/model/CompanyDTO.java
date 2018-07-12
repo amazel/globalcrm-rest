@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -20,6 +21,7 @@ import java.util.Set;
 public class CompanyDTO {
 
     private Long id;
+    @NotNull
     private String name;
     private AccountDTO account;
     private LocalDateTime creationDateTime;

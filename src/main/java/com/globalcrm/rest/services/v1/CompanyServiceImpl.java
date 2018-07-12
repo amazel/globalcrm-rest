@@ -36,15 +36,16 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public CompanyDTO createCompany(Long accountId, CompanyDTO companyDTO) {
+        log.info("Creating company");
         Account acct = accountRepository.findById(accountId)
                 .orElseThrow(() -> ExceptionFactory.accountNotFound(accountId));
         Company company = mapper.dtoToCompany(companyDTO);
         company.setAccount(acct);
-        for(Contact c: company.getContacts()) {
+        for (Contact c : company.getContacts()) {
             c.setCompany(company);
         }
         company.setCreationDateTime(LocalDateTime.now());
-
+        log.info(company.toString());
         return mapper.companyToDto(companyRepository.saveAndFlush(company));
     }
 
@@ -54,12 +55,26 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public Company getCompanyByAccountAndId(Long accountId, Long companyId){
+    public Company getCompanyByAccountAndId(Long accountId, Long companyId) {
         return getAllCompaniesByAccount(accountId)
                 .stream()
                 .filter(company -> company.getId().equals(companyId))
                 .findFirst()
                 .orElseThrow(() -> ExceptionFactory.companyNotFound(companyId));
+    }
+
+    @Override
+    public CompanyDTO updateCompany(CompanyDTO companyDTO) {
+        Company company = companyRepository.findById(companyDTO.getId()).orElseThrow(() -> ExceptionFactory
+                .companyNotFound(companyDTO.getId()));
+        company.setZipCode(companyDTO.getZipCode());
+        company.setVisibleFor(companyDTO.getVisibleFor());
+        company.setState(companyDTO.getState());
+        company.setCity(companyDTO.getCity());
+        company.setAddress(companyDTO.getAddress());
+        company.setName(companyDTO.getName());
+
+        return mapper.companyToDto(companyRepository.save(company));
     }
 
     @Override

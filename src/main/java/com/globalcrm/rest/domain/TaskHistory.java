@@ -6,17 +6,16 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 /**
- * Created by Hugo Lezama on May - 2018
+ * Created by Hugo Lezama on Jun - 2018
  */
 @Data
 @Entity
-public class SaleHistory {
+public class TaskHistory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne(optional = false)
-    private Sale sale;
-    @Enumerated(value = EnumType.STRING)
-    private SaleStage currentStage;
+    private Task task;
     private LocalDateTime creationDateTime;
+
 }

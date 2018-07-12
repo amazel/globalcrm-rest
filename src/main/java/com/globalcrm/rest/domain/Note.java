@@ -5,6 +5,7 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 /**
  * Created by Hugo Lezama on May - 2018
@@ -23,5 +24,5 @@ public class Note {
     private Contact contact;
     @ManyToOne
     private Sale sale;
-
+    private LocalDateTime creationDateTime;
 }

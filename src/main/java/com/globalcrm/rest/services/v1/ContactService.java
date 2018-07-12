@@ -18,4 +18,6 @@ public interface ContactService {
     ContactDTO findByUserAndId(Long userId, Long contactId);
 
     void deleteContact(Long contactId);
+
+    ContactDTO updateContact(ContactDTO contactDTO);
 }
